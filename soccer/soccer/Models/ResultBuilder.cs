@@ -133,8 +133,6 @@ namespace Soccer.Models
         {
             string strHTML = GetHtmlContentFromNet(this.url);
 
-            File.WriteAllText("output.txt", strHTML);
-
             List<Result> results = new List<Result>();
             ParseHtml(strHTML, results);
 

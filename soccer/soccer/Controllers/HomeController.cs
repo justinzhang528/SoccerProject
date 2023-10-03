@@ -1,18 +1,13 @@
 ﻿using Hangfire;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 using Soccer.Services;
 
 namespace soccer.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
+        private ISoccerService _service = new SoccerService();
         public IActionResult Index()
         {
             return View();
@@ -27,9 +22,9 @@ namespace soccer.Controllers
         [Route("Result")]
         public string Result() 
         {
-            // add schedule job
-            RecurringJob.AddOrUpdate<IServiceManagement>(x => x.UpdateDatabase(), "*/15 * * * * *");
-            return "Done!";
+            //add schedule job
+            RecurringJob.AddOrUpdate<ISoccerService>(x => x.GenerateResult(), "*/03 * * * *");
+            return "Get result Done!";
         }
     }
 }

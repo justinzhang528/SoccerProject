@@ -1,6 +1,6 @@
 ﻿namespace Soccer.Services
 {
-    public interface IServiceManagement
+    public interface ISoccerService
     {
         void UpdateDatabase();
 
