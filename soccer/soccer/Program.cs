@@ -1,5 +1,7 @@
 using Hangfire;
 using Hangfire.SqlServer;
+using Soccer.Services;
+using System.Threading.Channels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,8 @@ builder.Services.AddHangfire(configuration => configuration
        }));
 builder.Services.AddHangfireServer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IServiceManagement, ServiceManagement>();
 
 var app = builder.Build();
 

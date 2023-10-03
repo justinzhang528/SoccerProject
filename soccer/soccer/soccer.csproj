@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AngleSharp" Version="1.0.4" />
     <PackageReference Include="Dapper" Version="2.1.4" />
     <PackageReference Include="Hangfire" Version="1.8.5" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.8.5" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.53" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
+    <PackageReference Include="NLog" Version="5.2.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 

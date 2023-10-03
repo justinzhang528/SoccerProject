@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Mvc;
+using Soccer.Services;
 
 namespace soccer.Controllers
 {
@@ -19,6 +21,15 @@ namespace soccer.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [HttpGet]
+        [Route("Result")]
+        public string Result() 
+        {
+            // add schedule job
+            RecurringJob.AddOrUpdate<IServiceManagement>(x => x.UpdateDatabase(), "*/15 * * * * *");
+            return "Done!";
         }
     }
 }
