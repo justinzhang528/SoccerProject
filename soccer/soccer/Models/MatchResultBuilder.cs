@@ -5,16 +5,16 @@ using Soccer.Utils;
 
 namespace Soccer.Models
 {
-    public class ResultBuilder
+    public class MatchResultBuilder
     {
         private string url;
 
-        public ResultBuilder(string url)
+        public MatchResultBuilder(string url)
         {
             this.url = url;
         }
 
-        private void ParseHtml(string data, List<Result> results)
+        private void ParseHtml(string data, List<MatchResult> results)
         {
             {
                 var doc = new HtmlDocument();
@@ -60,7 +60,7 @@ namespace Soccer.Models
                     idx++;
 
                     // 如果是正常狀態，需要把detail資料取出來
-                    Detail detail = null;
+                    MatchDetail detail = null;
                     if (condition == ConditionInfo.Normal)
                     {
                         row = rows[idx];
@@ -100,7 +100,7 @@ namespace Soccer.Models
 
                         idx += 12; //跳過detail表格裏面的11個rows，因爲已經取過了
 
-                        detail = new Detail(id, firstHalf_H, firstHalf_A, secondHalf_H, secondHalf_A, regularTime_H, regularTime_A, corners_H, corners_A, penalties_H, penalties_A,
+                        detail = new MatchDetail(id, firstHalf_H, firstHalf_A, secondHalf_H, secondHalf_A, regularTime_H, regularTime_A, corners_H, corners_A, penalties_H, penalties_A,
                             yellowCards_H, yellowCards_A, redCards_H, redCards_A, firstET_H, firstET_A, secondET_H, secondET_A, penaltiesShootout_H, penaltiesShootout_A);
                     }
 
@@ -108,7 +108,7 @@ namespace Soccer.Models
                     string[] words = events.Split("vs");
                     string homeTeam = words[0];
                     string awayTeam = words[1];
-                    Result result = new Result(id ,gameTime, leagues, homeTeam, awayTeam, homeScore, awayScore, condition, detail);
+                    MatchResult result = new MatchResult(id ,gameTime, leagues, homeTeam, awayTeam, homeScore, awayScore, condition, detail);
                     results.Add(result);
                 }
             }
@@ -141,11 +141,11 @@ namespace Soccer.Models
 
         }
 
-        public List<Result> GenerateResults()
+        public List<MatchResult> GenerateResults()
         {
             string strHTML = GetHtmlContentFromNet(this.url);
 
-            List<Result> results = new List<Result>();
+            List<MatchResult> results = new List<MatchResult>();
             ParseHtml(strHTML, results);
 
             return results;

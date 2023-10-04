@@ -1,6 +1,6 @@
 ﻿namespace Soccer.Models
 {
-    public class Detail
+    public class MatchDetail
     {
         public string Id { get; set; }
         public string FirstHalf_H { get; set; }
@@ -24,9 +24,9 @@
         public string PenaltiesShootout_H { get; set; }
         public string PenaltiesShootout_A { get; set; }
 
-        public Detail() { }
+        public MatchDetail() { }
 
-        public Detail(string id, string firstHalf_H, string firstHalf_A, string secondHalf_H, string secondHalf_A, string regularTime_H, string regularTime_A, string corners_H, string corners_A, string penalties_H, string penalties_A,
+        public MatchDetail(string id, string firstHalf_H, string firstHalf_A, string secondHalf_H, string secondHalf_A, string regularTime_H, string regularTime_A, string corners_H, string corners_A, string penalties_H, string penalties_A,
             string yellowCards_H, string yellowCards_A, string redCards_H, string redCards_A, string firstET_H, string firstET_A, string secondET_H, string secondET_A, string penaltiesShootout_H, string penaltiesShootout_A)
         {
             Id = id;

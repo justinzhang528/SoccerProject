@@ -6,32 +6,32 @@ namespace Soccer.Services
 {
     public class SoccerService : ISoccerService
     {
-        ResultBuilder _resultBuilder;
+        MatchResultBuilder _matchResultBuilder;
         DBConnUtil _dBConnUtil;
         
         public SoccerService(DBConnUtil dBConnUtil)
         {
-            _resultBuilder = new ResultBuilder("https://bti-results.bsportsasia.com/?ns=prod20082-23705321.bti-sports.io&locale=en&tzoffset=8");
+            _matchResultBuilder = new MatchResultBuilder("https://bti-results.bsportsasia.com/?ns=prod20082-23705321.bti-sports.io&locale=en&tzoffset=8");
             _dBConnUtil = dBConnUtil;
         }
 
-        public void GenerateResult()
+        public void GenerateMatchResult()
         {
-            List<Result> results = _resultBuilder.GenerateResults();
+            List<MatchResult> results = _matchResultBuilder.GenerateResults();
             //Logger logger = LogManager.GetLogger("resultHistory");
-            foreach (Result result in results)
+            foreach (MatchResult result in results)
             {
-                Result resultRow = GetResultById(result.Id);
+                MatchResult resultRow = GetMatchResultById(result.Id);
 
                 // 如果DB裏不存在則新增Result
                 if (resultRow == null)
                 {
-                    AddResult(result);
+                    AddMatchResult(result);
 
                     // 如果是正常狀態下，則需要新增Detail資料
                     if(result.Condition == ConditionInfo.Normal)
                     {
-                        AddDetail(result.Detail);
+                        AddMatchDetail(result.Detail);
                     }
                 }
                 // 如果DB裏已經存在，則檢查是否需要更新Detail和Result
@@ -47,51 +47,51 @@ namespace Soccer.Services
             //logger.Info(msg);
         }
 
-        public List<Result> GetAllResult()
+        public List<MatchResult> GetAllMatchResults()
         {
-            List<Result> results;
+            List<MatchResult> results;
             using (var connection = _dBConnUtil.GetConnection())
             {
-                results = connection.Query<Result>("spGetAllResults", commandType: System.Data.CommandType.StoredProcedure).ToList();
+                results = connection.Query<MatchResult>("spGetAllResults", commandType: System.Data.CommandType.StoredProcedure).ToList();
             }
-            foreach (Result result in results)
+            foreach (MatchResult result in results)
             {
                 if(result.Condition == ConditionInfo.Normal)
                 {
-                    result.Detail = GetDetailById(result.Id);
+                    result.Detail = GetMatchDetailById(result.Id);
                 }
             }
             return results;
         }
 
 
-        public Result GetResultById(string id)
+        public MatchResult GetMatchResultById(string id)
         {
-            Result result;
+            MatchResult result;
             using (var connection = _dBConnUtil.GetConnection())
             { 
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("Id", id);
 
-                result = connection.QuerySingleOrDefault<Result>("spGetResultById", parameters, commandType: System.Data.CommandType.StoredProcedure);
+                result = connection.QuerySingleOrDefault<MatchResult>("spGetResultById", parameters, commandType: System.Data.CommandType.StoredProcedure);
             }
             return result;
         }
 
-        public Detail GetDetailById(string id)
+        public MatchDetail GetMatchDetailById(string id)
         {
-            Detail detail;
+            MatchDetail detail;
             using (var connection = _dBConnUtil.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("Id", id);
 
-                detail = connection.QuerySingleOrDefault<Detail>("spGetDetailById", parameters, commandType: System.Data.CommandType.StoredProcedure);
+                detail = connection.QuerySingleOrDefault<MatchDetail>("spGetDetailById", parameters, commandType: System.Data.CommandType.StoredProcedure);
             }
             return detail;
         }
 
-        public void AddResult(Result result)
+        public void AddMatchResult(MatchResult result)
         {
             using (var connection = _dBConnUtil.GetConnection())
             {
@@ -109,7 +109,7 @@ namespace Soccer.Services
             }
         }
 
-        public void AddDetail(Detail detail)
+        public void AddMatchDetail(MatchDetail detail)
         {
             using (var connection = _dBConnUtil.GetConnection())
             {
@@ -141,7 +141,7 @@ namespace Soccer.Services
         }
 
         // to do
-        public void AddHistory(Detail detail)
+        public void AddHistory(MatchDetail detail)
         {
             using (var connection = _dBConnUtil.GetConnection())
             {
@@ -172,7 +172,7 @@ namespace Soccer.Services
             }
         }
 
-        public void UpdateResultById(Result result)
+        public void UpdateMatchResultById(MatchResult result)
         {
             using (var connection = _dBConnUtil.GetConnection())
             {
@@ -186,7 +186,7 @@ namespace Soccer.Services
             }
         }
 
-        public void UpdateDetialById(Detail detail)
+        public void UpdateMatchDetialById(MatchDetail detail)
         {
             using (var connection = _dBConnUtil.GetConnection())
             {

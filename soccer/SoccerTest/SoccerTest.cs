@@ -18,10 +18,10 @@ namespace SoccerTest
         public void GenerateResultsTest()
         {
             string url = "https://bti-results.bsportsasia.com/?ns=prod20082-23705321.bti-sports.io&locale=en&tzoffset=8";
-            ResultBuilder builder = new ResultBuilder(url);
-            List<Result> results = builder.GenerateResults();
+            MatchResultBuilder builder = new MatchResultBuilder(url);
+            List<MatchResult> results = builder.GenerateResults();
 
-            foreach (Result result in results) 
+            foreach (MatchResult result in results) 
             {
                 output.WriteLine("------------------------------------");
                 output.WriteLine(result.Id);

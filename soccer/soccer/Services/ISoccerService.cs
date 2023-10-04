@@ -4,7 +4,7 @@ namespace Soccer.Services
 {
     public interface ISoccerService
     {
-        void GenerateResult();
-        List<Result> GetAllResult();
+        void GenerateMatchResult();
+        List<MatchResult> GetAllMatchResults();
     }
 }

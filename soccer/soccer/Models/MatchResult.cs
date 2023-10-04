@@ -2,7 +2,7 @@
 
 namespace Soccer.Models
 {
-    public class Result
+    public class MatchResult
     {
         public string Id { get; set; }
         public string GameTime { get; set; }
@@ -11,12 +11,12 @@ namespace Soccer.Models
         public string AwayTeam { get; set; }
         public string HomeScore { get; set; }
         public string AwayScore { get; set; }
-        public Detail Detail { get; set; }
+        public MatchDetail Detail { get; set; }
         public ConditionInfo Condition { get; set; }
 
-        public Result() { }
+        public MatchResult() { }
 
-        public Result(string id, string gameTime, string leagues, string homeTeam, string awayTeam, string homeScore, string awayScore, ConditionInfo condition, Detail detail)
+        public MatchResult(string id, string gameTime, string leagues, string homeTeam, string awayTeam, string homeScore, string awayScore, ConditionInfo condition, MatchDetail detail)
         {
             Id = id;
             GameTime = gameTime;
