@@ -18,7 +18,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr id="@item.Id">
+                <tr>
                     <td>@item.GameTime</td>
                     <td>@item.Leagues</td>
                     <td>@item.HomeTeam vs @item.AwayTeam</td>
@@ -32,7 +32,7 @@
                         <td>@item.HomeScore</td>
                         <td>@item.AwayScore</td>
                         <td>
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            <button id="@item.Id" onclick="detailEvent(this)">Show Details</button>
                         </td>
                     }
                     else
