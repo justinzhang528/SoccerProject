@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using NLog;
 using Soccer.Models;
 using Soccer.Utils;
 
@@ -30,7 +29,7 @@ namespace Soccer.Services
                     AddResult(result);
 
                     // 如果是正常狀態下，則需要新增Detail資料
-                    if(result.Condition == 1)
+                    if(result.Condition == ConditionInfo.Normal)
                     {
                         AddDetail(result.Detail);
                     }
@@ -39,7 +38,7 @@ namespace Soccer.Services
                 else
                 {
                     // 如果在正常狀態下
-                    if (result.Condition == 1) 
+                    if (result.Condition == ConditionInfo.Normal) 
                     {
 
                     }
@@ -57,7 +56,7 @@ namespace Soccer.Services
             }
             foreach (Result result in results)
             {
-                if(result.Condition == 1)
+                if(result.Condition == ConditionInfo.Normal)
                 {
                     result.Detail = GetDetailById(result.Id);
                 }

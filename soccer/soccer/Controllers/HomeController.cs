@@ -14,6 +14,7 @@ namespace soccer.Controllers
         {
             _service = service;
         }
+
         public IActionResult Index()
         {
             List<Result> results = _service.GetAllResult();

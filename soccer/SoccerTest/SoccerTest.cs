@@ -1,5 +1,5 @@
 using Soccer.Models;
-using System;
+using Soccer.Utils;
 using Xunit.Abstractions;
 
 namespace SoccerTest
@@ -28,7 +28,7 @@ namespace SoccerTest
                 output.WriteLine(result.GameTime);
                 output.WriteLine(result.Leagues);
                 output.WriteLine(result.HomeTeam + " vs " + result.AwayTeam);
-                if (result.Condition == 1)
+                if (result.Condition == ConditionInfo.Normal)
                 {
                     output.WriteLine(result.HomeScore);
                     output.WriteLine(result.AwayScore);

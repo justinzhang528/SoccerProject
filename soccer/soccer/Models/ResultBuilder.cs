@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text;
 using HtmlAgilityPack;
+using Soccer.Utils;
 
 namespace Soccer.Models
 {
@@ -36,7 +37,7 @@ namespace Soccer.Models
                     var row = rows[idx];
                     var cells = row.SelectNodes(".//td");
 
-                    int status = 0; // 1->normal, 0->cancelled, 2->notStart
+                    ConditionInfo condition = ConditionInfo.Cancelled; // 1->normal, 0->cancelled, 2->notStart
 
                     // 欄位
                     string id = row.Attributes["id"].Value;
@@ -51,16 +52,16 @@ namespace Soccer.Models
                     {
                         homeScore = cells[3].InnerText;
                         awayScore = cells[4].InnerText;
-                        status = 1;
+                        condition = ConditionInfo.Normal;
                         if (homeScore == "")
-                            status = 2;
+                            condition = ConditionInfo.NotStart;
                     }
 
                     idx++;
 
                     // 如果是正常狀態，需要把detail資料取出來
                     Detail detail = null;
-                    if (status == 1)
+                    if (condition == ConditionInfo.Normal)
                     {
                         row = rows[idx];
                         var innerRows = row.SelectSingleNode(".//td").SelectSingleNode(".//table").SelectNodes(".//tr");
@@ -107,7 +108,7 @@ namespace Soccer.Models
                     string[] words = events.Split("vs");
                     string homeTeam = words[0];
                     string awayTeam = words[1];
-                    Result result = new Result(id ,gameTime, leagues, homeTeam, awayTeam, homeScore, awayScore, status, detail);
+                    Result result = new Result(id ,gameTime, leagues, homeTeam, awayTeam, homeScore, awayScore, condition, detail);
                     results.Add(result);
                 }
             }
