@@ -8,7 +8,12 @@ namespace soccer.Controllers
 {
     public class HomeController : Controller
     {
-        private ISoccerService _service = new SoccerService();
+        private readonly ISoccerService _service;
+
+        public HomeController(ISoccerService service)
+        {
+            _service = service;
+        }
         public IActionResult Index()
         {
             List<Result> results = _service.GetAllResult();
