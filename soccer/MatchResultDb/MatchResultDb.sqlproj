@@ -64,6 +64,6 @@
     <Build Include="dbo\Tables\History.sql" />
     <Build Include="dbo\Tables\MatchResult.sql" />
     <Build Include="dbo\Tables\MatchDetail.sql" />
-    <Build Include="dbo\StoreProcedure\Soccer_Procedure.sql" />
+    <Build Include="dbo\StoreProcedure\Soccer_Store_Procedure.sql" />
   </ItemGroup>
 </Project>
