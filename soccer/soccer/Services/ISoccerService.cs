@@ -1,9 +1,10 @@
-﻿namespace Soccer.Services
+﻿using Soccer.Models;
+
+namespace Soccer.Services
 {
     public interface ISoccerService
     {
-        void UpdateDatabase();
-
         void GenerateResult();
+        List<Result> GetAllResult();
     }
 }

@@ -12,7 +12,7 @@ namespace Soccer.Models
         public string HomeScore { get; set; }
         public string AwayScore { get; set; }
         public Detail Detail { get; set; }
-        public int Status { get; set; } // 1->normal, 0->cancelled, 2->notStart
+        public int Condition { get; set; } // 1->normal, 0->cancelled, 2->notStart
 
         public Result(string id, string gameTime, string leagues, string homeTeam, string awayTeam, string homeScore, string awayScore, int status, Detail detail)
         {
@@ -23,7 +23,7 @@ namespace Soccer.Models
             AwayTeam = awayTeam;
             HomeScore = homeScore;
             AwayScore = awayScore;
-            Status = status;
+            Condition = status;
             Detail = detail;
         }
 
@@ -34,7 +34,7 @@ namespace Soccer.Models
             Console.WriteLine(GameTime);
             Console.WriteLine(Leagues);
             Console.WriteLine(HomeTeam + " vs " + AwayTeam);
-            if (Status == 1)
+            if (Condition == 1)
             {
                 Console.WriteLine(HomeScore);
                 Console.WriteLine(AwayScore);
@@ -52,7 +52,7 @@ namespace Soccer.Models
                 Console.WriteLine(Detail.SecondHalf_H + " secondET " + Detail.SecondHalf_A);
                 Console.WriteLine(Detail.PenaltiesShootout_H + " penaltiesShootout " + Detail.PenaltiesShootout_A);
             }
-            else if (Status == 0)
+            else if (Condition == 0)
             {
                 Console.WriteLine();
                 Console.WriteLine("Cancelled");

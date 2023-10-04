@@ -1,5 +1,4 @@
 ﻿using NLog;
-using soccer.Controllers;
 using Soccer.Models;
 
 namespace Soccer.Services
@@ -25,7 +24,7 @@ namespace Soccer.Services
                 msg += result.GameTime + ",";
                 msg += result.Leagues + ",";
                 msg += result.HomeTeam + " vs " + result.AwayTeam + ",";
-                if (result.Status == 1)
+                if (result.Condition == 1)
                 {
                     msg += result.HomeScore + ",";
                     msg += result.AwayScore + "\n";
@@ -42,7 +41,7 @@ namespace Soccer.Services
                     msg += result.Detail.SecondHalf_H + " secondET " + result.Detail.SecondHalf_A + "\n";
                     msg += result.Detail.PenaltiesShootout_H + " penaltiesShootout " + result.Detail.PenaltiesShootout_A + "\n";
                 }
-                else if (result.Status == 0)
+                else if (result.Condition == 0)
                 {
                     msg += "Cancelled\n";
                 }
@@ -52,9 +51,10 @@ namespace Soccer.Services
             logger.Info(msg);
         }
 
-        public void UpdateDatabase()
+
+        public List<Result> GetAllResult()
         {
-            
+            return null;
         }
     }
 }

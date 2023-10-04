@@ -28,7 +28,7 @@ namespace SoccerTest
                 output.WriteLine(result.GameTime);
                 output.WriteLine(result.Leagues);
                 output.WriteLine(result.HomeTeam + " vs " + result.AwayTeam);
-                if (result.Status == 1)
+                if (result.Condition == 1)
                 {
                     output.WriteLine(result.HomeScore);
                     output.WriteLine(result.AwayScore);
@@ -47,7 +47,7 @@ namespace SoccerTest
                     output.WriteLine(result.Detail.SecondHalf_H + " secondET " + result.Detail.SecondHalf_A);
                     output.WriteLine(result.Detail.PenaltiesShootout_H + " penaltiesShootout " + result.Detail.PenaltiesShootout_A);
                 }
-                else if (result.Status == 0)
+                else if (result.Condition == 0)
                 {
                     output.WriteLine("");
                     output.WriteLine("Cancelled");
