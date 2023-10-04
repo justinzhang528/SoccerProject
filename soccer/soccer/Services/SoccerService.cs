@@ -7,18 +7,18 @@ namespace Soccer.Services
 {
     public class SoccerService : ISoccerService
     {
-        ResultBuilder resultBuilder;
-        DBConnUtil dBConnUtil;
+        ResultBuilder _resultBuilder;
+        DBConnUtil _dBConnUtil;
         
-        public SoccerService()
+        public SoccerService(DBConnUtil dBConnUtil)
         {
-            resultBuilder = new ResultBuilder("https://bti-results.bsportsasia.com/?ns=prod20082-23705321.bti-sports.io&locale=en&tzoffset=8");
-            dBConnUtil = new DBConnUtil();
+            _resultBuilder = new ResultBuilder("https://bti-results.bsportsasia.com/?ns=prod20082-23705321.bti-sports.io&locale=en&tzoffset=8");
+            _dBConnUtil = dBConnUtil;
         }
 
         public void GenerateResult()
         {
-            List<Result> results = resultBuilder.GenerateResults();
+            List<Result> results = _resultBuilder.GenerateResults();
             //Logger logger = LogManager.GetLogger("resultHistory");
             foreach (Result result in results)
             {
@@ -51,7 +51,7 @@ namespace Soccer.Services
         public List<Result> GetAllResult()
         {
             List<Result> results;
-            using (var connection = dBConnUtil.GetConnection())
+            using (var connection = _dBConnUtil.GetConnection())
             {
                 results = connection.Query<Result>("spGetAllResults", commandType: System.Data.CommandType.StoredProcedure).ToList();
             }
@@ -69,7 +69,7 @@ namespace Soccer.Services
         public Result GetResultById(string id)
         {
             Result result;
-            using (var connection = dBConnUtil.GetConnection())
+            using (var connection = _dBConnUtil.GetConnection())
             { 
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("Id", id);
@@ -82,7 +82,7 @@ namespace Soccer.Services
         public Detail GetDetailById(string id)
         {
             Detail detail;
-            using (var connection = dBConnUtil.GetConnection())
+            using (var connection = _dBConnUtil.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("Id", id);
@@ -94,7 +94,7 @@ namespace Soccer.Services
 
         public void AddResult(Result result)
         {
-            using (var connection = dBConnUtil.GetConnection())
+            using (var connection = _dBConnUtil.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("Id", result.Id);
@@ -112,7 +112,7 @@ namespace Soccer.Services
 
         public void AddDetail(Detail detail)
         {
-            using (var connection = dBConnUtil.GetConnection())
+            using (var connection = _dBConnUtil.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("Id", detail.Id);
@@ -144,7 +144,7 @@ namespace Soccer.Services
         // to do
         public void AddHistory(Detail detail)
         {
-            using (var connection = dBConnUtil.GetConnection())
+            using (var connection = _dBConnUtil.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("ResultId", detail.Id);
@@ -175,7 +175,7 @@ namespace Soccer.Services
 
         public void UpdateResultById(Result result)
         {
-            using (var connection = dBConnUtil.GetConnection())
+            using (var connection = _dBConnUtil.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("Id", result.Id);
@@ -189,7 +189,7 @@ namespace Soccer.Services
 
         public void UpdateDetialById(Detail detail)
         {
-            using (var connection = dBConnUtil.GetConnection())
+            using (var connection = _dBConnUtil.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("Id", detail.Id);
