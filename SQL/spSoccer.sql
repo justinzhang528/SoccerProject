@@ -10,7 +10,7 @@ CREATE PROCEDURE dbo.spGetAllResults
 AS    
    SET NOCOUNT ON;
 
-   SELECT * FROM dbo.Result
+   SELECT * FROM dbo.Result ORDER BY GameTime
    
    RETURN;
 GO

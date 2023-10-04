@@ -4,16 +4,10 @@ namespace Soccer.Utils
 {
     public class DBConnUtil
     {
-        private IConfiguration _configuration;
-
-        public DBConnUtil(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public SqlConnection GetConnection()
         {
-            return new SqlConnection(_configuration.GetConnectionString("master"));
+            string connectionString = "Server=localhost;Database=master;User Id=sa;Password=Weijun528@;Trusted_Connection=True;Integrated Security=SSPI;TrustServerCertificate=True";
+            return new SqlConnection(connectionString);
         }
     }
 }

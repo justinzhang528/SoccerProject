@@ -1,8 +1,116 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Soccer.Models.Result>
+@{
+    ViewData["Title"] = "Soccer";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Game Time (UTC 8)</th>
+                <th>Leagues</th>
+                <th>Events</th>
+                <th>Home Score</th>
+                <th>Away Score</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="@item.Id">
+                    <td>@item.GameTime</td>
+                    <td>@item.Leagues</td>
+                    <td>@item.HomeTeam vs @item.AwayTeam</td>
+                    @if (item.Condition == 0)
+                    {
+                        <td colspan="3" style="color: red">Cancelled</td>
+                        
+                    }
+                    else if (item.Condition == 1)
+                    {
+                        <td>@item.HomeScore</td>
+                        <td>@item.AwayScore</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    }
+                </tr>
+                @if(item.Condition == 1)
+                {
+                    <tr id="detail_@item.Id" style="display:none;">
+                        <td colspan="6">
+                            @item.HomeTeam vs @item.AwayTeam
+                            <br>
+                            <table style="text-align:center;">
+                                <tbody>
+                                    <tr>
+                                        <td>@item.HomeTeam</td>
+                                        <td>Teams</td>
+                                        <td>@item.AwayTeam</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@item.Detail.FirstHalf_H</td>
+                                        <td>1st half</td>
+                                        <td>@item.Detail.FirstHalf_A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@item.Detail.SecondHalf_H</td>
+                                        <td>2nd half</td>
+                                        <td>@item.Detail.SecondHalf_A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@item.Detail.RegularTime_H</td>
+                                        <td>Regular time</td>
+                                        <td>@item.Detail.RegularTime_A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@item.Detail.Corners_H</td>
+                                        <td>Corners</td>
+                                        <td>@item.Detail.Corners_A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@item.Detail.Penalties_H</td>
+                                        <td>Penalties</td>
+                                        <td>@item.Detail.Penalties_A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@item.Detail.YellowCards_H</td>
+                                        <td>Yellow cards</td>
+                                        <td>@item.Detail.YellowCards_A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@item.Detail.RedCards_H</td>
+                                        <td>Red cards</td>
+                                        <td>@item.Detail.RedCards_A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@item.Detail.FirstET_H</td>
+                                        <td>1st ET</td>
+                                        <td>@item.Detail.FirstET_A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@item.Detail.SecondET_H</td>
+                                        <td>2nd ET</td>
+                                        <td>@item.Detail.SecondET_A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@item.Detail.PenaltiesShootout_H</td>
+                                        <td>Penalties shootout</td>
+                                        <td>@item.Detail.PenaltiesShootout_A</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 </div>

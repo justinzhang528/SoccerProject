@@ -14,6 +14,7 @@ namespace Soccer.Models
         public Detail Detail { get; set; }
         public int Condition { get; set; } // 1->normal, 0->cancelled, 2->notStart
 
+        public Result() { }
         public Result(string id, string gameTime, string leagues, string homeTeam, string awayTeam, string homeScore, string awayScore, int status, Detail detail)
         {
             Id = id;

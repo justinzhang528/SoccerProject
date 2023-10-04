@@ -3,6 +3,7 @@ using Hangfire.SqlServer;
 using Soccer.Services;
 using NLog;
 using NLog.Web;
+using Soccer.Utils;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -32,6 +33,8 @@ try
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddScoped<ISoccerService, SoccerService>();
+
+    builder.Services.AddSingleton<DBConnUtil>();
 
     var app = builder.Build();
 
@@ -64,7 +67,7 @@ try
         pattern: "{controller=Home}/{action=Index}/{id?}");
 
     // schedule job
-    RecurringJob.AddOrUpdate<ISoccerService>(x => x.GenerateResult(), "*/03 * * * *");
+    //RecurringJob.AddOrUpdate<ISoccerService>(x => x.GenerateResult(), "*/03 * * * *");
 
     app.Run();
 }

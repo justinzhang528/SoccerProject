@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Microsoft.Data.SqlClient;
 using NLog;
 using Soccer.Models;
 using Soccer.Utils;
@@ -11,51 +10,43 @@ namespace Soccer.Services
         ResultBuilder resultBuilder;
         DBConnUtil dBConnUtil;
         
-        public SoccerService(IConfiguration configuration)
+        public SoccerService()
         {
             resultBuilder = new ResultBuilder("https://bti-results.bsportsasia.com/?ns=prod20082-23705321.bti-sports.io&locale=en&tzoffset=8");
-            dBConnUtil = new DBConnUtil(configuration);
+            dBConnUtil = new DBConnUtil();
         }
 
         public void GenerateResult()
         {
             List<Result> results = resultBuilder.GenerateResults();
-            Logger logger = LogManager.GetLogger("resultHistory");
-            string msg = "";
-            int cnt = 1;
+            //Logger logger = LogManager.GetLogger("resultHistory");
             foreach (Result result in results)
             {
-                msg += cnt + ".";
-                msg += result.GameTime + ",";
-                msg += result.Leagues + ",";
-                msg += result.HomeTeam + " vs " + result.AwayTeam + ",";
-                if (result.Condition == 1)
-                {
-                    msg += result.HomeScore + ",";
-                    msg += result.AwayScore + "\n";
-                    msg += "Detail:" + "\n";
-                    msg += result.HomeTeam + " teams " + result.AwayTeam + "\n";
-                    msg += result.Detail.FirstHalf_H + " firstHalf " + result.Detail.FirstHalf_A + "\n";
-                    msg += result.Detail.SecondHalf_H + " secondHalf " + result.Detail.SecondHalf_A + "\n";
-                    msg += result.Detail.RegularTime_H + " regularTime " + result.Detail.RegularTime_A + "\n";
-                    msg += result.Detail.Corners_H + " corners " + result.Detail.Corners_A + "\n";
-                    msg += result.Detail.Penalties_H + " penalties " + result.Detail.Penalties_A + "\n";
-                    msg += result.Detail.YellowCards_H + " yellowCards " + result.Detail.YellowCards_A + "\n";
-                    msg += result.Detail.RedCards_H + " redCards " + result.Detail.RedCards_A + "\n";
-                    msg += result.Detail.FirstHalf_H + " firstET " + result.Detail.FirstHalf_A + "\n";
-                    msg += result.Detail.SecondHalf_H + " secondET " + result.Detail.SecondHalf_A + "\n";
-                    msg += result.Detail.PenaltiesShootout_H + " penaltiesShootout " + result.Detail.PenaltiesShootout_A + "\n";
-                }
-                else if (result.Condition == 0)
-                {
-                    msg += "Cancelled\n";
-                }
-                msg += "\n--------------------------------------------------------------------------------------------\n";
-                cnt++;
-            }
-            logger.Info(msg);
-        }
+                Result resultRow = GetResultById(result.Id);
 
+                // 如果DB裏不存在則新增Result
+                if (resultRow == null)
+                {
+                    AddResult(result);
+
+                    // 如果是正常狀態下，則需要新增Detail資料
+                    if(result.Condition == 1)
+                    {
+                        AddDetail(result.Detail);
+                    }
+                }
+                // 如果DB裏已經存在，則檢查是否需要更新Detail和Result
+                else
+                {
+                    // 如果在正常狀態下
+                    if (result.Condition == 1) 
+                    {
+
+                    }
+                }
+            }
+            //logger.Info(msg);
+        }
 
         public List<Result> GetAllResult()
         {
@@ -63,6 +54,13 @@ namespace Soccer.Services
             using (var connection = dBConnUtil.GetConnection())
             {
                 results = connection.Query<Result>("spGetAllResults", commandType: System.Data.CommandType.StoredProcedure).ToList();
+            }
+            foreach (Result result in results)
+            {
+                if(result.Condition == 1)
+                {
+                    result.Detail = GetDetailById(result.Id);
+                }
             }
             return results;
         }
@@ -144,12 +142,33 @@ namespace Soccer.Services
         }
 
         // to do
-        public void AddHistory(History history)
+        public void AddHistory(Detail detail)
         {
             using (var connection = dBConnUtil.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
-                
+                parameters.Add("ResultId", detail.Id);
+                parameters.Add("FirstHalf_H", detail.FirstHalf_H);
+                parameters.Add("FirstHalf_A", detail.FirstHalf_A);
+                parameters.Add("SecondHalf_H", detail.SecondHalf_H);
+                parameters.Add("SecondHalf_A", detail.SecondHalf_A);
+                parameters.Add("RegularTime_H", detail.RegularTime_H);
+                parameters.Add("RegularTime_A", detail.RegularTime_A);
+                parameters.Add("Corners_H", detail.Corners_H);
+                parameters.Add("Corners_A", detail.Corners_A);
+                parameters.Add("Penalties_H", detail.Penalties_H);
+                parameters.Add("Penalties_A", detail.Penalties_A);
+                parameters.Add("YellowCards_H", detail.YellowCards_H);
+                parameters.Add("YellowCards_A", detail.YellowCards_A);
+                parameters.Add("RedCards_H", detail.RedCards_H);
+                parameters.Add("RedCards_A", detail.RedCards_A);
+                parameters.Add("FirstET_H", detail.FirstET_H);
+                parameters.Add("FirstET_A", detail.FirstET_A);
+                parameters.Add("SecondET_H", detail.SecondET_H);
+                parameters.Add("SecondET_A", detail.SecondET_A);
+                parameters.Add("PenaltiesShootout_H", detail.PenaltiesShootout_H);
+                parameters.Add("PenaltiesShootout_A", detail.PenaltiesShootout_A);
+
                 connection.Execute("spAddHistory", parameters, commandType: System.Data.CommandType.StoredProcedure);
             }
         }

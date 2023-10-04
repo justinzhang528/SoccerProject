@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using Soccer.Models;
 using Soccer.Services;
 
 namespace soccer.Controllers
@@ -10,7 +11,8 @@ namespace soccer.Controllers
         private ISoccerService _service = new SoccerService();
         public IActionResult Index()
         {
-            return View();
+            List<Result> results = _service.GetAllResult();
+            return View(results);
         }
 
         public IActionResult Privacy()
