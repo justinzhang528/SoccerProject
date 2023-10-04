@@ -76,20 +76,31 @@ namespace Soccer.Models
                         var secondETCells = innerRows[9].SelectNodes(".//td");
                         var penaltiesShootoutCells = innerRows[10].SelectNodes(".//td");
 
-                        string[] firstHalf = { firstHalfCells[0].InnerText, firstHalfCells[2].InnerText };
-                        string[] secondHalf = { secondHalfCells[0].InnerText, secondHalfCells[2].InnerText };
-                        string[] regularTime = { regularTimeCells[0].InnerText, regularTimeCells[2].InnerText };
-                        string[] corners = { cornersCells[0].InnerText, cornersCells[2].InnerText };
-                        string[] penalties = { penaltiesCells[0].InnerText, penaltiesCells[2].InnerText };
-                        string[] yellowCards = { yellowCardsCells[0].InnerText, yellowCardsCells[2].InnerText };
-                        string[] redCards = { redCardsCells[0].InnerText, redCardsCells[2].InnerText };
-                        string[] firstET = { firstETCells[0].InnerText, firstETCells[2].InnerText };
-                        string[] secondET = { secondETCells[0].InnerText, secondETCells[2].InnerText };
-                        string[] penaltiesShootout = { penaltiesShootoutCells[0].InnerText, penaltiesShootoutCells[2].InnerText };
+                        string firstHalf_H = firstHalfCells[0].InnerText;
+                        string firstHalf_A = firstHalfCells[2].InnerText;
+                        string secondHalf_H = secondHalfCells[0].InnerText;
+                        string secondHalf_A = secondHalfCells[2].InnerText;
+                        string regularTime_H = regularTimeCells[0].InnerText;
+                        string regularTime_A = regularTimeCells[2].InnerText;
+                        string corners_H = cornersCells[0].InnerText;
+                        string corners_A = cornersCells[2].InnerText;
+                        string penalties_H = penaltiesCells[0].InnerText;
+                        string penalties_A = penaltiesCells[2].InnerText;
+                        string yellowCards_H = yellowCardsCells[0].InnerText;
+                        string yellowCards_A = yellowCardsCells[2].InnerText;
+                        string redCards_H = redCardsCells[0].InnerText;
+                        string redCards_A = redCardsCells[2].InnerText;
+                        string firstET_H = firstETCells[0].InnerText;
+                        string firstET_A = firstETCells[2].InnerText;
+                        string secondET_H = secondETCells[0].InnerText;
+                        string secondET_A = secondETCells[2].InnerText;
+                        string penaltiesShootout_H = penaltiesShootoutCells[0].InnerText;
+                        string penaltiesShootout_A = penaltiesShootoutCells[2].InnerText;
 
                         idx += 12; //跳過detail表格裏面的11個rows，因爲已經取過了
 
-                        detail = new Detail(id, firstHalf, secondHalf, regularTime, corners, penalties, yellowCards, redCards, firstET, secondET, penaltiesShootout);
+                        detail = new Detail(id, firstHalf_H, firstHalf_A, secondHalf_H, secondHalf_A, regularTime_H, regularTime_A, corners_H, corners_A, penalties_H, penalties_A,
+                            yellowCards_H, yellowCards_A, redCards_H, redCards_A, firstET_H, firstET_A, secondET_H, secondET_A, penaltiesShootout_H, penaltiesShootout_A);
                     }
 
                     // 產生Result物件并且加到Result Array裏
