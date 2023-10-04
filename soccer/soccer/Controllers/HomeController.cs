@@ -23,7 +23,6 @@ namespace soccer.Controllers
         public string Result() 
         {
             //add schedule job
-            RecurringJob.AddOrUpdate<ISoccerService>(x => x.GenerateResult(), "*/03 * * * *");
             return "Get result Done!";
         }
     }

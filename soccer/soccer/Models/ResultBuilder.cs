@@ -39,6 +39,7 @@ namespace Soccer.Models
                     int status = 0; // 1->normal, 0->cancelled, 2->notStart
 
                     // 欄位
+                    string id = row.Attributes["id"].Value;
                     string gameTime = cells[0].InnerText;
                     string leagues = cells[1].InnerText;
                     string events = cells[2].InnerText;
@@ -75,7 +76,6 @@ namespace Soccer.Models
                         var secondETCells = innerRows[9].SelectNodes(".//td");
                         var penaltiesShootoutCells = innerRows[10].SelectNodes(".//td");
 
-                        string[] teams = { teamsCells[0].InnerText, teamsCells[2].InnerText };
                         string[] firstHalf = { firstHalfCells[0].InnerText, firstHalfCells[2].InnerText };
                         string[] secondHalf = { secondHalfCells[0].InnerText, secondHalfCells[2].InnerText };
                         string[] regularTime = { regularTimeCells[0].InnerText, regularTimeCells[2].InnerText };
@@ -89,14 +89,14 @@ namespace Soccer.Models
 
                         idx += 12; //跳過detail表格裏面的11個rows，因爲已經取過了
 
-                        detail = new Detail(teams, firstHalf, secondHalf, regularTime, corners, penalties, yellowCards, redCards, firstET, secondET, penaltiesShootout);
+                        detail = new Detail(id, firstHalf, secondHalf, regularTime, corners, penalties, yellowCards, redCards, firstET, secondET, penaltiesShootout);
                     }
 
                     // 產生Result物件并且加到Result Array裏
                     string[] words = events.Split("vs");
                     string homeTeam = words[0];
                     string awayTeam = words[1];
-                    Result result = new Result(gameTime, leagues, homeTeam, awayTeam, homeScore, awayScore, status, detail);
+                    Result result = new Result(id ,gameTime, leagues, homeTeam, awayTeam, homeScore, awayScore, status, detail);
                     results.Add(result);
                 }
             }

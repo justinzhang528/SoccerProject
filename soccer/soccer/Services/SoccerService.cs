@@ -18,8 +18,10 @@ namespace Soccer.Services
             List<Result> results = resultBuilder.GenerateResults();
             Logger logger = LogManager.GetLogger("resultHistory");
             string msg = "";
+            int cnt = 1;
             foreach (Result result in results)
             {
+                msg += cnt + ".";
                 msg += result.GameTime + ",";
                 msg += result.Leagues + ",";
                 msg += result.HomeTeam + " vs " + result.AwayTeam + ",";
@@ -28,23 +30,24 @@ namespace Soccer.Services
                     msg += result.HomeScore + ",";
                     msg += result.AwayScore + "\n";
                     msg += "Detail:" + "\n";
-                    msg += result.Detail.Teams[0] + " teams " + result.Detail.Teams[1] + "\n";
-                    msg += result.Detail.FirstHalf[0] + " firstHalf " + result.Detail.FirstHalf[1] + "\n";
-                    msg += result.Detail.SecondHalf[0] + " secondHalf " + result.Detail.SecondHalf[1] + "\n";
-                    msg += result.Detail.RegularTime[0] + " regularTime " + result.Detail.RegularTime[1] + "\n";
-                    msg += result.Detail.Corners[0] + " corners " + result.Detail.Corners[1] + "\n";
-                    msg += result.Detail.Penalties[0] + " penalties " + result.Detail.Penalties[1] + "\n";
-                    msg += result.Detail.YellowCards[0] + " yellowCards " + result.Detail.YellowCards[1] + "\n";
-                    msg += result.Detail.RedCards[0] + " redCards " + result.Detail.RedCards[1] + "\n";
-                    msg += result.Detail.FirstHalf[0] + " firstET " + result.Detail.FirstHalf[1] + "\n";
-                    msg += result.Detail.SecondHalf[0] + " secondET " + result.Detail.SecondHalf[1] + "\n";
-                    msg += result.Detail.PenaltiesShootout[0] + " penaltiesShootout " + result.Detail.PenaltiesShootout[1] + "\n";
+                    msg += result.HomeTeam + " teams " + result.AwayTeam + "\n";
+                    msg += result.Detail.FirstHalf_H + " firstHalf " + result.Detail.FirstHalf_A + "\n";
+                    msg += result.Detail.SecondHalf_H + " secondHalf " + result.Detail.SecondHalf_A + "\n";
+                    msg += result.Detail.RegularTime_H + " regularTime " + result.Detail.RegularTime_A + "\n";
+                    msg += result.Detail.Corners_H + " corners " + result.Detail.Corners_A + "\n";
+                    msg += result.Detail.Penalties_H + " penalties " + result.Detail.Penalties_A + "\n";
+                    msg += result.Detail.YellowCards_H + " yellowCards " + result.Detail.YellowCards_A + "\n";
+                    msg += result.Detail.RedCards_H + " redCards " + result.Detail.RedCards_A + "\n";
+                    msg += result.Detail.FirstHalf_H + " firstET " + result.Detail.FirstHalf_A + "\n";
+                    msg += result.Detail.SecondHalf_H + " secondET " + result.Detail.SecondHalf_A + "\n";
+                    msg += result.Detail.PenaltiesShootout_H + " penaltiesShootout " + result.Detail.PenaltiesShootout_A + "\n";
                 }
                 else if (result.Status == 0)
                 {
                     msg += "Cancelled\n";
                 }
                 msg += "\n--------------------------------------------------------------------------------------------\n";
+                cnt++;
             }
             logger.Info(msg);
         }

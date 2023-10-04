@@ -63,6 +63,9 @@ try
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 
+    // schedule job
+    RecurringJob.AddOrUpdate<ISoccerService>(x => x.GenerateResult(), "*/03 * * * *");
+
     app.Run();
 }
 catch(Exception exception)

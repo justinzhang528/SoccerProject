@@ -24,6 +24,7 @@ namespace SoccerTest
             foreach (Result result in results) 
             {
                 output.WriteLine("------------------------------------");
+                output.WriteLine(result.Id);
                 output.WriteLine(result.GameTime);
                 output.WriteLine(result.Leagues);
                 output.WriteLine(result.HomeTeam + " vs " + result.AwayTeam);
@@ -33,17 +34,18 @@ namespace SoccerTest
                     output.WriteLine(result.AwayScore);
                     output.WriteLine("");
                     output.WriteLine("Detail:");
-                    output.WriteLine(result.Detail.Teams[0] + " teams " + result.Detail.Teams[1]);
-                    output.WriteLine(result.Detail.FirstHalf[0] + " firstHalf " + result.Detail.FirstHalf[1]);
-                    output.WriteLine(result.Detail.SecondHalf[0] + " secondHalf " + result.Detail.SecondHalf[1]);
-                    output.WriteLine(result.Detail.RegularTime[0] + " regularTime " + result.Detail.RegularTime[1]);
-                    output.WriteLine(result.Detail.Corners[0] + " corners " + result.Detail.Corners[1]);
-                    output.WriteLine(result.Detail.Penalties[0] + " penalties " + result.Detail.Penalties[1]);
-                    output.WriteLine(result.Detail.YellowCards[0] + " yellowCards " + result.Detail.YellowCards[1]);
-                    output.WriteLine(result.Detail.RedCards[0] + " redCards " + result.Detail.RedCards[1]);
-                    output.WriteLine(result.Detail.FirstHalf[0] + " firstET " + result.Detail.FirstHalf[1]);
-                    output.WriteLine(result.Detail.SecondHalf[0] + " secondET " + result.Detail.SecondHalf[1]);
-                    output.WriteLine(result.Detail.PenaltiesShootout[0] + " penaltiesShootout " + result.Detail.PenaltiesShootout[1]);
+                    output.WriteLine(result.Detail.Id);
+                    output.WriteLine(result.HomeTeam + " teams " + result.AwayTeam);
+                    output.WriteLine(result.Detail.FirstHalf_H + " firstHalf " + result.Detail.FirstHalf_A);
+                    output.WriteLine(result.Detail.SecondHalf_H + " secondHalf " + result.Detail.SecondHalf_A);
+                    output.WriteLine(result.Detail.RegularTime_H + " regularTime " + result.Detail.RegularTime_A);
+                    output.WriteLine(result.Detail.Corners_H + " corners " + result.Detail.Corners_A);
+                    output.WriteLine(result.Detail.Penalties_H + " penalties " + result.Detail.Penalties_A);
+                    output.WriteLine(result.Detail.YellowCards_H + " yellowCards " + result.Detail.YellowCards_A);
+                    output.WriteLine(result.Detail.RedCards_H + " redCards " + result.Detail.RedCards_A);
+                    output.WriteLine(result.Detail.FirstHalf_H + " firstET " + result.Detail.FirstHalf_A);
+                    output.WriteLine(result.Detail.SecondHalf_H + " secondET " + result.Detail.SecondHalf_A);
+                    output.WriteLine(result.Detail.PenaltiesShootout_H + " penaltiesShootout " + result.Detail.PenaltiesShootout_A);
                 }
                 else if (result.Status == 0)
                 {
