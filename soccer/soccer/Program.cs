@@ -4,6 +4,7 @@ using Soccer.Services;
 using NLog;
 using NLog.Web;
 using Soccer.Utils;
+using Soccer.Models;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -21,7 +22,7 @@ try
            .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
            .UseSimpleAssemblyNameTypeSerializer()
            .UseRecommendedSerializerSettings()
-           .UseSqlServerStorage(builder.Configuration.GetConnectionString("master"), new SqlServerStorageOptions
+           .UseSqlServerStorage(builder.Configuration.GetConnectionString("matchResultDb"), new SqlServerStorageOptions
            {
                CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
@@ -33,8 +34,8 @@ try
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddScoped<ISoccerService, SoccerService>();
-
     builder.Services.AddSingleton<DBConnUtil>();
+    builder.Services.AddScoped<MatchResultBuilder>();
 
     var app = builder.Build();
 

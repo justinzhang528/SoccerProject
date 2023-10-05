@@ -17,7 +17,7 @@ namespace Soccer.Utils
 
         public SqlConnection GetConnection()
         {
-            return new SqlConnection(_configuration.GetConnectionString("master"));
+            return new SqlConnection(_configuration.GetConnectionString("matchResultDb"));
         }
 
         public List<T> QueryAll<T>(string sp)

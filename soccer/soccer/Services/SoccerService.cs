@@ -11,11 +11,15 @@ namespace Soccer.Services
     {
         MatchResultBuilder _matchResultBuilder;
         DBConnUtil _dBConnUtil;
+        IConfiguration _configuration;
         
-        public SoccerService(DBConnUtil dBConnUtil)
+        public SoccerService(DBConnUtil dBConnUtil, MatchResultBuilder matchResultBuilder, IConfiguration configuration)
         {
-            _matchResultBuilder = new MatchResultBuilder("https://bti-results.bsportsasia.com/?ns=prod20082-23705321.bti-sports.io&locale=en&tzoffset=8");
+            _matchResultBuilder = matchResultBuilder;
+            _configuration = configuration;
             _dBConnUtil = dBConnUtil;
+            _matchResultBuilder = matchResultBuilder;
+            _matchResultBuilder.URL = configuration.GetValue<string>("URL:soccer");
         }
 
         private DataTable ToDataTable<T>(List<T> items)

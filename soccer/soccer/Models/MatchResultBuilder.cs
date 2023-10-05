@@ -7,12 +7,7 @@ namespace Soccer.Models
 {
     public class MatchResultBuilder
     {
-        private string url;
-
-        public MatchResultBuilder(string url)
-        {
-            this.url = url;
-        }
+        public string URL { get; set; }
 
         private void ParseHtml(string data, List<MatchResult> results)
         {
@@ -120,11 +115,11 @@ namespace Soccer.Models
 
         /// </summary>
 
-        private string GetHtmlContentFromNet(string url)
+        private string GetHtmlContentFromNet()
         {
 
             //爬取的網頁地址
-            WebRequest request = WebRequest.Create(url);
+            WebRequest request = WebRequest.Create(this.URL);
             WebResponse response = (WebResponse)request.GetResponse();
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream, Encoding.UTF8);
@@ -143,7 +138,7 @@ namespace Soccer.Models
 
         public List<MatchResult> GenerateResults()
         {
-            string strHTML = GetHtmlContentFromNet(this.url);
+            string strHTML = GetHtmlContentFromNet();
 
             List<MatchResult> results = new List<MatchResult>();
             ParseHtml(strHTML, results);
