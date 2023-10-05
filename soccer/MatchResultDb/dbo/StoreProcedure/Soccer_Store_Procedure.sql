@@ -220,3 +220,55 @@ AS
 		PenaltiesShootout_A = @PenaltiesShootout_A
 	WHERE Id = @Id
 GO
+
+
+CREATE TYPE MatchResultType 
+   AS TABLE
+      ( Id varchar(80) NOT NULL PRIMARY KEY,
+		GameTime DateTime NOT NULL,
+		Leagues varchar(100) NOT NULL,
+		HomeTeam varchar(50) NOT NULL,
+		AwayTeam varchar(50) NOT NULL,
+		HomeScore int,
+		AwayScore int,
+		Condition int );
+GO
+
+CREATE TYPE MatchDetailType 
+   AS TABLE
+      ( Id varchar(80) NOT NULL PRIMARY KEY,
+		FirstHalf_H int,
+		FirstHalf_A int,
+		SecondHalf_H int,
+		SecondHalf_A int,
+		RegularTime_H int,
+		RegularTime_A int,
+		Corners_H int,
+		Corners_A int,
+		Penalties_H int,
+		Penalties_A int,
+		YellowCards_H int,
+		YellowCards_A int,
+		RedCards_H int,
+		RedCards_A int,
+		FirstET_H int,
+		FirstET_A int,
+		SecondET_H int,
+		SecondET_A int,
+		PenaltiesShootout_H int,
+		PenaltiesShootout_A int );
+GO
+
+CREATE PROCEDURE [dbo].[Soccer_MatchResult_UpdateResultDetailHistoryTable_v1]
+	@Results dbo.MatchResultType READONLY,
+    @Details dbo.MatchDetailType READONLY
+AS
+BEGIN
+    INSERT INTO #TempResult
+    SELECT *
+    FROM @Results;
+
+	INSERT INTO #TempDetail
+	SELECT *
+	FROM @Details;
+END
