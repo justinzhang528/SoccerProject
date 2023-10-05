@@ -17,17 +17,14 @@
 //});
 
 function detailEvent(e) {
-    if (e.innerText == 'Show Details') {
-        e.innerText == 'Hide Details'
+    detailTrId = "#detail_" + e.id;
+    if (e.innerText === 'Show Details') {
+        e.innerText = 'Hide Details'
+        $(detailTrId).css('display','block')
     } else {
-        e.innerText == 'Show Details'
-    }
-    if (detailTable.style.display === 'none' || detailTable.style.display === '') {
-        detailTable.style.display = 'block';
-        this.innerText = 'Hide Detail';
-    } else {
-        detailTable.style.display = 'none';
-        this.innerText = 'Show Detail';
+        e.innerText = 'Show Details'
+        $(detailTrId).css('display', 'none')
+
     }
 }
 
