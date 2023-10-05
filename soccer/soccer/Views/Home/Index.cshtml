@@ -3,10 +3,10 @@
     ViewData["Title"] = "Soccer";
 }
 
-<div class="text-center">
-    <table class="table">
+<div class="table-responsive">
+    <table class="table table-bordered">
         <thead>
-            <tr>
+            <tr class="text-center table-primary">
                 <th>Game Time (UTC 8)</th>
                 <th>Leagues</th>
                 <th>Events</th>
@@ -18,7 +18,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
+                <tr class="text-center">
                     <td>@item.GameTime</td>
                     <td>@item.Leagues</td>
                     <td>@item.HomeTeam vs @item.AwayTeam</td>
@@ -32,7 +32,7 @@
                         <td>@item.HomeScore</td>
                         <td>@item.AwayScore</td>
                         <td>
-                            <button id="@item.Id" onclick="detailEvent(this)">Show Details</button>
+                            <button id="@item.Id" class="btn btn-outline-primary" onclick="detailEvent(this)">Show Details</button>
                         </td>
                     }
                     else
@@ -44,64 +44,64 @@
                 </tr>
                 @if (item.Condition == Soccer.Utils.ConditionInfo.Normal)
                 {
-                    <tr id="detail_@item.Id" style="display:none;">
+                    <tr id="detail_@item.Id" class="text-center" style="display:none;">
                         <td colspan="6">
-                            @item.HomeTeam vs @item.AwayTeam
-                            <table>
+                            <p class="fw-bold">@item.HomeTeam vs @item.AwayTeam</p>
+                            <table class="table table-bordered">
                                 <tbody>
-                                    <tr>
+                                    <tr class="table-primary">
                                         <td>@item.HomeTeam</td>
                                         <td>Teams</td>
                                         <td>@item.AwayTeam</td>
                                     </tr>
                                     <tr>
                                         <td>@item.Detail.FirstHalf_H</td>
-                                        <td>1st half</td>
+                                        <td class="table-primary">1st half</td>
                                         <td>@item.Detail.FirstHalf_A</td>
                                     </tr>
                                     <tr>
                                         <td>@item.Detail.SecondHalf_H</td>
-                                        <td>2nd half</td>
+                                        <td class="table-primary">2nd half</td>
                                         <td>@item.Detail.SecondHalf_A</td>
                                     </tr>
                                     <tr>
                                         <td>@item.Detail.RegularTime_H</td>
-                                        <td>Regular time</td>
+                                        <td class="table-primary">Regular time</td>
                                         <td>@item.Detail.RegularTime_A</td>
                                     </tr>
                                     <tr>
                                         <td>@item.Detail.Corners_H</td>
-                                        <td>Corners</td>
+                                        <td class="table-primary">Corners</td>
                                         <td>@item.Detail.Corners_A</td>
                                     </tr>
                                     <tr>
                                         <td>@item.Detail.Penalties_H</td>
-                                        <td>Penalties</td>
+                                        <td class="table-primary">Penalties</td>
                                         <td>@item.Detail.Penalties_A</td>
                                     </tr>
                                     <tr>
                                         <td>@item.Detail.YellowCards_H</td>
-                                        <td>Yellow cards</td>
+                                        <td class="table-primary">Yellow cards</td>
                                         <td>@item.Detail.YellowCards_A</td>
                                     </tr>
                                     <tr>
                                         <td>@item.Detail.RedCards_H</td>
-                                        <td>Red cards</td>
+                                        <td class="table-primary">Red cards</td>
                                         <td>@item.Detail.RedCards_A</td>
                                     </tr>
                                     <tr>
                                         <td>@item.Detail.FirstET_H</td>
-                                        <td>1st ET</td>
+                                        <td class="table-primary">1st ET</td>
                                         <td>@item.Detail.FirstET_A</td>
                                     </tr>
                                     <tr>
                                         <td>@item.Detail.SecondET_H</td>
-                                        <td>2nd ET</td>
+                                        <td class="table-primary">2nd ET</td>
                                         <td>@item.Detail.SecondET_A</td>
                                     </tr>
                                     <tr>
                                         <td>@item.Detail.PenaltiesShootout_H</td>
-                                        <td>Penalties shootout</td>
+                                        <td class="table-primary">Penalties shootout</td>
                                         <td>@item.Detail.PenaltiesShootout_A</td>
                                     </tr>
                                 </tbody>
