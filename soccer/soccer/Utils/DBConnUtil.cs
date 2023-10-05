@@ -1,8 +1,5 @@
 ﻿using Dapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using Soccer.Models;
 
 namespace Soccer.Utils
 {

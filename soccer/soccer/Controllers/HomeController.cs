@@ -1,6 +1,4 @@
-﻿using Hangfire;
-using Microsoft.AspNetCore.Mvc;
-using NLog;
+﻿using Microsoft.AspNetCore.Mvc;
 using Soccer.Models;
 using Soccer.Services;
 

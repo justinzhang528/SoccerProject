@@ -3,7 +3,6 @@ using Soccer.Models;
 using Soccer.Utils;
 using System.Data;
 using System.Reflection;
-using System.Reflection.Metadata;
 
 namespace Soccer.Services
 {
