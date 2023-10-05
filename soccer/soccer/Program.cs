@@ -68,7 +68,7 @@ try
         pattern: "{controller=Home}/{action=Index}/{id?}");
 
     // schedule job
-    //RecurringJob.AddOrUpdate<ISoccerService>(x => x.GenerateResult(), "*/03 * * * *");
+    RecurringJob.AddOrUpdate<ISoccerService>(x => x.UpdateResultDetailHistoryTable(), "*/03 * * * *");
 
     app.Run();
 }
