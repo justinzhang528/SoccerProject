@@ -1,12 +1,18 @@
-﻿CREATE PROCEDURE [dbo].[Soccer_MatchResult_GetAllMatchResults_2023.10.04]
+﻿CREATE PROCEDURE [dbo].[Soccer_MatchResult_GetAllMatchResults_v1]
 AS
 	SELECT * FROM dbo.MatchResult ORDER BY GameTime
 	
 	RETURN
 GO
 
+CREATE PROCEDURE [dbo].[Soccer_MatchResult_GetAllMatchDetails_v1]
+AS
+	SELECT * FROM dbo.MatchDetail
+	
+	RETURN
+GO
 
-CREATE PROCEDURE [dbo].[Soccer_MatchResult_GetMatchResultById_2023.10.04]
+CREATE PROCEDURE [dbo].[Soccer_MatchResult_GetMatchResultById_v1]
 	@Id nvarchar(80)
 AS
    SELECT * FROM dbo.MatchResult WHERE Id = @Id
@@ -15,7 +21,7 @@ AS
 GO
 
 
-CREATE PROCEDURE [dbo].[Soccer_MatchResult_GetDetailById_2023.10.04]
+CREATE PROCEDURE [dbo].[Soccer_MatchResult_GetDetailById_v1]
 	@Id nvarchar(80)
 AS    
    SET NOCOUNT ON;
@@ -26,7 +32,7 @@ AS
 GO
 
 
-CREATE PROCEDURE [dbo].[Soccer_MatchResult_AddMatchResult_2023.10.04]
+CREATE PROCEDURE [dbo].[Soccer_MatchResult_AddMatchResult_v1]
 	@Id varchar(80),
 	@GameTime DateTime,
 	@Leagues varchar(100),
@@ -50,7 +56,7 @@ AS
 GO
 
 
-CREATE PROCEDURE [dbo].[Soccer_MatchResult_AddMatchDetail_2023.10.04]
+CREATE PROCEDURE [dbo].[Soccer_MatchResult_AddMatchDetail_v1]
 	@Id varchar(80),
 	@FirstHalf_H int,
 	@FirstHalf_A int,
@@ -100,7 +106,7 @@ AS
 GO
 
 
-CREATE PROCEDURE [dbo].[Soccer_MatchResult_AddHistory_2023.10.04]
+CREATE PROCEDURE [dbo].[Soccer_MatchResult_AddHistory_v1]
 	@ResultId varchar(80),
 	@FirstHalf_H int,
 	@FirstHalf_A int,
@@ -150,7 +156,7 @@ AS
 GO
 
 
-CREATE PROCEDURE [dbo].[Soccer_MatchResult_UpdateMatchResultById_2023.10.04]
+CREATE PROCEDURE [dbo].[Soccer_MatchResult_UpdateMatchResultById_v1]
 	@Id varchar(80),
 	@HomeScore int,
 	@AwayScore int,
@@ -166,7 +172,7 @@ AS
 GO
 
 
-CREATE PROCEDURE [dbo].[Soccer_MatchResult_UpdateMatchDetailById_2023.10.04]
+CREATE PROCEDURE [dbo].[Soccer_MatchResult_UpdateMatchDetailById_v1]
 	@Id varchar(80),
 	@FirstHalf_H int,
 	@FirstHalf_A int,

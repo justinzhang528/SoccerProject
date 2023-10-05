@@ -51,8 +51,8 @@ namespace Soccer.Services
         {
             List<MatchResult> results;
             List<MatchDetail> details;
-            results = _dBConnUtil.QueryAll<MatchResult>("spGetAllResults");
-            details = _dBConnUtil.QueryAll<MatchDetail>("spGetAllDetails");
+            results = _dBConnUtil.QueryAll<MatchResult>("Soccer_MatchResult_GetAllMatchResults_v1");
+            details = _dBConnUtil.QueryAll<MatchDetail>("Soccer_MatchResult_GetAllMatchDetails_v1");
 
             foreach (MatchResult result in results)
             {

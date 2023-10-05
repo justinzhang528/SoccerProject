@@ -14,7 +14,7 @@ namespace Soccer.Utils
             _configuration = configuration;
         }
 
-        private SqlConnection GetConnection()
+        public SqlConnection GetConnection()
         {
             return new SqlConnection(_configuration.GetConnectionString("master"));
         }
