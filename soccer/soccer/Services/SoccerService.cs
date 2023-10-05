@@ -50,17 +50,24 @@ namespace Soccer.Services
         public List<MatchResult> GetAllMatchResults()
         {
             List<MatchResult> results;
-            using (var connection = _dBConnUtil.GetConnection())
-            {
-                results = connection.Query<MatchResult>("spGetAllResults", commandType: System.Data.CommandType.StoredProcedure).ToList();
-            }
+            List<MatchDetail> details;
+            results = _dBConnUtil.QueryAll<MatchResult>("spGetAllResults");
+            details = _dBConnUtil.QueryAll<MatchDetail>("spGetAllDetails");
+
             foreach (MatchResult result in results)
             {
-                if(result.Condition == ConditionInfo.Normal)
+                if (result.Condition == ConditionInfo.Normal)
                 {
-                    result.Detail = GetMatchDetailById(result.Id);
+                    foreach (MatchDetail detail in details)
+                    {
+                        if(result.Id == detail.Id)
+                        {
+                            result.Detail = detail;
+                        }
+                    }
                 }
             }
+
             return results;
         }
 
@@ -216,6 +223,7 @@ namespace Soccer.Services
                 connection.Execute("spUpdateDetialById", parameters, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
+        // 如何把 dbconnection and Dapper Query的程式碼包在一個 DBConnUtil.cs 裏，供services.cs來使用
 
     }
 }

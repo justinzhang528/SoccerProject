@@ -1,5 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using Soccer.Models;
 
 namespace Soccer.Utils
 {
@@ -12,9 +14,19 @@ namespace Soccer.Utils
             _configuration = configuration;
         }
 
-        public SqlConnection GetConnection()
+        private SqlConnection GetConnection()
         {
             return new SqlConnection(_configuration.GetConnectionString("master"));
+        }
+
+        public List<T> QueryAll<T>(string sp)
+        {
+            List<T> results;
+            using (var connection = GetConnection())
+            {
+                results = connection.Query<T>(sp, commandType: System.Data.CommandType.StoredProcedure).ToList();
+            }
+            return results;
         }
     }
 }
