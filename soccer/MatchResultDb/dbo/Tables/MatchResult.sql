@@ -7,5 +7,6 @@
 	AwayTeam varchar(50) NOT NULL,
 	HomeScore int,
 	AwayScore int,
-	Condition int --1:normal, 0:cancelled, 2:notStart
+	Condition int,
+	UpdateTime DATETIME
 );

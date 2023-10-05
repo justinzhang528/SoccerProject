@@ -20,5 +20,6 @@
 	SecondET_H int,
 	SecondET_A int,
 	PenaltiesShootout_H int,
-	PenaltiesShootout_A int
+	PenaltiesShootout_A int,
+	UpdateTime DATETIME
 );
