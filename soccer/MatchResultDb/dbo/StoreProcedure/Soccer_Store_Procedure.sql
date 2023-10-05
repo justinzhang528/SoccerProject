@@ -259,16 +259,11 @@ CREATE TYPE MatchDetailType
 		PenaltiesShootout_A int );
 GO
 
-CREATE PROCEDURE [dbo].[Soccer_MatchResult_UpdateResultDetailHistoryTable_v1]
-	@Results dbo.MatchResultType READONLY,
-    @Details dbo.MatchDetailType READONLY
+CREATE PROCEDURE [dbo].[Soccer_MatchResult_UpdateAllMatchResults_v1]
+	@Results dbo.MatchResultType READONLY
 AS
 BEGIN
-    INSERT INTO #TempResult
+    INSERT INTO dbo.MatchResult
     SELECT *
     FROM @Results;
-
-	INSERT INTO #TempDetail
-	SELECT *
-	FROM @Details;
 END

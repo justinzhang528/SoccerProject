@@ -1,6 +1,9 @@
 ﻿using Dapper;
 using Soccer.Models;
 using Soccer.Utils;
+using System.Data;
+using System.Reflection;
+using System.Reflection.Metadata;
 
 namespace Soccer.Services
 {
@@ -15,36 +18,47 @@ namespace Soccer.Services
             _dBConnUtil = dBConnUtil;
         }
 
-        public void GenerateMatchResult()
+        private DataTable ToDataTable<T>(List<T> items)
+        {
+            DataTable dataTable = new DataTable(typeof(T).Name);
+            PropertyInfo[] props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var prop in props)
+            {
+                if (prop.PropertyType == typeof(ConditionInfo))
+                    dataTable.Columns.Add(prop.Name, typeof(Int32));
+                else
+                    dataTable.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+            }
+
+            foreach (T item in items)
+            {
+                var values = new object[props.Length];
+                for (int i = 0; i < props.Length; i++)
+                {
+                    values[i] = props[i].GetValue(item, null);
+                }
+                dataTable.Rows.Add(values);
+            }
+
+            return dataTable;
+        }
+
+        public void UpdateResultDetailHistoryTable()
         {
             List<MatchResult> results = _matchResultBuilder.GenerateResults();
-            //Logger logger = LogManager.GetLogger("resultHistory");
+            List<MatchDetail> details = new List<MatchDetail>();
+            var results_dt = ToDataTable(results);
+            results_dt.Columns.Remove("Detail");
+
             foreach (MatchResult result in results)
             {
-                MatchResult resultRow = GetMatchResultById(result.Id);
-
-                // 如果DB裏不存在則新增Result
-                if (resultRow == null)
+                if(result.Condition == ConditionInfo.Normal)
                 {
-                    AddMatchResult(result);
-
-                    // 如果是正常狀態下，則需要新增Detail資料
-                    if(result.Condition == ConditionInfo.Normal)
-                    {
-                        AddMatchDetail(result.Detail);
-                    }
-                }
-                // 如果DB裏已經存在，則檢查是否需要更新Detail和Result
-                else
-                {
-                    // 如果在正常狀態下
-                    if (result.Condition == ConditionInfo.Normal) 
-                    {
-
-                    }
+                    details.Add(result.Detail);
                 }
             }
-            //logger.Info(msg);
+            _dBConnUtil.UpdateAll("Soccer_MatchResult_UpdateAllMatchResults_v1", new { Results = results_dt.AsTableValuedParameter("dbo.MatchResultType") });
         }
 
         public List<MatchResult> GetAllMatchResults()
@@ -67,7 +81,6 @@ namespace Soccer.Services
                     }
                 }
             }
-
             return results;
         }
 
@@ -79,7 +92,6 @@ namespace Soccer.Services
             { 
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("Id", id);
-
                 result = connection.QuerySingleOrDefault<MatchResult>("spGetResultById", parameters, commandType: System.Data.CommandType.StoredProcedure);
             }
             return result;

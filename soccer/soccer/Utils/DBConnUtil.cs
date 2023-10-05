@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Soccer.Models;
@@ -27,6 +28,14 @@ namespace Soccer.Utils
                 results = connection.Query<T>(sp, commandType: System.Data.CommandType.StoredProcedure).ToList();
             }
             return results;
+        }
+
+        public void UpdateAll(string sp, object parameterObject)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Execute(sp, param: parameterObject, commandType: System.Data.CommandType.StoredProcedure);
+            }
         }
     }
 }
