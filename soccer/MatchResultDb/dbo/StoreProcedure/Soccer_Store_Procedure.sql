@@ -267,3 +267,15 @@ BEGIN
     SELECT *
     FROM @Results;
 END
+GO
+
+
+CREATE PROCEDURE [dbo].[Soccer_MatchResult_UpdateAllMatchDetails_v1]
+	@Details dbo.MatchDetailType READONLY
+AS
+BEGIN
+    INSERT INTO dbo.MatchDetail
+    SELECT *
+    FROM @Details;
+END
+GO
