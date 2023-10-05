@@ -43,3 +43,5 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
+/Soccer/MatchResultDb/*.jfm
+/Soccer/MatchResultDb/*.dbmdl

@@ -1,6 +1,6 @@
 ﻿CREATE TABLE History
 (
-	ResultId varchar(80) NOT NULL,
+	ResultId varchar(80),
 	FirstHalf_H int,
 	FirstHalf_A int,
 	SecondHalf_H int,
@@ -20,5 +20,6 @@
 	SecondET_H int,
 	SecondET_A int,
 	PenaltiesShootout_H int,
-	PenaltiesShootout_A int
+	PenaltiesShootout_A int,
+	UpdateTime datetime
 );
