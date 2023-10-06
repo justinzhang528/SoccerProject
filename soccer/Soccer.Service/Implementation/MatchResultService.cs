@@ -4,11 +4,11 @@ using Soccer.Repository.Models;
 
 namespace Soccer.Service.Implementation
 {
-    public class SoccerService : ISoccerService
+    public class MatchResultService : IMatchResultService
     {
-        ISoccerRepository _soccerRepository;
+        IMatchResultRepository _soccerRepository;
 
-        public SoccerService(ISoccerRepository soccerRepository)
+        public MatchResultService(IMatchResultRepository soccerRepository)
         {
             _soccerRepository = soccerRepository;
         }

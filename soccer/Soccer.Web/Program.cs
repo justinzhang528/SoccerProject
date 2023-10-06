@@ -35,8 +35,8 @@ try
     builder.Services.AddHangfireServer();
     builder.Services.AddSwaggerGen();
 
-    builder.Services.AddScoped<ISoccerRepository, SoccerRepository>();
-    builder.Services.AddScoped<ISoccerService, SoccerService>();
+    builder.Services.AddScoped<IMatchResultRepository, MatchResultRepository>();
+    builder.Services.AddScoped<IMatchResultService, MatchResultService>();
     builder.Services.AddScoped<IMatchResultBuilder, MatchResultBuilder>();
     builder.Services.AddSingleton<BaseRepository>();
 
@@ -71,7 +71,7 @@ try
         pattern: "{controller=Home}/{action=Index}/{id?}");
 
     // schedule job
-    RecurringJob.AddOrUpdate<ISoccerRepository>(x => x.UpdateResultDetailHistoryTable(), "*/03 * * * *");
+    RecurringJob.AddOrUpdate<IMatchResultRepository>(x => x.UpdateResultDetailHistoryTable(), "*/03 * * * *");
 
     app.Run();
 }

@@ -1,11 +1,12 @@
 ﻿using Soccer.Repository.Models;
 
-namespace Soccer.Repository.Interface
+namespace Soccer.Service.Interface
 {
-    public interface ISoccerRepository
+    public interface IMatchResultService
     {
         void UpdateResultDetailHistoryTable();
         List<MatchResultModel> GetAllMatchResults();
+
         MatchDetailModel GetMatchDetailModel(string id);
     }
 }

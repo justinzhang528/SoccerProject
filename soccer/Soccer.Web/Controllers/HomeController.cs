@@ -6,9 +6,9 @@ namespace Soccer.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ISoccerService _service;
+        private readonly IMatchResultService _service;
 
-        public HomeController(ISoccerService service)
+        public HomeController(IMatchResultService service)
         {
             _service = service;
         }

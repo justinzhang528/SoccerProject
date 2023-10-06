@@ -8,13 +8,13 @@ using System.Reflection;
 
 namespace Soccer.Repository.Implementaion
 {
-    public class SoccerRepository : ISoccerRepository
+    public class MatchResultRepository : IMatchResultRepository
     {
         IMatchResultBuilder _matchResultBuilder;
         BaseRepository _dBConnUtil;
         IConfiguration _configuration;
 
-        public SoccerRepository(BaseRepository dBConnUtil, IMatchResultBuilder matchResultBuilder, IConfiguration configuration)
+        public MatchResultRepository(BaseRepository dBConnUtil, IMatchResultBuilder matchResultBuilder, IConfiguration configuration)
         {
             _matchResultBuilder = matchResultBuilder;
             _configuration = configuration;
