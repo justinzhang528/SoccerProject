@@ -1,15 +1,17 @@
 ﻿using System.Net;
 using System.Text;
 using HtmlAgilityPack;
+using Soccer.Models;
+using Soccer.Repository.Interface;
 using Soccer.Utils;
 
-namespace Soccer.Models
+namespace Soccer.Repository.Implementaion
 {
-    public class MatchResultBuilder
+    public class MatchResultBuilder : IMatchResultBuilder
     {
-        public string URL { get; set; }
+        private string _url;
 
-        private void ParseHtml(string data, List<MatchResult> results)
+        private void ParseHtml(string data, List<MatchResultModel> results)
         {
             {
                 var doc = new HtmlDocument();
@@ -55,7 +57,7 @@ namespace Soccer.Models
                     idx++;
 
                     // 如果是正常狀態，需要把detail資料取出來
-                    MatchDetail detail = null;
+                    MatchDetailModel detail = null;
                     if (condition == ConditionInfo.Normal)
                     {
                         row = rows[idx];
@@ -95,7 +97,7 @@ namespace Soccer.Models
 
                         idx += 12; //跳過detail表格裏面的11個rows，因爲已經取過了
 
-                        detail = new MatchDetail(id, firstHalf_H, firstHalf_A, secondHalf_H, secondHalf_A, regularTime_H, regularTime_A, corners_H, corners_A, penalties_H, penalties_A,
+                        detail = new MatchDetailModel(id, firstHalf_H, firstHalf_A, secondHalf_H, secondHalf_A, regularTime_H, regularTime_A, corners_H, corners_A, penalties_H, penalties_A,
                             yellowCards_H, yellowCards_A, redCards_H, redCards_A, firstET_H, firstET_A, secondET_H, secondET_A, penaltiesShootout_H, penaltiesShootout_A);
                     }
 
@@ -103,7 +105,7 @@ namespace Soccer.Models
                     string[] words = events.Split("vs");
                     string homeTeam = words[0];
                     string awayTeam = words[1];
-                    MatchResult result = new MatchResult(id ,gameTime, leagues, homeTeam, awayTeam, homeScore, awayScore, condition, detail);
+                    MatchResultModel result = new MatchResultModel(id, gameTime, leagues, homeTeam, awayTeam, homeScore, awayScore, condition, detail);
                     results.Add(result);
                 }
             }
@@ -119,8 +121,8 @@ namespace Soccer.Models
         {
 
             //爬取的網頁地址
-            WebRequest request = WebRequest.Create(this.URL);
-            WebResponse response = (WebResponse)request.GetResponse();
+            WebRequest request = WebRequest.Create(_url);
+            WebResponse response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream, Encoding.UTF8);
 
@@ -136,14 +138,19 @@ namespace Soccer.Models
 
         }
 
-        public List<MatchResult> GenerateResults()
+        public List<MatchResultModel> GenerateResults()
         {
             string strHTML = GetHtmlContentFromNet();
 
-            List<MatchResult> results = new List<MatchResult>();
+            List<MatchResultModel> results = new List<MatchResultModel>();
             ParseHtml(strHTML, results);
 
             return results;
+        }
+
+        public void SetURL(string url)
+        {
+            _url = url;
         }
     }
 }

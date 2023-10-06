@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Soccer.Models;
-using Soccer.Services;
+using Soccer.Service.Interface;
 
 namespace soccer.Controllers
 {
@@ -15,7 +15,7 @@ namespace soccer.Controllers
 
         public IActionResult Index()
         {
-            List<MatchResult> results = _service.GetAllMatchResults();
+            List<MatchResultModel> results = _service.GetAllMatchResults();
             return View(results);
         }
 

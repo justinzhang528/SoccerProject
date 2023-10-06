@@ -4,7 +4,9 @@ using Soccer.Services;
 using NLog;
 using NLog.Web;
 using Soccer.Utils;
-using Soccer.Models;
+using Soccer.Service.Interface;
+using Soccer.Repository.Interface;
+using Soccer.Repository.Implementaion;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -33,9 +35,10 @@ try
     builder.Services.AddHangfireServer();
     builder.Services.AddSwaggerGen();
 
+    builder.Services.AddScoped<ISoccerRepository, SoccerRepository>();
     builder.Services.AddScoped<ISoccerService, SoccerService>();
+    builder.Services.AddScoped<IMatchResultBuilder, MatchResultBuilder>();
     builder.Services.AddSingleton<DBConnUtil>();
-    builder.Services.AddScoped<MatchResultBuilder>();
 
     var app = builder.Build();
 
@@ -68,7 +71,7 @@ try
         pattern: "{controller=Home}/{action=Index}/{id?}");
 
     // schedule job
-    RecurringJob.AddOrUpdate<ISoccerService>(x => x.UpdateResultDetailHistoryTable(), "*/03 * * * *");
+    RecurringJob.AddOrUpdate<ISoccerRepository>(x => x.UpdateResultDetailHistoryTable(), "*/03 * * * *");
 
     app.Run();
 }

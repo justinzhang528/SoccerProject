@@ -1,24 +1,26 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using Soccer.Models;
+using Soccer.Repository.Interface;
 using Soccer.Utils;
 using System.Data;
 using System.Reflection;
 
-namespace Soccer.Services
+namespace Soccer.Repository.Implementaion
 {
-    public class SoccerService : ISoccerService
+    public class SoccerRepository : ISoccerRepository
     {
-        MatchResultBuilder _matchResultBuilder;
+        IMatchResultBuilder _matchResultBuilder;
         DBConnUtil _dBConnUtil;
         IConfiguration _configuration;
-        
-        public SoccerService(DBConnUtil dBConnUtil, MatchResultBuilder matchResultBuilder, IConfiguration configuration)
+
+        public SoccerRepository(DBConnUtil dBConnUtil, IMatchResultBuilder matchResultBuilder, IConfiguration configuration)
         {
             _matchResultBuilder = matchResultBuilder;
             _configuration = configuration;
             _dBConnUtil = dBConnUtil;
             _matchResultBuilder = matchResultBuilder;
-            _matchResultBuilder.URL = configuration.GetValue<string>("URL:soccer");
+            _matchResultBuilder.SetURL(_configuration["URL:soccer"]);
         }
 
         private DataTable ToDataTable<T>(List<T> items)
@@ -49,14 +51,14 @@ namespace Soccer.Services
 
         public void UpdateResultDetailHistoryTable()
         {
-            List<MatchResult> results = _matchResultBuilder.GenerateResults();
-            List<MatchDetail> details = new List<MatchDetail>();
+            List<MatchResultModel> results = _matchResultBuilder.GenerateResults();
+            List<MatchDetailModel> details = new List<MatchDetailModel>();
             DataTable results_dt = ToDataTable(results);
             results_dt.Columns.Remove("Detail");
 
-            foreach (MatchResult result in results)
+            foreach (MatchResultModel result in results)
             {
-                if(result.Condition == ConditionInfo.Normal)
+                if (result.Condition == ConditionInfo.Normal)
                 {
                     details.Add(result.Detail);
                 }
@@ -66,20 +68,20 @@ namespace Soccer.Services
             _dBConnUtil.UpdateAll("Soccer_MatchResult_UpdateAllMatchDetails_v1", new { Details = details_dt.AsTableValuedParameter("dbo.MatchDetailType") });
         }
 
-        public List<MatchResult> GetAllMatchResults()
+        public List<MatchResultModel> GetAllMatchResults()
         {
-            List<MatchResult> results;
-            List<MatchDetail> details;
-            results = _dBConnUtil.QueryAll<MatchResult>("Soccer_MatchResult_GetAllMatchResults_v1");
-            details = _dBConnUtil.QueryAll<MatchDetail>("Soccer_MatchResult_GetAllMatchDetails_v1");
+            List<MatchResultModel> results;
+            List<MatchDetailModel> details;
+            results = _dBConnUtil.QueryAll<MatchResultModel>("Soccer_MatchResult_GetAllMatchResults_v1");
+            details = _dBConnUtil.QueryAll<MatchDetailModel>("Soccer_MatchResult_GetAllMatchDetails_v1");
 
-            foreach (MatchResult result in results)
+            foreach (MatchResultModel result in results)
             {
                 if (result.Condition == ConditionInfo.Normal)
                 {
-                    foreach (MatchDetail detail in details)
+                    foreach (MatchDetailModel detail in details)
                     {
-                        if(result.Id == detail.Id)
+                        if (result.Id == detail.Id)
                         {
                             result.Detail = detail;
                         }
@@ -88,6 +90,5 @@ namespace Soccer.Services
             }
             return results;
         }
-
     }
 }

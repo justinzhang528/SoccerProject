@@ -3,11 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soccer", "Soccer\Soccer.csproj", "{A394705F-7A48-4223-BD47-15DB0039BF11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soccer.Web", "Soccer\Soccer.Web.csproj", "{A394705F-7A48-4223-BD47-15DB0039BF11}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoccerTest", "SoccerTest\SoccerTest.csproj", "{EC183595-0B92-4793-879D-9748634A3351}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MatchResultDb", "MatchResultDb\MatchResultDb.sqlproj", "{847ACAF6-8E8B-4F36-9FE2-65705E461342}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soccer.Service", "Soccer.Service\Soccer.Service.csproj", "{11EF6D16-3FB8-4FE4-8827-00BFFC74CFC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soccer.Repository", "Soccer.Repository\Soccer.Repository.csproj", "{3C1B7FD3-7E78-4F0F-AEFA-D0E964EDF6D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soccer.Common", "Soccer.Common\Soccer.Common.csproj", "{3D033474-C971-4D92-9995-3B63AB78FB53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +35,18 @@ Global
 		{847ACAF6-8E8B-4F36-9FE2-65705E461342}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{847ACAF6-8E8B-4F36-9FE2-65705E461342}.Release|Any CPU.Build.0 = Release|Any CPU
 		{847ACAF6-8E8B-4F36-9FE2-65705E461342}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{11EF6D16-3FB8-4FE4-8827-00BFFC74CFC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11EF6D16-3FB8-4FE4-8827-00BFFC74CFC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11EF6D16-3FB8-4FE4-8827-00BFFC74CFC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11EF6D16-3FB8-4FE4-8827-00BFFC74CFC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C1B7FD3-7E78-4F0F-AEFA-D0E964EDF6D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C1B7FD3-7E78-4F0F-AEFA-D0E964EDF6D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C1B7FD3-7E78-4F0F-AEFA-D0E964EDF6D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C1B7FD3-7E78-4F0F-AEFA-D0E964EDF6D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D033474-C971-4D92-9995-3B63AB78FB53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D033474-C971-4D92-9995-3B63AB78FB53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D033474-C971-4D92-9995-3B63AB78FB53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D033474-C971-4D92-9995-3B63AB78FB53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
