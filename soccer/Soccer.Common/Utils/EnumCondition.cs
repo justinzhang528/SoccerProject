@@ -1,6 +1,6 @@
-﻿namespace Soccer.Utils
+﻿namespace Soccer.Common.Utils
 {
-    public enum ConditionInfo
+    public enum EnumCondition
     {
         Cancelled,
         Normal,

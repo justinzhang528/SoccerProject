@@ -1,4 +1,4 @@
-﻿using Soccer.Utils;
+﻿using Soccer.Common.Utils;
 
 namespace Soccer.Models
 {
@@ -12,11 +12,11 @@ namespace Soccer.Models
         public string HomeScore { get; set; }
         public string AwayScore { get; set; }
         public MatchDetailModel Detail { get; set; }
-        public ConditionInfo Condition { get; set; }
+        public EnumCondition Condition { get; set; }
 
         public MatchResultModel() { }
 
-        public MatchResultModel(string id, string gameTime, string leagues, string homeTeam, string awayTeam, string homeScore, string awayScore, ConditionInfo condition, MatchDetailModel detail)
+        public MatchResultModel(string id, string gameTime, string leagues, string homeTeam, string awayTeam, string homeScore, string awayScore, EnumCondition condition, MatchDetailModel detail)
         {
             Id = id;
             GameTime = gameTime;

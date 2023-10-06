@@ -1,8 +1,8 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
+using Soccer.Common.Utils;
 using Soccer.Models;
 using Soccer.Repository.Interface;
-using Soccer.Utils;
 using System.Data;
 using System.Reflection;
 
@@ -11,10 +11,10 @@ namespace Soccer.Repository.Implementaion
     public class SoccerRepository : ISoccerRepository
     {
         IMatchResultBuilder _matchResultBuilder;
-        DBConnUtil _dBConnUtil;
+        BaseRepository _dBConnUtil;
         IConfiguration _configuration;
 
-        public SoccerRepository(DBConnUtil dBConnUtil, IMatchResultBuilder matchResultBuilder, IConfiguration configuration)
+        public SoccerRepository(BaseRepository dBConnUtil, IMatchResultBuilder matchResultBuilder, IConfiguration configuration)
         {
             _matchResultBuilder = matchResultBuilder;
             _configuration = configuration;
@@ -30,7 +30,7 @@ namespace Soccer.Repository.Implementaion
 
             foreach (var prop in props)
             {
-                if (prop.PropertyType == typeof(ConditionInfo))
+                if (prop.PropertyType == typeof(EnumCondition))
                     dataTable.Columns.Add(prop.Name, typeof(Int32));
                 else
                     dataTable.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
@@ -58,7 +58,7 @@ namespace Soccer.Repository.Implementaion
 
             foreach (MatchResultModel result in results)
             {
-                if (result.Condition == ConditionInfo.Normal)
+                if (result.Condition == EnumCondition.Normal)
                 {
                     details.Add(result.Detail);
                 }
@@ -77,7 +77,7 @@ namespace Soccer.Repository.Implementaion
 
             foreach (MatchResultModel result in results)
             {
-                if (result.Condition == ConditionInfo.Normal)
+                if (result.Condition == EnumCondition.Normal)
                 {
                     foreach (MatchDetailModel detail in details)
                     {

@@ -3,7 +3,7 @@ using Hangfire.SqlServer;
 using Soccer.Services;
 using NLog;
 using NLog.Web;
-using Soccer.Utils;
+using Soccer.Common.Utils;
 using Soccer.Service.Interface;
 using Soccer.Repository.Interface;
 using Soccer.Repository.Implementaion;
@@ -38,7 +38,7 @@ try
     builder.Services.AddScoped<ISoccerRepository, SoccerRepository>();
     builder.Services.AddScoped<ISoccerService, SoccerService>();
     builder.Services.AddScoped<IMatchResultBuilder, MatchResultBuilder>();
-    builder.Services.AddSingleton<DBConnUtil>();
+    builder.Services.AddSingleton<BaseRepository>();
 
     var app = builder.Build();
 

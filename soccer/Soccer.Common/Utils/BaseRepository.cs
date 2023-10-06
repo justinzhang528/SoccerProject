@@ -2,13 +2,13 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
-namespace Soccer.Utils
+namespace Soccer.Common.Utils
 {
-    public class DBConnUtil
+    public class BaseRepository
     {
         private IConfiguration _configuration;
 
-        public DBConnUtil(IConfiguration configuration)
+        public BaseRepository(IConfiguration configuration)
         {
             _configuration = configuration;
         }

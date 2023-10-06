@@ -1,7 +1,7 @@
 using Soccer.Models;
 using Soccer.Repository.Implementaion;
 using Soccer.Repository.Interface;
-using Soccer.Utils;
+using Soccer.Common.Utils;
 using Xunit.Abstractions;
 
 namespace SoccerTest
@@ -31,7 +31,7 @@ namespace SoccerTest
                 output.WriteLine(result.GameTime);
                 output.WriteLine(result.Leagues);
                 output.WriteLine(result.HomeTeam + " vs " + result.AwayTeam);
-                if (result.Condition == ConditionInfo.Normal)
+                if (result.Condition == EnumCondition.Normal)
                 {
                     output.WriteLine(result.HomeScore);
                     output.WriteLine(result.AwayScore);
