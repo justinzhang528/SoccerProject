@@ -6,5 +6,7 @@ namespace Soccer.Service.Interface
     {
         void UpdateResultDetailHistoryTable();
         List<MatchResultModel> GetAllMatchResults();
+
+        MatchDetailModel GetMatchDetailModel(string id);
     }
 }

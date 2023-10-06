@@ -35,5 +35,15 @@ namespace Soccer.Utils
                 connection.Execute(sp, param: parameterObject, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
+
+        public List<T> QueryWithCondition<T>(string sp, DynamicParameters parameters)
+        {
+            List<T> results;
+            using (var connection = GetConnection())
+            {
+                results = connection.Query<T>(sp, parameters, commandType: System.Data.CommandType.StoredProcedure).ToList();
+            }
+            return results;
+        }
     }
 }

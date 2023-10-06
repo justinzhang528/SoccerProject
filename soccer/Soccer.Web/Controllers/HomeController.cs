@@ -25,11 +25,11 @@ namespace soccer.Controllers
         }
 
         [HttpGet]
-        [Route("Result")]
-        public string Result() 
+        [Route("detail")]
+        public JsonResult Detail(string id) 
         {
-            //add schedule job
-            return "Get result Done!";
+            MatchDetailModel matchDetailModel = _service.GetMatchDetailModel(id);
+            return Json(matchDetailModel);
         }
     }
 }
