@@ -9,17 +9,11 @@ namespace Soccer.Repository.Implementaion
 {
     public class MatchResultRepository : BaseRepository, IMatchResultRepository
     {
-        private readonly IMatchResultBuilder _matchResultBuilder;
 
-        public MatchResultRepository(IMatchResultBuilder matchResultBuilder, IConfiguration configuration): base(configuration)
-        {
-            _matchResultBuilder = matchResultBuilder;
-            _matchResultBuilder.SetURL(configuration["URL:soccer"]);
-        }
+        public MatchResultRepository(IConfiguration configuration):base(configuration) { }
 
-        public void UpdateResultDetailHistoryTable()
+        public void UpdateResultDetailHistoryTable(List<MatchResultModel> results)
         {
-            List<MatchResultModel> results = _matchResultBuilder.GenerateResults();
             List<MatchDetailModel> details = new List<MatchDetailModel>();
             DataTable results_dt = ToDataTable(results);
             results_dt.Columns.Remove("Detail");

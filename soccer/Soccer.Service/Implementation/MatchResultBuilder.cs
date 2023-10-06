@@ -5,7 +5,7 @@ using Soccer.Repository.Interface;
 using Soccer.Common.Utils;
 using Soccer.Repository.Models;
 
-namespace Soccer.Repository.Implementaion
+namespace Soccer.Service.Implementation
 {
     public class MatchResultBuilder : IMatchResultBuilder
     {

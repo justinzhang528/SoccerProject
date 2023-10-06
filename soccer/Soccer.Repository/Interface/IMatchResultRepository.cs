@@ -4,7 +4,7 @@ namespace Soccer.Repository.Interface
 {
     public interface IMatchResultRepository
     {
-        void UpdateResultDetailHistoryTable();
+        void UpdateResultDetailHistoryTable(List<MatchResultModel> results);
         List<MatchResultModel> GetAllMatchResults();
         MatchDetailModel GetMatchDetailById(string id);
     }
