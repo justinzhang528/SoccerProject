@@ -32,7 +32,7 @@
                         <td>@item.HomeScore</td>
                         <td>@item.AwayScore</td>
                         <td>
-                            <button id="@item.Id" class="btn btn-outline-primary" onclick="detailEvent(this)">Show Details</button>
+                            <button id="@item.Id" class="btn btn-outline-primary" onclick="getDetailById(this)" type="button" data-toggle="modal" data-target="#detailModal" data-whatever="hello">Show Details</button>
                         </td>
                     }
                     else
@@ -42,74 +42,94 @@
                         <td></td>
                     }
                 </tr>
-                @if (item.Condition == Soccer.Utils.ConditionInfo.Normal)
-                {
-                    <tr id="detail_@item.Id" class="text-center" style="display:none;">
-                        <td colspan="6">
-                            <p class="fw-bold">@item.HomeTeam vs @item.AwayTeam</p>
-                            <table class="table table-bordered">
-                                <tbody>
-                                    <tr class="table-primary">
-                                        <td>@item.HomeTeam</td>
-                                        <td>Teams</td>
-                                        <td>@item.AwayTeam</td>
-                                    </tr>
-                                    <tr>
-                                        <td>@item.Detail.FirstHalf_H</td>
-                                        <td class="table-primary">1st half</td>
-                                        <td>@item.Detail.FirstHalf_A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>@item.Detail.SecondHalf_H</td>
-                                        <td class="table-primary">2nd half</td>
-                                        <td>@item.Detail.SecondHalf_A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>@item.Detail.RegularTime_H</td>
-                                        <td class="table-primary">Regular time</td>
-                                        <td>@item.Detail.RegularTime_A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>@item.Detail.Corners_H</td>
-                                        <td class="table-primary">Corners</td>
-                                        <td>@item.Detail.Corners_A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>@item.Detail.Penalties_H</td>
-                                        <td class="table-primary">Penalties</td>
-                                        <td>@item.Detail.Penalties_A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>@item.Detail.YellowCards_H</td>
-                                        <td class="table-primary">Yellow cards</td>
-                                        <td>@item.Detail.YellowCards_A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>@item.Detail.RedCards_H</td>
-                                        <td class="table-primary">Red cards</td>
-                                        <td>@item.Detail.RedCards_A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>@item.Detail.FirstET_H</td>
-                                        <td class="table-primary">1st ET</td>
-                                        <td>@item.Detail.FirstET_A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>@item.Detail.SecondET_H</td>
-                                        <td class="table-primary">2nd ET</td>
-                                        <td>@item.Detail.SecondET_A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>@item.Detail.PenaltiesShootout_H</td>
-                                        <td class="table-primary">Penalties shootout</td>
-                                        <td>@item.Detail.PenaltiesShootout_A</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                }
             }
         </tbody>
     </table>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header float-right">
+                <h5>Details</h5>
+                <div class="text-right">
+                    <i data-dismiss="modal" aria-label="Close" class="fa fa-close"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <table class="table table-bordered">
+                        <thead class="text-center">
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr>
+                                <td id="team_H"></td>
+                                <td>Teams</td>
+                                <td id="team_A"></td>
+                            </tr>
+                            <tr>
+                                <td id="firstHalf_H"></td>
+                                <td>1st half</td>
+                                <td id="firstHalf_A"></td>
+                            </tr>
+                            <tr>
+                                <td id="secondHalf_H"></td>
+                                <td>2nd half</td>
+                                <td id="secondHalf_A"></td>
+                            </tr>
+                            <tr>
+                                <td id="regularTime_H"></td>
+                                <td>Regular time</td>
+                                <td id="regularTime_A"></td>
+                            </tr>
+                            <tr>
+                                <td id="corners_H"></td>
+                                <td>Corners</td>
+                                <td id="corners_A"></td>
+                            </tr>
+                            <tr>
+                                <td id="penalties_H"></td>
+                                <td>Penalties</td>
+                                <td id="penalties_A"></td>
+                            </tr>
+                            <tr>
+                                <td id="yellowCards_H"></td>
+                                <td>Yellow cards</td>
+                                <td id="yellowCards_A"></td>
+                            </tr>
+                            <tr>
+                                <td id="redCards_H"></td>
+                                <td>Red cards</td>
+                                <td id="redCards_A"></td>
+                            </tr>
+                            <tr>
+                                <td id="firstET_H"></td>
+                                <td>1st ET</td>
+                                <td id="firstET_A"></td>
+                            </tr>
+                            <tr>
+                                <td id="secondET_H"></td>
+                                <td>2nd ET</td>
+                                <td id="secondET_A"></td>
+                            </tr>
+                            <tr>
+                                <td id="penaltiesShootout_H"></td>
+                                <td>Penalties shootout</td>
+                                <td id="penaltiesShootout_A"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
