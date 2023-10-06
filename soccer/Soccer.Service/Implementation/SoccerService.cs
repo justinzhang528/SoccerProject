@@ -1,9 +1,8 @@
-﻿using Soccer.Models;
-using Soccer.Service.Interface;
+﻿using Soccer.Service.Interface;
 using Soccer.Repository.Interface;
-using Soccer.Repository.Implementaion;
+using Soccer.Repository.Models;
 
-namespace Soccer.Services
+namespace Soccer.Service.Implementation
 {
     public class SoccerService : ISoccerService
     {

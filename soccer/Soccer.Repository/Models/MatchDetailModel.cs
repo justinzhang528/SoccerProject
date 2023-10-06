@@ -1,4 +1,4 @@
-﻿namespace Soccer.Models
+﻿namespace Soccer.Repository.Models
 {
     public class MatchDetailModel
     {

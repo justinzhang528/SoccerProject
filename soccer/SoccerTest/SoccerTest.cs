@@ -1,8 +1,8 @@
-using Soccer.Models;
 using Soccer.Repository.Implementaion;
 using Soccer.Repository.Interface;
 using Soccer.Common.Utils;
 using Xunit.Abstractions;
+using Soccer.Repository.Models;
 
 namespace SoccerTest
 {

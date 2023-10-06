@@ -1,8 +1,8 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
 using Soccer.Common.Utils;
-using Soccer.Models;
 using Soccer.Repository.Interface;
+using Soccer.Repository.Models;
 using System.Data;
 using System.Reflection;
 

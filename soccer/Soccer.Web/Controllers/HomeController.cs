@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Soccer.Models;
+using Soccer.Repository.Models;
 using Soccer.Service.Interface;
 
-namespace soccer.Controllers
+namespace Soccer.Web.Controllers
 {
     public class HomeController : Controller
     {
@@ -26,7 +26,7 @@ namespace soccer.Controllers
 
         [HttpGet]
         [Route("detail")]
-        public JsonResult Detail(string id) 
+        public JsonResult Detail(string id)
         {
             MatchDetailModel matchDetailModel = _service.GetMatchDetailModel(id);
             return Json(matchDetailModel);

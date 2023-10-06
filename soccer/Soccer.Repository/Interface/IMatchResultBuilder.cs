@@ -1,4 +1,4 @@
-﻿using Soccer.Models;
+﻿using Soccer.Repository.Models;
 
 namespace Soccer.Repository.Interface
 {

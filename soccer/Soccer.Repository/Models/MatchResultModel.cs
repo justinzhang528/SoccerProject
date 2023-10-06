@@ -1,6 +1,6 @@
 ﻿using Soccer.Common.Utils;
 
-namespace Soccer.Models
+namespace Soccer.Repository.Models
 {
     public class MatchResultModel
     {

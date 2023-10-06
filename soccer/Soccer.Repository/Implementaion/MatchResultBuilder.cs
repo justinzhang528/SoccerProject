@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Text;
 using HtmlAgilityPack;
-using Soccer.Models;
 using Soccer.Repository.Interface;
 using Soccer.Common.Utils;
+using Soccer.Repository.Models;
 
 namespace Soccer.Repository.Implementaion
 {

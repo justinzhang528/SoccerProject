@@ -1,12 +1,12 @@
 using Hangfire;
 using Hangfire.SqlServer;
-using Soccer.Services;
 using NLog;
 using NLog.Web;
 using Soccer.Common.Utils;
 using Soccer.Service.Interface;
 using Soccer.Repository.Interface;
 using Soccer.Repository.Implementaion;
+using Soccer.Service.Implementation;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
