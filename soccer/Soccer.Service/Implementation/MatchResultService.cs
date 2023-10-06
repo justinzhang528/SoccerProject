@@ -25,7 +25,7 @@ namespace Soccer.Service.Implementation
 
         public MatchDetailModel GetMatchDetailModel(string id)
         {
-            return _soccerRepository.GetMatchDetailModel(id);
+            return _soccerRepository.GetMatchDetailById(id);
         }
     }
 }

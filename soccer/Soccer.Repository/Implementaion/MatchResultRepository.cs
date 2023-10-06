@@ -60,7 +60,7 @@ namespace Soccer.Repository.Implementaion
             return results;
         }
 
-        public MatchDetailModel GetMatchDetailModel(string id)
+        public MatchDetailModel GetMatchDetailById(string id)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("Id", id);
