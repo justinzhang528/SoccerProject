@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Soccer.Models.MatchResultModel>
+﻿@using Soccer.Common.Utils
+@model IEnumerable<Soccer.Models.MatchResultModel>
 @{
     ViewData["Title"] = "Soccer";
 }
@@ -22,12 +23,12 @@
                     <td>@item.GameTime</td>
                     <td>@item.Leagues</td>
                     <td>@item.HomeTeam vs @item.AwayTeam</td>
-                    @if (item.Condition == 0)
+                    @if (item.EnumCondition == 0)
                     {
                         <td colspan="3" style="color: red">Cancelled</td>
                         
                     }
-                    else if (item.Condition == Soccer.Utils.ConditionInfo.Normal)
+                    else if (item.EnumCondition == EnumCondition.Normal)
                     {
                         <td>@item.HomeScore</td>
                         <td>@item.AwayScore</td>

@@ -2,13 +2,13 @@
 using Soccer.Models;
 using Soccer.Service.Interface;
 
-namespace soccer.Controllers
+namespace Soccer.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ISoccerService _service;
+        private readonly IBtiMatchResultService _service;
 
-        public HomeController(ISoccerService service)
+        public HomeController(IBtiMatchResultService service)
         {
             _service = service;
         }

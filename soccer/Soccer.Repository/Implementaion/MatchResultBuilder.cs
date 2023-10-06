@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Text;
 using HtmlAgilityPack;
+using Soccer.Common.Utils;
 using Soccer.Models;
 using Soccer.Repository.Interface;
-using Soccer.Utils;
 
 namespace Soccer.Repository.Implementaion
 {
@@ -34,7 +34,7 @@ namespace Soccer.Repository.Implementaion
                     var row = rows[idx];
                     var cells = row.SelectNodes(".//td");
 
-                    ConditionInfo condition = ConditionInfo.Cancelled; // 1->normal, 0->cancelled, 2->notStart
+                    EnumCondition enumCondition = EnumCondition.Cancelled; // 1->normal, 0->cancelled, 2->notStart
 
                     // 欄位
                     string id = row.Attributes["id"].Value;
@@ -49,16 +49,16 @@ namespace Soccer.Repository.Implementaion
                     {
                         homeScore = cells[3].InnerText;
                         awayScore = cells[4].InnerText;
-                        condition = ConditionInfo.Normal;
+                        enumCondition = EnumCondition.Normal;
                         if (homeScore == "")
-                            condition = ConditionInfo.NotStart;
+                            enumCondition = EnumCondition.NotStart;
                     }
 
                     idx++;
 
                     // 如果是正常狀態，需要把detail資料取出來
                     MatchDetailModel detail = null;
-                    if (condition == ConditionInfo.Normal)
+                    if (enumCondition == EnumCondition.Normal)
                     {
                         row = rows[idx];
                         var innerRows = row.SelectSingleNode(".//td").SelectSingleNode(".//table").SelectNodes(".//tr");
@@ -105,7 +105,7 @@ namespace Soccer.Repository.Implementaion
                     string[] words = events.Split("vs");
                     string homeTeam = words[0];
                     string awayTeam = words[1];
-                    MatchResultModel result = new MatchResultModel(id, gameTime, leagues, homeTeam, awayTeam, homeScore, awayScore, condition, detail);
+                    MatchResultModel result = new MatchResultModel(id, gameTime, leagues, homeTeam, awayTeam, homeScore, awayScore, enumCondition, detail);
                     results.Add(result);
                 }
             }
