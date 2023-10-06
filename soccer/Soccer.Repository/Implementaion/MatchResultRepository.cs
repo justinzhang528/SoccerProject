@@ -14,7 +14,6 @@ namespace Soccer.Repository.Implementaion
         public MatchResultRepository(IMatchResultBuilder matchResultBuilder, IConfiguration configuration): base(configuration)
         {
             _matchResultBuilder = matchResultBuilder;
-            _matchResultBuilder = matchResultBuilder;
             _matchResultBuilder.SetURL(configuration["URL:soccer"]);
         }
 
@@ -33,8 +32,12 @@ namespace Soccer.Repository.Implementaion
                 }
             }
             DataTable details_dt = ToDataTable(details);
-            UpdateAll("Soccer_MatchResult_UpdateAllMatchResults_v1", new { Results = results_dt.AsTableValuedParameter("dbo.MatchResultType") });
-            UpdateAll("Soccer_MatchResult_UpdateAllMatchDetails_v1", new { Details = details_dt.AsTableValuedParameter("dbo.MatchDetailType") });
+            var parameterObject = new
+            {
+                Results = results_dt.AsTableValuedParameter("dbo.MatchResultType"),
+                Details = details_dt.AsTableValuedParameter("dbo.MatchDetailType")
+            };
+            UpdateAll("Soccer_MatchResult_UpdateMatchResultDetailHistory_v1", parameterObject);
         }
 
         public List<MatchResultModel> GetAllMatchResults()
@@ -64,7 +67,7 @@ namespace Soccer.Repository.Implementaion
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("Id", id);
-            List<MatchDetailModel> matchDetailModels = Query<MatchDetailModel>("Soccer_MatchResult_GetDetailById_v1", parameters);
+            List<MatchDetailModel> matchDetailModels = Query<MatchDetailModel>("Soccer_MatchResult_GetMatchDetailById_v1", parameters);
             if(matchDetailModels.Count > 0)
                 return matchDetailModels[0];
             return null;
