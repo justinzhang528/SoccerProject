@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soccer.Web", "Soccer\Soccer.Web.csproj", "{A394705F-7A48-4223-BD47-15DB0039BF11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soccer.Web", "Soccer.Web\Soccer.Web.csproj", "{A394705F-7A48-4223-BD47-15DB0039BF11}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoccerTest", "SoccerTest\SoccerTest.csproj", "{EC183595-0B92-4793-879D-9748634A3351}"
 EndProject

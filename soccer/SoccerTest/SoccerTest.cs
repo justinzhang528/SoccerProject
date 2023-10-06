@@ -1,5 +1,6 @@
 using Soccer.Models;
 using Soccer.Repository.Implementaion;
+using Soccer.Repository.Interface;
 using Soccer.Utils;
 using Xunit.Abstractions;
 
@@ -19,7 +20,8 @@ namespace SoccerTest
         public void GenerateResultsTest()
         {
             string url = "https://bti-results.bsportsasia.com/?ns=prod20082-23705321.bti-sports.io&locale=en&tzoffset=8";
-            MatchResultBuilder builder = new MatchResultBuilder(url);
+            IMatchResultBuilder builder = new MatchResultBuilder();
+            builder.SetURL(url);
             List<MatchResultModel> results = builder.GenerateResults();
 
             foreach (MatchResultModel result in results) 
