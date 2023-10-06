@@ -4,7 +4,6 @@ using Soccer.Common.Utils;
 using Soccer.Repository.Interface;
 using Soccer.Repository.Models;
 using System.Data;
-using System.Reflection;
 
 namespace Soccer.Repository.Implementaion
 {

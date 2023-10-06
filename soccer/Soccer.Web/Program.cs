@@ -71,7 +71,7 @@ try
         pattern: "{controller=Home}/{action=Index}/{id?}");
 
     // schedule job
-    RecurringJob.AddOrUpdate<IMatchResultRepository>(x => x.UpdateResultDetailHistoryTable(), "*/03 * * * *");
+    RecurringJob.AddOrUpdate<BTISportCrawlerScheduler>(x => x.UpdateResultDetailHistoryTable(), "*/03 * * * *");
 
     app.Run();
 }
@@ -86,4 +86,3 @@ finally
     // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
     NLog.LogManager.Shutdown();
 }
-
