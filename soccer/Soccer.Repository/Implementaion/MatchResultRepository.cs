@@ -72,8 +72,8 @@ namespace Soccer.Repository.Implementaion
         {
             List<MatchResultModel> results;
             List<MatchDetailModel> details;
-            results = _dBConnUtil.QueryAll<MatchResultModel>("Soccer_MatchResult_GetAllMatchResults_v1");
-            details = _dBConnUtil.QueryAll<MatchDetailModel>("Soccer_MatchResult_GetAllMatchDetails_v1");
+            results = _dBConnUtil.Query<MatchResultModel>("Soccer_MatchResult_GetAllMatchResults_v1");
+            details = _dBConnUtil.Query<MatchDetailModel>("Soccer_MatchResult_GetAllMatchDetails_v1");
 
             foreach (MatchResultModel result in results)
             {
@@ -95,7 +95,7 @@ namespace Soccer.Repository.Implementaion
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("Id", id);
-            List<MatchDetailModel> matchDetailModels = _dBConnUtil.QueryWithCondition<MatchDetailModel>("Soccer_MatchResult_GetDetailById_v1", parameters);
+            List<MatchDetailModel> matchDetailModels = _dBConnUtil.Query<MatchDetailModel>("Soccer_MatchResult_GetDetailById_v1", parameters);
             if(matchDetailModels.Count > 0)
                 return matchDetailModels[0];
             return null;

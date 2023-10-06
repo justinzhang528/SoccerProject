@@ -13,19 +13,9 @@ namespace Soccer.Common.Utils
             _configuration = configuration;
         }
 
-        public SqlConnection GetConnection()
+        private SqlConnection GetConnection()
         {
             return new SqlConnection(_configuration.GetConnectionString("matchResultDb"));
-        }
-
-        public List<T> QueryAll<T>(string sp)
-        {
-            List<T> results;
-            using (var connection = GetConnection())
-            {
-                results = connection.Query<T>(sp, commandType: System.Data.CommandType.StoredProcedure).ToList();
-            }
-            return results;
         }
 
         public void UpdateAll(string sp, object parameterObject)
@@ -36,7 +26,7 @@ namespace Soccer.Common.Utils
             }
         }
 
-        public List<T> QueryWithCondition<T>(string sp, DynamicParameters parameters)
+        public List<T> Query<T>(string sp, DynamicParameters? parameters = null)
         {
             List<T> results;
             using (var connection = GetConnection())
