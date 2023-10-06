@@ -2,25 +2,33 @@
 	@Results dbo.MatchResultType READONLY,
 	@Details dbo.MatchDetailType READONLY
 AS
-BEGIN
+BEGIN TRANSACTION;  
+
+	Declare @tempHistory Table (ResultId varchar(80),FirstHalf_H int,
+			FirstHalf_A int,SecondHalf_H int,SecondHalf_A int,RegularTime_H int,
+			RegularTime_A int,Corners_H int,Corners_A int,Penalties_H int,Penalties_A int,
+			YellowCards_H int,YellowCards_A int,RedCards_H int,RedCards_A int,FirstET_H int,
+			FirstET_A int,SecondET_H int,SecondET_A int,PenaltiesShootout_H int,
+			PenaltiesShootout_A int,UpdateTime datetime);		
+	
 	-- update MatchResult Table:
 	SELECT * INTO #TempResult
-		FROM @Results;
+	FROM @Results;
 
-		MERGE dbo.MatchResult AS tar
-		USING #TempResult AS src
-		ON tar.Id = src.Id
+	MERGE dbo.MatchResult AS tar
+	USING #TempResult AS src
+	ON tar.Id = src.Id
 
-		-- For Insert
-		WHEN NOT MATCHED BY TARGET THEN
-			INSERT VALUES (src.ID, src.GameTime, src.Leagues, src.HomeTeam, 
-							src.AwayTeam, src.HomeScore, src.AwayScore, src.Condition, GETDATE())
-		-- For Update
-		WHEN MATCHED AND (tar.HomeScore <> src.AwayScore) THEN UPDATE SET
-			tar.HomeScore = src.HomeScore,
-			tar.AwayScore = src.AwayScore,
-			tar.Condition = src.Condition,
-			tar.UpdateTime = GETDATE();
+	-- For Insert
+	WHEN NOT MATCHED BY TARGET THEN
+		INSERT VALUES (src.ID, src.GameTime, src.Leagues, src.HomeTeam, 
+						src.AwayTeam, src.HomeScore, src.AwayScore, src.Condition, GETDATE())
+	-- For Update
+	WHEN MATCHED AND (tar.HomeScore <> src.AwayScore) THEN UPDATE SET
+		tar.HomeScore = src.HomeScore,
+		tar.AwayScore = src.AwayScore,
+		tar.Condition = src.Condition,
+		tar.UpdateTime = GETDATE();
 
 
 	-- update MatchDetail Table:
@@ -84,10 +92,13 @@ BEGIN
 		tar.PenaltiesShootout_H = src.PenaltiesShootout_H,
 		tar.PenaltiesShootout_A = src.PenaltiesShootout_A,
 		tar.UpdateTime = GETDATE()
-
-	-- update History Table：
 	OUTPUT
 		DELETED.*
-	INTO dbo.History;
-END
+	INTO @tempHistory;
+	
+	-- update History Table:
+	INSERT INTO dbo.History
+	SELECT * FROM @tempHistory
+	WHERE ResultId IS NOT NULL;
+COMMIT;
 GO
