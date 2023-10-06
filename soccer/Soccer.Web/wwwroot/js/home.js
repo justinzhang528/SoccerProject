@@ -1,9 +1,13 @@
 function getDetailById(e) {
+    detailTitle = e.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.innerText
+    teams = detailTitle.split('vs')
     $.ajax({
         url: '/detail?id=' + e.id,
         type: 'GET',
         success: function (data) {
-            console.log(data)
+            $('#detail_title').text(detailTitle);
+            $('#team_H').text(teams[0]);
+            $('#team_A').text(teams[1]);
             $('#firstHalf_H').text(data.firstHalf_H);
             $('#firstHalf_A').text(data.firstHalf_A);
             $('#secondHalf_H').text(data.secondHalf_H);
