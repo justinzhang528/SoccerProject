@@ -24,7 +24,7 @@ BEGIN TRANSACTION;
 		INSERT VALUES (src.ID, src.GameTime, src.Leagues, src.HomeTeam, 
 						src.AwayTeam, src.HomeScore, src.AwayScore, src.Condition, GETDATE())
 	-- For Update
-	WHEN MATCHED AND (tar.HomeScore <> src.AwayScore) THEN UPDATE SET
+	WHEN MATCHED AND (tar.HomeScore <> src.HomeScore or tar.AwayScore <> src.AwayScore) THEN UPDATE SET
 		tar.HomeScore = src.HomeScore,
 		tar.AwayScore = src.AwayScore,
 		tar.Condition = src.Condition,
