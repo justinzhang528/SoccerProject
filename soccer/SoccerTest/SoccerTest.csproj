@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Soccer\Soccer.Web.csproj" />
+    <ProjectReference Include="..\Soccer.Service\Soccer.Service.csproj" />
   </ItemGroup>
 
 </Project>

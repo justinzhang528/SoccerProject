@@ -22,7 +22,6 @@ namespace Soccer.Service.Implementation
             {
                 using (var client = new HttpClient(handler))
                 {
-                    // Set the URL of the website you want to crawl
                     // Create a CookieContainer and add the session cookie
                     var cookies = new CookieContainer();
                     var cookie = new Cookie("ASP.NET_SessionId", "rqlbxric0qwgm4m1nlxjiowx");
@@ -95,7 +94,6 @@ namespace Soccer.Service.Implementation
             {
                 using (var client = new HttpClient(handler))
                 {
-                    // Set the URL of the website you want to crawl
                     // Create a CookieContainer and add the session cookie
                     var cookies = new CookieContainer();
                     var cookie = new Cookie("ASP.NET_SessionId", "rqlbxric0qwgm4m1nlxjiowx");
@@ -138,8 +136,9 @@ namespace Soccer.Service.Implementation
                                 {
                                     List<object> list = JsonConvert.DeserializeObject<List<object>>(item.ToString());
                                     string goalType = list.ElementAt(0).ToString();
-                                    string firstHalfScore = list.ElementAt(4).ToString();
-                                    string fullTimeScore = list.ElementAt(4).ToString();
+                                    List<object> scores = JsonConvert.DeserializeObject<List<object>>(list.ElementAt(4).ToString());
+                                    string firstHalfScore = scores.ElementAt(0).ToString();
+                                    string fullTimeScore = scores.ElementAt(1).ToString();
                                     string code = list.ElementAt(5).ToString();
 
                                     SBOMatchDetailModel model = new SBOMatchDetailModel(eventId, goalType, firstHalfScore, fullTimeScore, code);
