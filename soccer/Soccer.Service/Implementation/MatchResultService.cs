@@ -7,31 +7,31 @@ namespace Soccer.Service.Implementation
 {
     public class MatchResultService : IMatchResultService
     {
-        IMatchResultRepository _soccerRepository;
+        IMatchResultRepository _matchResultRepository;
         IMatchResultBuilder _matchResultBuilder;
         IConfiguration _configuration;
 
         public MatchResultService(IMatchResultRepository soccerRepository, IMatchResultBuilder builder, IConfiguration configuration)
         {
-            _soccerRepository = soccerRepository;
+            _matchResultRepository = soccerRepository;
             _matchResultBuilder = builder;
             _configuration = configuration;
-            _matchResultBuilder.SetURL(_configuration["URL:soccer"]);
+            _matchResultBuilder.SetURL(_configuration["URL:BTISport"]);
         }
 
         public void UpdateResultDetailHistoryTable()
         {
-            _soccerRepository.UpdateResultDetailHistoryTable(_matchResultBuilder.GenerateResults());
+            _matchResultRepository.UpdateResultDetailHistoryTable(_matchResultBuilder.GenerateResults());
         }
 
         public List<MatchResultModel> GetAllMatchResults()
         {
-            return _soccerRepository.GetAllMatchResults();
+            return _matchResultRepository.GetAllMatchResults();
         }
 
         public MatchDetailModel GetMatchDetailModel(string id)
         {
-            return _soccerRepository.GetMatchDetailById(id);
+            return _matchResultRepository.GetMatchDetailById(id);
         }
     }
 }

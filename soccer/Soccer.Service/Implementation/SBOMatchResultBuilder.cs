@@ -2,16 +2,17 @@
 using System.Net;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace Soccer.Service.Implementation
 {
     public class SBOMatchResultBuilder
     {
-        private string _url;
+        IConfiguration _configuration;
 
-        public void SetUrl(string url)
+        public SBOMatchResultBuilder(IConfiguration configuration)
         {
-            _url = url;
+            _configuration = configuration;
         }
 
         public async Task<List<SBOMatchResultModel>> GenerateSBOMatchResultsAsync()
@@ -24,9 +25,9 @@ namespace Soccer.Service.Implementation
                 {
                     // Create a CookieContainer and add the session cookie
                     var cookies = new CookieContainer();
-                    var cookie = new Cookie("ASP.NET_SessionId", "rqlbxric0qwgm4m1nlxjiowx");
-                    cookie.Domain = "sports-demo-wl.17mybet.com";
-                    cookie.Path = "/";
+                    var cookie = new Cookie(_configuration["SBOCookies:Name"], _configuration["SBOCookies:Value"]);
+                    cookie.Domain = _configuration["SBOCookies:Domain"];
+                    cookie.Path = _configuration["SBOCookies:Path"];
                     cookies.Add(cookie);
                     handler.CookieContainer = cookies;
 
@@ -45,7 +46,7 @@ namespace Soccer.Service.Implementation
                     });
 
                     // Send an HTTP POST request
-                    var response = await client.PostAsync(_url, postData);
+                    var response = await client.PostAsync(_configuration["URL:SBOSport-results-data"], postData);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -68,13 +69,13 @@ namespace Soccer.Service.Implementation
                                     List<object> list = JsonConvert.DeserializeObject<List<object>>(result.ToString());
                                     string id = list.ElementAt(0).ToString();
                                     string league = list.ElementAt(1).ToString();
-                                    string teamA = list.ElementAt(2).ToString();
-                                    string teamB = list.ElementAt(3).ToString();
-                                    string dateTime = list.ElementAt(4).ToString();
-                                    string isShowMore = list.ElementAt(7).ToString();
+                                    string homeTeam = list.ElementAt(2).ToString();
+                                    string awayTeam = list.ElementAt(3).ToString();
+                                    string matchTime = list.ElementAt(4).ToString();
+                                    string isShowMoreData = list.ElementAt(7).ToString();
                                     string firstHalfScore = list.ElementAt(10).ToString();
                                     string fullTimeScore = list.ElementAt(11).ToString();
-                                    SBOMatchResultModel model = new SBOMatchResultModel(id, league, teamA, teamB, dateTime, firstHalfScore, fullTimeScore, isShowMore);
+                                    SBOMatchResultModel model = new SBOMatchResultModel(id, league, homeTeam, awayTeam, matchTime, firstHalfScore, fullTimeScore, isShowMoreData);
                                     sBOMatchResultModels.Add(model);
                                 }
                             }
@@ -96,9 +97,9 @@ namespace Soccer.Service.Implementation
                 {
                     // Create a CookieContainer and add the session cookie
                     var cookies = new CookieContainer();
-                    var cookie = new Cookie("ASP.NET_SessionId", "rqlbxric0qwgm4m1nlxjiowx");
-                    cookie.Domain = "sports-demo-wl.17mybet.com";
-                    cookie.Path = "/";
+                    var cookie = new Cookie(_configuration["SBOCookies:Name"], _configuration["SBOCookies:Value"]);
+                    cookie.Domain = _configuration["SBOCookies:Domain"];
+                    cookie.Path = _configuration["SBOCookies:Path"];
                     cookies.Add(cookie);
                     handler.CookieContainer = cookies;
 
@@ -111,7 +112,7 @@ namespace Soccer.Service.Implementation
                     });
 
                     // Send an HTTP POST request
-                    var response = await client.PostAsync(_url, postData);
+                    var response = await client.PostAsync(_configuration["URL:SBOSport-results-more-data"], postData);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -135,13 +136,13 @@ namespace Soccer.Service.Implementation
                                 foreach (var item in listDetail)
                                 {
                                     List<object> list = JsonConvert.DeserializeObject<List<object>>(item.ToString());
-                                    string goalType = list.ElementAt(0).ToString();
+                                    string marketType = list.ElementAt(0).ToString();
                                     List<object> scores = JsonConvert.DeserializeObject<List<object>>(list.ElementAt(4).ToString());
                                     string firstHalfScore = scores.ElementAt(0).ToString();
                                     string fullTimeScore = scores.ElementAt(1).ToString();
                                     string code = list.ElementAt(5).ToString();
 
-                                    SBOMatchDetailModel model = new SBOMatchDetailModel(eventId, goalType, firstHalfScore, fullTimeScore, code);
+                                    SBOMatchDetailModel model = new SBOMatchDetailModel(eventId, marketType, firstHalfScore, fullTimeScore, code);
                                     sBOMatchDetailModels.Add(model);
                                 }
                             }
