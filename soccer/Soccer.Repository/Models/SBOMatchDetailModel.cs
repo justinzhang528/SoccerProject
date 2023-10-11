@@ -1,6 +1,6 @@
 ﻿namespace Soccer.Repository.Models
 {
-    public class SBOMatchDetail
+    public class SBOMatchDetailModel
     {
         public string Id { get; set; }
         public string GoalType { get; set; }
@@ -8,9 +8,9 @@
         public string FullTimeScore { get; set; }
         public string Code { get; set; }
 
-        public SBOMatchDetail() { }
+        public SBOMatchDetailModel() { }
 
-        public SBOMatchDetail(string id, string goalType, string firstHalfScore, string fullTimeScore, string code)
+        public SBOMatchDetailModel(string id, string goalType, string firstHalfScore, string fullTimeScore, string code)
         {
             Id = id;
             GoalType = goalType;
