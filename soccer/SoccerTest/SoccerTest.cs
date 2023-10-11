@@ -1,7 +1,8 @@
-using Soccer.Repository.Implementaion;
-using Soccer.Repository.Interface;
-using Soccer.Common.Utils;
-using Xunit.Abstractions;
+﻿using Xunit.Abstractions;
+using Newtonsoft.Json;
+using System.Net;
+using System.Text.RegularExpressions;
+using Soccer.Service.Implementation;
 using Soccer.Repository.Models;
 
 namespace SoccerTest
@@ -17,46 +18,42 @@ namespace SoccerTest
         }
 
         [Fact]
-        public void GenerateResultsTest()
+        public async Task GenerateSBOResult()
         {
-            string url = "https://bti-results.bsportsasia.com/?ns=prod20082-23705321.bti-sports.io&locale=en&tzoffset=8";
-            IMatchResultBuilder builder = new MatchResultBuilder();
-            builder.SetURL(url);
-            List<MatchResultModel> results = builder.GenerateResults();
-
-            foreach (MatchResultModel result in results) 
+            SBOMatchResultBuilder sBOMatchResultBuilder = new SBOMatchResultBuilder();
+            sBOMatchResultBuilder.SetUrl("https://sports-demo-wl.17mybet.com/web-root/restricted/result/results-data.aspx");
+            List<SBOMatchResultModel> sBOMatchResultModels = await sBOMatchResultBuilder.GenerateSBOMatchResultsAsync();
+            output.WriteLine(sBOMatchResultModels.Count.ToString());
+            foreach (var item in sBOMatchResultModels)
             {
-                output.WriteLine("------------------------------------");
-                output.WriteLine(result.Id);
-                output.WriteLine(result.GameTime);
-                output.WriteLine(result.Leagues);
-                output.WriteLine(result.HomeTeam + " vs " + result.AwayTeam);
-                if (result.Condition == EnumCondition.Normal)
-                {
-                    output.WriteLine(result.HomeScore);
-                    output.WriteLine(result.AwayScore);
-                    output.WriteLine("");
-                    output.WriteLine("Detail:");
-                    output.WriteLine(result.Detail.Id);
-                    output.WriteLine(result.HomeTeam + " teams " + result.AwayTeam);
-                    output.WriteLine(result.Detail.FirstHalf_H + " firstHalf " + result.Detail.FirstHalf_A);
-                    output.WriteLine(result.Detail.SecondHalf_H + " secondHalf " + result.Detail.SecondHalf_A);
-                    output.WriteLine(result.Detail.RegularTime_H + " regularTime " + result.Detail.RegularTime_A);
-                    output.WriteLine(result.Detail.Corners_H + " corners " + result.Detail.Corners_A);
-                    output.WriteLine(result.Detail.Penalties_H + " penalties " + result.Detail.Penalties_A);
-                    output.WriteLine(result.Detail.YellowCards_H + " yellowCards " + result.Detail.YellowCards_A);
-                    output.WriteLine(result.Detail.RedCards_H + " redCards " + result.Detail.RedCards_A);
-                    output.WriteLine(result.Detail.FirstHalf_H + " firstET " + result.Detail.FirstHalf_A);
-                    output.WriteLine(result.Detail.SecondHalf_H + " secondET " + result.Detail.SecondHalf_A);
-                    output.WriteLine(result.Detail.PenaltiesShootout_H + " penaltiesShootout " + result.Detail.PenaltiesShootout_A);
-                }
-                else if (result.Condition == 0)
-                {
-                    output.WriteLine("");
-                    output.WriteLine("Cancelled");
-                }
+                output.WriteLine(item.Id);
+                output.WriteLine(item.League);
+                output.WriteLine(item.TeamA);
+                output.WriteLine(item.TeamB);
+                output.WriteLine(item.FirstHalfScore);
+                output.WriteLine(item.FullTimeScore);
                 output.WriteLine("------------------------------------");
             }
+        }
+
+        [Fact]
+        public async Task GenerateSBOResultMoreData()
+        {
+            string eventId = "6012610";
+            SBOMatchResultBuilder sBOMatchResultBuilder = new SBOMatchResultBuilder();
+            sBOMatchResultBuilder.SetUrl("https://sports-demo-wl.17mybet.com/web-root/restricted/result/result-more-data.aspx");
+            List<SBOMatchDetailModel> sBOMatchDetailModels = await sBOMatchResultBuilder.GenerateSBOMatchDetailsAsync(eventId);
+            output.WriteLine(sBOMatchDetailModels.Count.ToString());
+            foreach (var item in sBOMatchDetailModels)
+            {
+                output.WriteLine(item.Id);
+                output.WriteLine(item.GoalType);
+                output.WriteLine(item.FirstHalfScore);
+                output.WriteLine(item.FullTimeScore);
+                output.WriteLine(item.Code);
+                output.WriteLine("------------------------------------");
+            }
+
         }
     }
 }
