@@ -11,6 +11,15 @@ BEGIN TRANSACTION;
 								HomeFullTimeScore varchar(3),
 								AwayFullTimeScore varchar(3),
 								UpdateTime DATETIME);
+
+	Declare @tempDetailHistory Table (Id varchar(80),
+								MarketType varchar(100),
+								HomeFirstHalfScore varchar(3),
+								AwayFirstHalfScore varchar(3),
+								HomeFullTimeScore varchar(3),
+								AwayFullTimeScore varchar(3),
+								Code int,
+								UpdateTime DATETIME);
 	
 	-- update SBOMatchResult Table:
 	SELECT * INTO #TempResult
@@ -59,6 +68,27 @@ BEGIN TRANSACTION;
 	-- For Insert
 	WHEN NOT MATCHED BY TARGET THEN
 		INSERT VALUES (src.ID, src.MarketType, src.HomeFirstHalfScore, src.AwayFirstHalfScore, 
-						src.HomeFullTimeScore, src.AwayFullTimeScore, src.Code, GETDATE());
+						src.HomeFullTimeScore, src.AwayFullTimeScore, src.Code, GETDATE())
+
+	-- For Update
+	WHEN MATCHED AND (
+		tar.HomeFirstHalfScore <> src.HomeFirstHalfScore or 
+		tar.AwayFirstHalfScore <> src.AwayFirstHalfScore or
+		tar.HomeFullTimeScore <> src.HomeFullTimeScore or
+		tar.AwayFullTimeScore <> src.AwayFullTimeScore
+	) THEN UPDATE SET
+		tar.HomeFirstHalfScore = src.HomeFirstHalfScore,
+		tar.AwayFirstHalfScore = src.AwayFirstHalfScore,
+		tar.HomeFullTimeScore = src.HomeFullTimeScore,
+		tar.AwayFullTimeScore = src.AwayFullTimeScore,
+		tar.UpdateTime = GETDATE()
+	OUTPUT
+		DELETED.*
+	INTO @tempDetailHistory;
+		
+	-- update SBOHistory Table:
+	INSERT INTO dbo.SBOMatchDetailHistory
+	SELECT * FROM @tempDetailHistory
+	WHERE Id IS NOT NULL;
 COMMIT;
 GO
