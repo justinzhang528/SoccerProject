@@ -63,6 +63,17 @@ namespace Soccer.Service.Implementation
             return res;
         }
 
+        private string HandleStringNumber(string input)
+        {
+            string pattern = @"\d+";
+            Match match = Regex.Match(input, pattern);
+            if (match.Success)
+            {
+                input = match.Value;
+            }
+            return input;
+        }
+
         private void GenerateSBOMatchResults()
         {
             string url = _configuration["URL:SBOSport-results-data"];
@@ -98,12 +109,12 @@ namespace Soccer.Service.Implementation
                         if (firstHalfScore.Length == 2)
                         {
                             homeFirstHalfScore = firstHalfScore[0].Trim();
-                            awayFirstHalfScore = firstHalfScore[1].Trim();
+                            awayFirstHalfScore = HandleStringNumber(firstHalfScore[1].Trim());
                         }
                         if (fullTimeScore.Length == 2)
                         {
                             homeFullTimeScore = fullTimeScore[0].Trim();
-                            awayFullTimeScore = fullTimeScore[1].Trim();
+                            awayFullTimeScore = HandleStringNumber(fullTimeScore[1].Trim());
                         }
                         SBOMatchResultModel model = new SBOMatchResultModel(id, league, homeTeam, awayTeam, matchTime, homeFirstHalfScore, awayFirstHalfScore, homeFullTimeScore, awayFullTimeScore, isShowMoreData);
                         _matchResults.Add(model);
@@ -153,12 +164,12 @@ namespace Soccer.Service.Implementation
                             if (firstHalfScore.Length == 2)
                             {
                                 homeFirstHalfScore = firstHalfScore[0].Trim();
-                                awayFirstHalfScore = firstHalfScore[1].Trim();
+                                awayFirstHalfScore = HandleStringNumber(firstHalfScore[1].Trim());
                             }
                             if (fullTimeScore.Length == 2)
                             {
                                 homeFullTimeScore = fullTimeScore[0].Trim();
-                                awayFullTimeScore = fullTimeScore[1].Trim();
+                                awayFullTimeScore = HandleStringNumber(fullTimeScore[1].Trim());
                             }
                             string code = list.ElementAt(5).ToString();
 
