@@ -36,25 +36,7 @@ namespace Soccer.Repository.Implementaion
 
         public List<MatchResultModel> GetAllMatchResults()
         {
-            List<MatchResultModel> results;
-            List<MatchDetailModel> details;
-            results = Query<MatchResultModel>("Soccer_MatchResult_GetAllMatchResults_v1");
-            details = Query<MatchDetailModel>("Soccer_MatchResult_GetAllMatchDetails_v1");
-
-            foreach (MatchResultModel result in results)
-            {
-                if (result.Condition == EnumCondition.Normal)
-                {
-                    foreach (MatchDetailModel detail in details)
-                    {
-                        if (result.Id == detail.Id)
-                        {
-                            result.Detail = detail;
-                        }
-                    }
-                }
-            }
-            return results;
+            return Query<MatchResultModel>("Soccer_MatchResult_GetAllMatchResults_v1");
         }
 
         public MatchDetailModel GetMatchDetailById(string id)
