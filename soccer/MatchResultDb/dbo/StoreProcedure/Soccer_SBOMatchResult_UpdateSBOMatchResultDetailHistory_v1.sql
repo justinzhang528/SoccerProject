@@ -3,7 +3,7 @@ CREATE PROCEDURE [dbo].[Soccer_SBOMatchResult_UpdateSBOMatchResultDetailHistory_
 	@Results dbo.SBOMatchResultType READONLY,
 	@Details dbo.SBOMatchDetailType READONLY
 AS
-BEGIN TRANSACTION;  
+BEGIN TRANSACTION;
 
 	Declare @tempHistory Table (Id varchar(80) NOT NULL,
 								HomeFirstHalfScore varchar(3),
