@@ -1,5 +1,5 @@
 function getDetailById(e) {
-    detailTitle = e.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.innerText
+    detailTitle = e.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerText
     teams = detailTitle.split('vs')
     $.ajax({
         url: '/detail?id=' + e.id,

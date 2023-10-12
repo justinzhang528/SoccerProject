@@ -10,8 +10,10 @@
                 <th>Game Time (UTC 8)</th>
                 <th>Leagues</th>
                 <th>Events</th>
-                <th>Home Score</th>
-                <th>Away Score</th>
+                <th>BTI Home Score</th>
+                <th>BTI Away Score</th>
+                <th>SBO Home Score</th>
+                <th>SBO Away Score</th>
                 <th>Details</th>
             </tr>
         </thead>
@@ -24,19 +26,23 @@
                     <td>@item.HomeTeam vs @item.AwayTeam</td>
                     @if (item.Condition == 0)
                     {
-                        <td colspan="3" style="color: red">Cancelled</td>
+                        <td colspan="5" style="color: red">Cancelled</td>
                         
                     }
                     else if (item.Condition == Soccer.Common.Utils.EnumCondition.Normal)
                     {
                         <td>@item.HomeScore</td>
                         <td>@item.AwayScore</td>
+                        <td></td>
+                        <td></td>
                         <td>
                             <button id="@item.Id" class="btn btn-outline-primary" onclick="getDetailById(this)" type="button" data-toggle="modal" data-target="#detailModal" data-whatever="hello">Show Details</button>
                         </td>
                     }
                     else
                     {
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
