@@ -1,6 +1,6 @@
 ﻿CREATE TYPE [dbo].[SBOMatchDetailType] AS TABLE
 (
-	Id varchar(80) NOT NULL PRIMARY KEY,
+	Id varchar(80) NOT NULL,
 	MarketType varchar(100) NOT NULL,
 	HomeFirstHalfScore varchar(3),
 	AwayFirstHalfScore varchar(3),
