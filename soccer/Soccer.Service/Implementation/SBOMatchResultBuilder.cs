@@ -83,10 +83,22 @@ namespace Soccer.Service.Implementation
                         string awayTeam = list.ElementAt(3).ToString();
                         string matchTime = list.ElementAt(4).ToString();
                         string isShowMoreData = list.ElementAt(7).ToString();
-                        string homeFirstHalfScore = list.ElementAt(10).ToString();
-                        string awayFirstHalfScore = list.ElementAt(10).ToString();
-                        string homeFullTimeScore = list.ElementAt(11).ToString();
-                        string awayFullTimeScore = list.ElementAt(11).ToString();
+                        string homeFirstHalfScore = "-1";
+                        string awayFirstHalfScore = "-1";
+                        string homeFullTimeScore = "-1";
+                        string awayFullTimeScore = "-1";
+                        string[] firstHalfScore = list.ElementAt(10).ToString().Split(":");
+                        string[] fullTimeScore = list.ElementAt(11).ToString().Split(":");
+                        if (firstHalfScore.Length == 2)
+                        {
+                            homeFirstHalfScore = firstHalfScore[0];
+                            awayFirstHalfScore = firstHalfScore[1];
+                        }
+                        if (fullTimeScore.Length == 2)
+                        {
+                            homeFullTimeScore = fullTimeScore[0];
+                            awayFullTimeScore = fullTimeScore[1];
+                        }
                         SBOMatchResultModel model = new SBOMatchResultModel(id, league, homeTeam, awayTeam, matchTime, homeFirstHalfScore, awayFirstHalfScore, homeFullTimeScore, awayFullTimeScore, isShowMoreData);
                         _matchResults.Add(model);
                         if(isShowMoreData == "1")
@@ -128,10 +140,22 @@ namespace Soccer.Service.Implementation
                         List<object> list = JsonConvert.DeserializeObject<List<object>>(item.ToString());
                         string marketType = list.ElementAt(0).ToString();
                         List<object> scores = JsonConvert.DeserializeObject<List<object>>(list.ElementAt(4).ToString());
-                        string homeFirstHalfScore = list.ElementAt(0).ToString();
-                        string awayFirstHalfScore = list.ElementAt(0).ToString();
-                        string homeFullTimeScore = list.ElementAt(1).ToString();
-                        string awayFullTimeScore = list.ElementAt(1).ToString();
+                        string homeFirstHalfScore = "-1";
+                        string awayFirstHalfScore = "-1";
+                        string homeFullTimeScore = "-1";
+                        string awayFullTimeScore = "-1";
+                        string[] firstHalfScore = scores.ElementAt(0).ToString().Split(":");
+                        string[] fullTimeScore = scores.ElementAt(1).ToString().Split(":");
+                        if(firstHalfScore.Length == 2)
+                        {
+                            homeFirstHalfScore = firstHalfScore[0];
+                            awayFirstHalfScore = firstHalfScore[1];
+                        }
+                        if(fullTimeScore.Length == 2)
+                        {
+                            homeFullTimeScore = fullTimeScore[0];
+                            awayFullTimeScore = fullTimeScore[1];
+                        }
                         string code = list.ElementAt(5).ToString();
 
                         SBOMatchDetailModel model = new SBOMatchDetailModel(eventId, marketType, homeFirstHalfScore, awayFirstHalfScore, homeFullTimeScore, awayFullTimeScore, code);
