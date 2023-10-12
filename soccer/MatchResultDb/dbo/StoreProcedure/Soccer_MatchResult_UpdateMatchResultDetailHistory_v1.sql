@@ -21,7 +21,7 @@ BEGIN TRANSACTION;
 
 	-- For Insert
 	WHEN NOT MATCHED BY TARGET THEN
-		INSERT VALUES (src.ID, src.GameTime, src.Leagues, src.HomeTeam, 
+		INSERT VALUES (src.ID, src.MatchTime, src.League, src.HomeTeam, 
 						src.AwayTeam, src.HomeScore, src.AwayScore, src.Condition, GETDATE())
 	-- For Update
 	WHEN MATCHED AND (tar.HomeScore <> src.HomeScore or tar.AwayScore <> src.AwayScore) THEN UPDATE SET
