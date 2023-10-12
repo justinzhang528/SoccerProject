@@ -1,9 +1,10 @@
-﻿    using Soccer.Repository.Models;
+﻿using Soccer.Repository.Models;
 using System.Net;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Soccer.Service.Interface;
+using System.Text;
 
 namespace Soccer.Service.Implementation
 {
@@ -12,56 +13,61 @@ namespace Soccer.Service.Implementation
         private readonly IConfiguration _configuration;
         private List<SBOMatchResultModel> _matchResults;
         private List<SBOMatchDetailModel> _matchDetails;
+        private List<string> _eventIds;
 
         public SBOMatchResultBuilder(IConfiguration configuration)
         {
             _configuration = configuration;
             _matchResults = new List<SBOMatchResultModel>();
             _matchDetails = new List<SBOMatchDetailModel>();
+            _eventIds = new List<string>();
         }
-        private async Task<string> SendPostRequestWithCookieAsync(string url, FormUrlEncodedContent postData)
+
+        private string GetPostRequestWithCookie(string url, string postData)
         {
-            using (var handler = new HttpClientHandler())
+            string res = "";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.CookieContainer = new CookieContainer();
+
+            var cookie = new Cookie(_configuration["SBOCookies:Name"], _configuration["SBOCookies:Value"])
             {
-                using (var client = new HttpClient(handler))
-                {
-                    var cookies = new CookieContainer();
-                    var cookie = new Cookie(_configuration["SBOCookies:Name"], _configuration["SBOCookies:Value"])
-                    {
-                        Domain = _configuration["SBOCookies:Domain"],
-                        Path = _configuration["SBOCookies:Path"]
-                    };
-                    cookies.Add(cookie);
-                    handler.CookieContainer = cookies;
+                Domain = _configuration["SBOCookies:Domain"],
+                Path = _configuration["SBOCookies:Path"]
+            };
+            request.CookieContainer.Add(cookie);
 
-                    var response = await client.PostAsync(url, postData);
+            // Encode the POST data
+            byte[] postDataBytes = Encoding.UTF8.GetBytes(postData);
+            request.ContentLength = postDataBytes.Length;
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return await response.Content.ReadAsStringAsync();
-                    }
-                }
+            // Write the POST data to the request stream
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                requestStream.Write(postDataBytes, 0, postDataBytes.Length);
             }
 
-            return null; // Handle the case when the request fails
+            // Send the request and get the response
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            // Read the response content
+            using (Stream responseStream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(responseStream, Encoding.UTF8))
+            {
+                res = reader.ReadToEnd();
+            }
+
+            response.Close();
+            return res;
         }
 
-        private async Task GenerateSBOMatchResultsAsync()
+        private void GenerateSBOMatchResults()
         {
-            List<SBOMatchResultModel> sBOMatchResultModels = new List<SBOMatchResultModel>();
-
-            FormUrlEncodedContent postData = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("result-token", "1,1,1"),
-                new KeyValuePair<string, string>("actionValue", "today"),
-                new KeyValuePair<string, string>("leagueid", ""),
-                new KeyValuePair<string, string>("startdate", ""),
-                new KeyValuePair<string, string>("names", ""),
-                new KeyValuePair<string, string>("isMobile", "0"),
-                new KeyValuePair<string, string>("HidCK", "uJdZa")
-            });
-
-            string content = await SendPostRequestWithCookieAsync(_configuration["URL:SBOSport-results-data"], postData);
+            string url = _configuration["URL:SBOSport-results-data"];
+            string postData = _configuration["PostData:ResultsData"];
+            string content = GetPostRequestWithCookie(url, postData);
 
             if (!string.IsNullOrEmpty(content))
             {
@@ -101,73 +107,73 @@ namespace Soccer.Service.Implementation
                         }
                         SBOMatchResultModel model = new SBOMatchResultModel(id, league, homeTeam, awayTeam, matchTime, homeFirstHalfScore, awayFirstHalfScore, homeFullTimeScore, awayFullTimeScore, isShowMoreData);
                         _matchResults.Add(model);
-                        if(isShowMoreData == "1")
+
+                        if (isShowMoreData == "1")
                         {
-                            await GenerateSBOMatchDetailsAsync(id);
+                            _eventIds.Add(id);
                         }
                     }
                 }
             }
         }
 
-        private async Task GenerateSBOMatchDetailsAsync(string eventId)
+        private void GenerateSBOMatchDetails()
         {
-            List<SBOMatchDetailModel> sBOMatchDetailModels = new List<SBOMatchDetailModel>();
-
-            FormUrlEncodedContent postData = new FormUrlEncodedContent(new[]
+            foreach (string eventId in _eventIds)
             {
-                new KeyValuePair<string, string>("eventId", eventId)
-            });
+                string url = _configuration["URL:SBOSport-results-more-data"];
+                string postData = _configuration["PostData:ResultsMoreData"] + eventId;
+                string content = GetPostRequestWithCookie(url, postData);
 
-            string content = await SendPostRequestWithCookieAsync(_configuration["URL:SBOSport-results-more-data"], postData);
-
-            if (!string.IsNullOrEmpty(content))
-            {
-                string pattern = @"<script>(.*?)</script>";
-                MatchCollection matches = Regex.Matches(content, pattern);
-
-                if (matches.Count > 0)
+                if (!string.IsNullOrEmpty(content))
                 {
-                    string resultString = matches[matches.Count - 1].Groups[1].Value;
-                    resultString = Regex.Match(resultString, @"\[.*\]").Value;
+                    string pattern = @"<script>(.*?)</script>";
+                    MatchCollection matches = Regex.Matches(content, pattern);
 
-                    List<object>? listDetail = JsonConvert.DeserializeObject<List<object>>(resultString);
-
-                    listDetail = JsonConvert.DeserializeObject<List<object>>(listDetail.ElementAt(4).ToString());
-
-                    foreach (var item in listDetail)
+                    if (matches.Count > 0)
                     {
-                        List<object> list = JsonConvert.DeserializeObject<List<object>>(item.ToString());
-                        string marketType = list.ElementAt(0).ToString();
-                        List<object> scores = JsonConvert.DeserializeObject<List<object>>(list.ElementAt(4).ToString());
-                        string homeFirstHalfScore = "-1";
-                        string awayFirstHalfScore = "-1";
-                        string homeFullTimeScore = "-1";
-                        string awayFullTimeScore = "-1";
-                        string[] firstHalfScore = scores.ElementAt(0).ToString().Split(":");
-                        string[] fullTimeScore = scores.ElementAt(1).ToString().Split(":");
-                        if(firstHalfScore.Length == 2)
-                        {
-                            homeFirstHalfScore = firstHalfScore[0].Trim();
-                            awayFirstHalfScore = firstHalfScore[1].Trim();
-                        }
-                        if(fullTimeScore.Length == 2)
-                        {
-                            homeFullTimeScore = fullTimeScore[0].Trim();
-                            awayFullTimeScore = fullTimeScore[1].Trim();
-                        }
-                        string code = list.ElementAt(5).ToString();
+                        string resultString = matches[matches.Count - 1].Groups[1].Value;
+                        resultString = Regex.Match(resultString, @"\[.*\]").Value;
 
-                        SBOMatchDetailModel model = new SBOMatchDetailModel(eventId, marketType, homeFirstHalfScore, awayFirstHalfScore, homeFullTimeScore, awayFullTimeScore, code);
-                        _matchDetails.Add(model);
+                        List<object>? listDetail = JsonConvert.DeserializeObject<List<object>>(resultString);
+
+                        listDetail = JsonConvert.DeserializeObject<List<object>>(listDetail.ElementAt(4).ToString());
+
+                        foreach (var item in listDetail)
+                        {
+                            List<object> list = JsonConvert.DeserializeObject<List<object>>(item.ToString());
+                            string marketType = list.ElementAt(0).ToString();
+                            List<object> scores = JsonConvert.DeserializeObject<List<object>>(list.ElementAt(4).ToString());
+                            string homeFirstHalfScore = "-1";
+                            string awayFirstHalfScore = "-1";
+                            string homeFullTimeScore = "-1";
+                            string awayFullTimeScore = "-1";
+                            string[] firstHalfScore = scores.ElementAt(0).ToString().Split(":");
+                            string[] fullTimeScore = scores.ElementAt(1).ToString().Split(":");
+                            if (firstHalfScore.Length == 2)
+                            {
+                                homeFirstHalfScore = firstHalfScore[0].Trim();
+                                awayFirstHalfScore = firstHalfScore[1].Trim();
+                            }
+                            if (fullTimeScore.Length == 2)
+                            {
+                                homeFullTimeScore = fullTimeScore[0].Trim();
+                                awayFullTimeScore = fullTimeScore[1].Trim();
+                            }
+                            string code = list.ElementAt(5).ToString();
+
+                            SBOMatchDetailModel model = new SBOMatchDetailModel(eventId, marketType, homeFirstHalfScore, awayFirstHalfScore, homeFullTimeScore, awayFullTimeScore, code);
+                            _matchDetails.Add(model);
+                        }
                     }
                 }
             }
         }
 
-        public async Task Build()
+        public void Build()
         {
-            await GenerateSBOMatchResultsAsync();
+            GenerateSBOMatchResults();
+            GenerateSBOMatchDetails();
         }
 
         public List<SBOMatchResultModel> GetSBOMatchResults()
@@ -179,6 +185,7 @@ namespace Soccer.Service.Implementation
         {
             return _matchDetails;
         }
+
 
     }
 }

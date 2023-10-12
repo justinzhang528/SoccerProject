@@ -17,9 +17,10 @@ namespace Soccer.Service.Implementation
             _sBOMatchResultBuilder = builder;
             _configuration = configuration;
         }
-        public void UpdateResultDetailHistoryTable()
+        public void UpdateResultDetailHistoryTableAsync()
         {
-            // to do
+            _sBOMatchResultBuilder.Build();
+            _sBOMatchResultRepository.UpdateResultDetailHistoryTable(_sBOMatchResultBuilder.GetSBOMatchResults(),_sBOMatchResultBuilder.GetSBOMatchDetails());
         }
 
         public List<SBOMatchResultModel> GetAllMatchResults()

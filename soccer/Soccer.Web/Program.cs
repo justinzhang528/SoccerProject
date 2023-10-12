@@ -39,6 +39,8 @@ try
     builder.Services.AddScoped<IMatchResultService, MatchResultService>();
     builder.Services.AddScoped<IMatchResultBuilder, MatchResultBuilder>();
     builder.Services.AddSingleton<BaseRepository>();
+    builder.Services.AddScoped<ISBOMatchResultRepository, SBOMatchResultRepository>();
+    builder.Services.AddScoped<ISBOMatchResultService, SBOMatchResultService>();
     builder.Services.AddScoped<ISBOMatchResultBuilder, SBOMatchResultBuilder>();
 
 
