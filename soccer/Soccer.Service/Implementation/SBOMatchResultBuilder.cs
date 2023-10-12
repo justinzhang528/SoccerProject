@@ -91,13 +91,13 @@ namespace Soccer.Service.Implementation
                         string[] fullTimeScore = list.ElementAt(11).ToString().Split(":");
                         if (firstHalfScore.Length == 2)
                         {
-                            homeFirstHalfScore = firstHalfScore[0];
-                            awayFirstHalfScore = firstHalfScore[1];
+                            homeFirstHalfScore = firstHalfScore[0].Trim();
+                            awayFirstHalfScore = firstHalfScore[1].Trim();
                         }
                         if (fullTimeScore.Length == 2)
                         {
-                            homeFullTimeScore = fullTimeScore[0];
-                            awayFullTimeScore = fullTimeScore[1];
+                            homeFullTimeScore = fullTimeScore[0].Trim();
+                            awayFullTimeScore = fullTimeScore[1].Trim();
                         }
                         SBOMatchResultModel model = new SBOMatchResultModel(id, league, homeTeam, awayTeam, matchTime, homeFirstHalfScore, awayFirstHalfScore, homeFullTimeScore, awayFullTimeScore, isShowMoreData);
                         _matchResults.Add(model);
@@ -148,13 +148,13 @@ namespace Soccer.Service.Implementation
                         string[] fullTimeScore = scores.ElementAt(1).ToString().Split(":");
                         if(firstHalfScore.Length == 2)
                         {
-                            homeFirstHalfScore = firstHalfScore[0];
-                            awayFirstHalfScore = firstHalfScore[1];
+                            homeFirstHalfScore = firstHalfScore[0].Trim();
+                            awayFirstHalfScore = firstHalfScore[1].Trim();
                         }
                         if(fullTimeScore.Length == 2)
                         {
-                            homeFullTimeScore = fullTimeScore[0];
-                            awayFullTimeScore = fullTimeScore[1];
+                            homeFullTimeScore = fullTimeScore[0].Trim();
+                            awayFullTimeScore = fullTimeScore[1].Trim();
                         }
                         string code = list.ElementAt(5).ToString();
 
