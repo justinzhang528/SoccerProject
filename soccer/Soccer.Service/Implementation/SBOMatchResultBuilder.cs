@@ -9,11 +9,15 @@ namespace Soccer.Service.Implementation
 {
     public class SBOMatchResultBuilder : ISBOMatchResultBuilder
     {
-        IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
+        private List<SBOMatchResultModel> _matchResults;
+        private List<SBOMatchDetailModel> _matchDetails;
 
         public SBOMatchResultBuilder(IConfiguration configuration)
         {
             _configuration = configuration;
+            _matchResults = new List<SBOMatchResultModel>();
+            _matchDetails = new List<SBOMatchDetailModel>();
         }
         private async Task<string> SendPostRequestWithCookieAsync(string url, FormUrlEncodedContent postData)
         {
@@ -42,7 +46,7 @@ namespace Soccer.Service.Implementation
             return null; // Handle the case when the request fails
         }
 
-        public async Task<List<SBOMatchResultModel>> GenerateSBOMatchResultsAsync()
+        private async Task GenerateSBOMatchResultsAsync()
         {
             List<SBOMatchResultModel> sBOMatchResultModels = new List<SBOMatchResultModel>();
 
@@ -79,18 +83,22 @@ namespace Soccer.Service.Implementation
                         string awayTeam = list.ElementAt(3).ToString();
                         string matchTime = list.ElementAt(4).ToString();
                         string isShowMoreData = list.ElementAt(7).ToString();
-                        string firstHalfScore = list.ElementAt(10).ToString();
-                        string fullTimeScore = list.ElementAt(11).ToString();
-                        SBOMatchResultModel model = new SBOMatchResultModel(id, league, homeTeam, awayTeam, matchTime, firstHalfScore, fullTimeScore, isShowMoreData);
-                        sBOMatchResultModels.Add(model);
+                        string homeFirstHalfScore = list.ElementAt(10).ToString();
+                        string awayFirstHalfScore = list.ElementAt(10).ToString();
+                        string homeFullTimeScore = list.ElementAt(11).ToString();
+                        string awayFullTimeScore = list.ElementAt(11).ToString();
+                        SBOMatchResultModel model = new SBOMatchResultModel(id, league, homeTeam, awayTeam, matchTime, homeFirstHalfScore, awayFirstHalfScore, homeFullTimeScore, awayFullTimeScore, isShowMoreData);
+                        _matchResults.Add(model);
+                        if(isShowMoreData == "1")
+                        {
+                            await GenerateSBOMatchDetailsAsync(id);
+                        }
                     }
                 }
             }
-
-            return sBOMatchResultModels;
         }
 
-        public async Task<List<SBOMatchDetailModel>> GenerateSBOMatchDetailsAsync(string eventId)
+        private async Task GenerateSBOMatchDetailsAsync(string eventId)
         {
             List<SBOMatchDetailModel> sBOMatchDetailModels = new List<SBOMatchDetailModel>();
 
@@ -120,16 +128,32 @@ namespace Soccer.Service.Implementation
                         List<object> list = JsonConvert.DeserializeObject<List<object>>(item.ToString());
                         string marketType = list.ElementAt(0).ToString();
                         List<object> scores = JsonConvert.DeserializeObject<List<object>>(list.ElementAt(4).ToString());
-                        string firstHalfScore = scores.ElementAt(0).ToString();
-                        string fullTimeScore = scores.ElementAt(1).ToString();
+                        string homeFirstHalfScore = list.ElementAt(0).ToString();
+                        string awayFirstHalfScore = list.ElementAt(0).ToString();
+                        string homeFullTimeScore = list.ElementAt(1).ToString();
+                        string awayFullTimeScore = list.ElementAt(1).ToString();
                         string code = list.ElementAt(5).ToString();
 
-                        SBOMatchDetailModel model = new SBOMatchDetailModel(eventId, marketType, firstHalfScore, fullTimeScore, code);
-                        sBOMatchDetailModels.Add(model);
+                        SBOMatchDetailModel model = new SBOMatchDetailModel(eventId, marketType, homeFirstHalfScore, awayFirstHalfScore, homeFullTimeScore, awayFullTimeScore, code);
+                        _matchDetails.Add(model);
                     }
                 }
             }
-            return sBOMatchDetailModels;
+        }
+
+        public async Task Build()
+        {
+            await GenerateSBOMatchResultsAsync();
+        }
+
+        public List<SBOMatchResultModel> GetSBOMatchResults()
+        {
+            return _matchResults;
+        }
+
+        public List<SBOMatchDetailModel> GetSBOMatchDetails()
+        {
+            return _matchDetails;
         }
 
     }

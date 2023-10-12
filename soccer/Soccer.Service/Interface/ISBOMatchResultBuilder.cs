@@ -4,7 +4,9 @@ namespace Soccer.Service.Interface
 {
     public interface ISBOMatchResultBuilder
     {
-        Task<List<SBOMatchDetailModel>> GenerateSBOMatchDetailsAsync(string eventId);
-        Task<List<SBOMatchResultModel>> GenerateSBOMatchResultsAsync();
+        public Task Build();
+        public List<SBOMatchResultModel> GetSBOMatchResults();
+
+        public List<SBOMatchDetailModel> GetSBOMatchDetails();
     }
 }
