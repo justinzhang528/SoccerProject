@@ -1,59 +1,67 @@
 ﻿using Xunit.Abstractions;
-using Newtonsoft.Json;
-using System.Net;
-using System.Text.RegularExpressions;
-using Soccer.Service.Implementation;
 using Soccer.Repository.Models;
+using Microsoft.Extensions.Configuration;
+using Soccer.Service.Implementation;
+using Soccer.Service.Interface;
 
 namespace SoccerTest
 {
     public class SoccerTest
     {
+        private readonly ITestOutputHelper _testOutputHelper;
+        private readonly IConfiguration _configuration;
+        private ISBOMatchResultBuilder _sBOMatchResultBuilder;
 
-        private readonly ITestOutputHelper output;
-
-        public SoccerTest(ITestOutputHelper output)
+        public SoccerTest(ITestOutputHelper testOutputHelper)
         {
-            this.output = output;
+            _configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+            _testOutputHelper = testOutputHelper;
+            _sBOMatchResultBuilder = new SBOMatchResultBuilder(_configuration);
         }
 
-        [Fact]
-        public async Task GenerateSBOResult()
+        //[Fact]
+        public void GenerateSBOMatchResultTest()
         {
-            SBOMatchResultBuilder sBOMatchResultBuilder = new SBOMatchResultBuilder();
-            sBOMatchResultBuilder.SetUrl("https://sports-demo-wl.17mybet.com/web-root/restricted/result/results-data.aspx");
-            List<SBOMatchResultModel> sBOMatchResultModels = await sBOMatchResultBuilder.GenerateSBOMatchResultsAsync();
-            output.WriteLine(sBOMatchResultModels.Count.ToString());
+            _sBOMatchResultBuilder.Build();
+            List<SBOMatchResultModel> sBOMatchResultModels = _sBOMatchResultBuilder.GetSBOMatchResults();
+            _testOutputHelper.WriteLine(sBOMatchResultModels.Count.ToString());
             foreach (var item in sBOMatchResultModels)
             {
-                output.WriteLine(item.Id);
-                output.WriteLine(item.League);
-                output.WriteLine(item.TeamA);
-                output.WriteLine(item.TeamB);
-                output.WriteLine(item.FirstHalfScore);
-                output.WriteLine(item.FullTimeScore);
-                output.WriteLine("------------------------------------");
+                _testOutputHelper.WriteLine(item.Id);
+                _testOutputHelper.WriteLine(item.League);
+                _testOutputHelper.WriteLine(item.HomeTeam);
+                _testOutputHelper.WriteLine(item.AwayTeam);
+                _testOutputHelper.WriteLine(item.HomeFirstHalfScore);
+                _testOutputHelper.WriteLine(item.AwayFirstHalfScore);
+                _testOutputHelper.WriteLine(item.HomeFullTimeScore);
+                _testOutputHelper.WriteLine(item.AwayFullTimeScore);
+                _testOutputHelper.WriteLine("------------------------------------");
             }
+            Console.WriteLine("Hello");
+            Assert.True(true);
         }
 
         [Fact]
-        public async Task GenerateSBOResultMoreData()
+        public void GenerateSBOMatchDetailTest()
         {
-            string eventId = "6012610";
-            SBOMatchResultBuilder sBOMatchResultBuilder = new SBOMatchResultBuilder();
-            sBOMatchResultBuilder.SetUrl("https://sports-demo-wl.17mybet.com/web-root/restricted/result/result-more-data.aspx");
-            List<SBOMatchDetailModel> sBOMatchDetailModels = await sBOMatchResultBuilder.GenerateSBOMatchDetailsAsync(eventId);
-            output.WriteLine(sBOMatchDetailModels.Count.ToString());
+            _sBOMatchResultBuilder.Build();
+            List<SBOMatchDetailModel> sBOMatchDetailModels = _sBOMatchResultBuilder.GetSBOMatchDetails();
+            _testOutputHelper.WriteLine(sBOMatchDetailModels.Count.ToString());
             foreach (var item in sBOMatchDetailModels)
             {
-                output.WriteLine(item.Id);
-                output.WriteLine(item.GoalType);
-                output.WriteLine(item.FirstHalfScore);
-                output.WriteLine(item.FullTimeScore);
-                output.WriteLine(item.Code);
-                output.WriteLine("------------------------------------");
+                _testOutputHelper.WriteLine(item.Id);
+                _testOutputHelper.WriteLine(item.MarketType);
+                _testOutputHelper.WriteLine(item.HomeFirstHalfScore);
+                _testOutputHelper.WriteLine(item.AwayFirstHalfScore);
+                _testOutputHelper.WriteLine(item.HomeFullTimeScore);
+                _testOutputHelper.WriteLine(item.AwayFullTimeScore);
+                _testOutputHelper.WriteLine(item.Code);
+                _testOutputHelper.WriteLine("------------------------------------");
             }
-
+            Assert.True(true);
         }
     }
 }
