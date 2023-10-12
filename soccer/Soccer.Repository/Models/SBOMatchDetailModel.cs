@@ -4,18 +4,22 @@
     {
         public string Id { get; set; }
         public string MarketType { get; set; }
-        public string FirstHalfScore { get; set; }
-        public string FullTimeScore { get; set; }
+        public string HomeFirstHalfScore { get; set; }
+        public string AwayFirstHalfScore { get; set; }
+        public string HomeFullTimeScore { get; set; }
+        public string AwayFullTimeScore { get; set; }
         public string Code { get; set; }
 
         public SBOMatchDetailModel() { }
 
-        public SBOMatchDetailModel(string id, string marketType, string firstHalfScore, string fullTimeScore, string code)
+        public SBOMatchDetailModel(string id, string marketType, string homeFirstHalfScore, string awayFirstHalfScore, string homefullTimeScore, string awayFullTimeScore, string code)
         {
             Id = id;
             MarketType = marketType;
-            FirstHalfScore = firstHalfScore;
-            FullTimeScore = fullTimeScore;
+            HomeFirstHalfScore = homeFirstHalfScore;
+            AwayFirstHalfScore = awayFirstHalfScore;
+            HomeFullTimeScore = homefullTimeScore;
+            AwayFullTimeScore = awayFullTimeScore;
             Code = code;
         }
     }
