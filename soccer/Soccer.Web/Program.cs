@@ -39,6 +39,8 @@ try
     builder.Services.AddScoped<IMatchResultService, MatchResultService>();
     builder.Services.AddScoped<IMatchResultBuilder, MatchResultBuilder>();
     builder.Services.AddSingleton<BaseRepository>();
+    builder.Services.AddScoped<ISBOMatchResultBuilder, SBOMatchResultBuilder>();
+
 
     var app = builder.Build();
 
@@ -72,6 +74,7 @@ try
 
     // schedule job
     RecurringJob.AddOrUpdate<BTISportCrawlerScheduler>(x => x.UpdateResultDetailHistoryTable(), "*/03 * * * *");
+    RecurringJob.AddOrUpdate<SBOSportCrawlerScheduler>(x => x.UpdateResultDetailHistoryTable(), "*/03 * * * *");
 
     app.Run();
 }
