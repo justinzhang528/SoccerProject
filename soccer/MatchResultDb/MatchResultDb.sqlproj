@@ -68,7 +68,6 @@
     <Build Include="dbo\Type\MatchResultType.sql" />
     <Build Include="dbo\Type\MatchDetailType.sql" />
     <Build Include="dbo\StoreProcedure\Soccer_MatchResult_GetAllMatchResults_v1.sql" />
-    <Build Include="dbo\StoreProcedure\Soccer_MatchResult_GetAllMatchDetails_v1.sql" />
     <Build Include="dbo\StoreProcedure\Soccer_MatchResult_GetMatchDetailById_v1.sql" />
     <Build Include="dbo\StoreProcedure\Soccer_MatchResult_UpdateMatchResultDetailHistory_v1.sql" />
     <Build Include="dbo\Tables\SBOMatchResult.sql" />

@@ -9,7 +9,6 @@ namespace Soccer.Repository.Implementaion
 {
     public class MatchResultRepository : BaseRepository, IMatchResultRepository
     {
-
         public MatchResultRepository(IConfiguration configuration):base(configuration) { }
 
         public void UpdateResultDetailHistoryTable(List<MatchResultModel> results)
@@ -34,9 +33,9 @@ namespace Soccer.Repository.Implementaion
             UpdateAll("Soccer_MatchResult_UpdateMatchResultDetailHistory_v1", parameterObject);
         }
 
-        public List<MatchResultModel> GetAllMatchResults()
+        public List<MatchResultForPageModel> GetAllMatchResults()
         {
-            return Query<MatchResultModel>("Soccer_MatchResult_GetAllMatchResults_v1");
+            return Query<MatchResultForPageModel>("Soccer_MatchResult_GetAllMatchResults_v1");
         }
 
         public MatchDetailModel GetMatchDetailById(string id)

@@ -10,7 +10,7 @@ BEGIN TRANSACTION;
 								AwayFirstHalfScore varchar(3),
 								HomeFullTimeScore varchar(3),
 								AwayFullTimeScore varchar(3),
-								UpdateTime DATETIME);		
+								UpdateTime DATETIME);
 	
 	-- update SBOMatchResult Table:
 	SELECT * INTO #TempResult
