@@ -5,7 +5,7 @@ CREATE PROCEDURE [dbo].[Soccer_SBOMatchResult_UpdateSBOMatchResultDetailHistory_
 AS
 BEGIN TRANSACTION;
 
-	Declare @tempHistory Table (Id varchar(80) NOT NULL,
+	Declare @tempHistory Table (Id varchar(80),
 								HomeFirstHalfScore varchar(3),
 								AwayFirstHalfScore varchar(3),
 								HomeFullTimeScore varchar(3),
@@ -39,7 +39,7 @@ BEGIN TRANSACTION;
 		tar.UpdateTime = GETDATE()
 	OUTPUT
 		DELETED.Id, DELETED.HomeFirstHalfScore, DELETED.AwayFirstHalfScore, 
-		DELETED.HomeFullTimeScore, DELETED.AwayFullTimeScore, DELETED.IsShowMoreData, DELETED.UpdateTime
+		DELETED.HomeFullTimeScore, DELETED.AwayFullTimeScore, DELETED.UpdateTime
 	INTO @tempHistory;
 		
 	-- update SBOHistory Table:
@@ -58,7 +58,7 @@ BEGIN TRANSACTION;
 
 	-- For Insert
 	WHEN NOT MATCHED BY TARGET THEN
-		INSERT VALUES (src.ID, src.MarketType, src.HomeFirstHalfScorem, src.AwayFirstHalfScore, 
+		INSERT VALUES (src.ID, src.MarketType, src.HomeFirstHalfScore, src.AwayFirstHalfScore, 
 						src.HomeFullTimeScore, src.AwayFullTimeScore, src.Code, GETDATE());
 COMMIT;
 GO

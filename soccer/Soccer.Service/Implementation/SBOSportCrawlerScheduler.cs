@@ -12,7 +12,7 @@ namespace Soccer.Service.Implementation
         }
         public void UpdateResultDetailHistoryTable()
         {
-            _sBOMatchResultService.UpdateResultDetailHistoryTableAsync();
+            _sBOMatchResultService.UpdateResultDetailHistoryTable();
         }
     }
 }
