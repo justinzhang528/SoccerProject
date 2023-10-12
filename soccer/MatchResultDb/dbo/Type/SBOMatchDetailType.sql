@@ -6,6 +6,5 @@
 	AwayFirstHalfScore varchar(3),
 	HomeFullTimeScore varchar(3),
 	AwayFullTimeScore varchar(3),
-	Code int NOT NULL,
-	UpdateTime DATETIME
+	Code int NOT NULL
 )

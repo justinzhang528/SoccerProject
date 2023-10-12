@@ -9,6 +9,5 @@
 	AwayFirstHalfScore varchar(3),
 	HomeFullTimeScore varchar(3),
 	AwayFullTimeScore varchar(3),
-	IsShowMoreData int,
-	UpdateTime DATETIME
+	IsShowMoreData int
 )
