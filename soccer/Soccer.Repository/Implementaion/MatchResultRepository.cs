@@ -47,5 +47,10 @@ namespace Soccer.Repository.Implementaion
                 return matchDetailModels[0];
             return null;
         }
+
+        public List<MatchResultForPageModel> GetAllMatchResultsByComparing()
+        {
+            return Query<MatchResultForPageModel>("Soccer_MatchResult_GetAllMatchResultsByComparing_v1");
+        }
     }
 }

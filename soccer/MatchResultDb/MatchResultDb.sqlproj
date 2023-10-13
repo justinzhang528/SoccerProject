@@ -80,5 +80,6 @@
     <Build Include="dbo\Tables\SBOMatchDetailHistory.sql" />
     <Build Include="dbo\Tables\League.sql" />
     <Build Include="dbo\Tables\Team.sql" />
+    <Build Include="dbo\StoreProcedure\Soccer_MatchResult_GetAllMatchResultsByComparing_v1.sql" />
   </ItemGroup>
 </Project>

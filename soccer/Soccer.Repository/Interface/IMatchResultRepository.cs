@@ -7,5 +7,6 @@ namespace Soccer.Repository.Interface
         void UpdateResultDetailHistoryTable(List<MatchResultModel> results);
         List<MatchResultModel> GetAllMatchResults();
         MatchDetailModel GetMatchDetailById(string id);
+        List<MatchResultForPageModel> GetAllMatchResultsByComparing();
     }
 }

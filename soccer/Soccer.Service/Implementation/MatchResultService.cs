@@ -33,5 +33,10 @@ namespace Soccer.Service.Implementation
         {
             return _matchResultRepository.GetMatchDetailById(id);
         }
+
+        public List<MatchResultForPageModel> GetAllMatchResultsByComparing()
+        {
+            return _matchResultRepository.GetAllMatchResultsByComparing();
+        }
     }
 }
