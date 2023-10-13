@@ -78,8 +78,7 @@
     <Build Include="dbo\StoreProcedure\Soccer_SBOMatchResult_UpdateSBOMatchResultDetailHistory_v1.sql" />
     <Build Include="dbo\StoreProcedure\Soccer_SBOMatchResult_GetAllSBOMatchResults_v1.sql" />
     <Build Include="dbo\Tables\SBOMatchDetailHistory.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="MatchResultDb.refactorlog" />
+    <Build Include="dbo\Tables\League.sql" />
+    <Build Include="dbo\Tables\Team.sql" />
   </ItemGroup>
 </Project>

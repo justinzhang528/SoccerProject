@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[League]
+(
+	Id int NOT NULL PRIMARY KEY IDENTITY(1,1),
+    BTILeagueName VARCHAR(255) NOT NULL,
+    SBOLeagueName VARCHAR(255) NOT NULL
+)
