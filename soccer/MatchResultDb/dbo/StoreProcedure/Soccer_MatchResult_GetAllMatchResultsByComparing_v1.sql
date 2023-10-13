@@ -15,7 +15,7 @@ left join
 		left join League as lg on a.League = lg.SBOLeagueName
 		left join Team as htm on a.HomeTeam = htm.SBOTeamName
 		left join Team as atm on a.AwayTeam = atm.SBOTeamName) as sbo
-on (bti.MatchTime = sbo.MatchTime or DATEADD(MINUTE, 1, bti.MatchTime) = sbo.MatchTime)
+on (bti.MatchTime = sbo.MatchTime or bti.MatchTime = DATEADD(MINUTE, 1, sbo.MatchTime))
 	and (bti.League = sbo.League or bti.LeagueId = sbo.LeagueId)
 	and (bti.HomeTeam = sbo.HomeTeam or bti.HomeTeamId = sbo.HomeTeamId)
 order by bti.League
