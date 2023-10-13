@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MatchResultModel>
+﻿@model IEnumerable<MatchResultForPageModel>
 @{
     ViewData["Title"] = "Soccer";
 }
@@ -22,19 +22,33 @@
             {
                 <tr class="text-center">
                     <td>@item.MatchTime</td>
-                    <td>@item.League</td>
-                    <td>@item.HomeTeam vs @item.AwayTeam</td>
+                    <td>
+                        @item.BTILeague
+                        @if(item.SBOLeague != null)
+                        {
+                            <br>
+                            <span class="text-danger">@item.SBOLeague</span>
+                        }
+                    </td>
+                    <td>
+                        @item.BTIHomeTeam vs @item.BTIAwayTeam
+                        @if (item.SBOHomeTeam != null)
+                        {
+                            <br>
+                            <span class="text-danger">@item.SBOHomeTeam vs @item.SBOAwayTeam</span>
+                        }
+                    </td>
                     @if (item.Condition == 0)
                     {
-                        <td colspan="5" style="color: red">Cancelled</td>
+                        <td colspan="5" class="text-danger">Cancelled</td>
                         
                     }
                     else if (item.Condition == Soccer.Common.Utils.EnumCondition.Normal)
                     {
-                        <td>@item.HomeScore</td>
-                        <td>@item.AwayScore</td>
-                        <td></td>
-                        <td></td>
+                        <td>@item.BTIHomeScore</td>
+                        <td>@item.BTIAwayScore</td>
+                        <td class="text-danger">@item.SBOHomeScore</td>
+                        <td class="text-danger">@item.SBOAwayScore</td>
                         <td>
                             <button id="@item.Id" class="btn btn-outline-primary" onclick="getDetailById(this)" type="button" data-toggle="modal" data-target="#detailModal" data-whatever="hello">Show Details</button>
                         </td>
