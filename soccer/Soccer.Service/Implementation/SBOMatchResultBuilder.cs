@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Soccer.Service.Interface;
 using System.Text;
+using HtmlAgilityPack;
 
 namespace Soccer.Service.Implementation
 {
@@ -14,6 +15,7 @@ namespace Soccer.Service.Implementation
         private List<SBOMatchResultModel> _matchResults;
         private List<SBOMatchDetailModel> _matchDetails;
         private List<string> _eventIds;
+        private Dictionary<string, string> _cookies;
 
         public SBOMatchResultBuilder(IConfiguration configuration)
         {
@@ -21,32 +23,37 @@ namespace Soccer.Service.Implementation
             _matchResults = new List<SBOMatchResultModel>();
             _matchDetails = new List<SBOMatchDetailModel>();
             _eventIds = new List<string>();
+            _cookies = GetCookiesFromNet();
+            _cookies["Value"] = _configuration["SBOCookies:Value"];
         }
 
-        private string GetPostRequestWithCookie(string url, string postData)
+        private string GetResponseWithCookie(string url, string method, string? postData = null)
         {
             string res = "";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "POST";
+            request.Method = method;
             request.ContentType = "application/x-www-form-urlencoded";
             request.CookieContainer = new CookieContainer();
 
-            var cookie = new Cookie(_configuration["SBOCookies:Name"], _configuration["SBOCookies:Value"])
+            var cookie = new Cookie(_cookies["Name"], _cookies["Value"])
             {
-                Domain = _configuration["SBOCookies:Domain"],
-                Path = _configuration["SBOCookies:Path"]
+                Domain = _cookies["Domain"],
+                Path = _cookies["Path"]
             };
             request.CookieContainer.Add(cookie);
 
-            // Encode the POST data
-            byte[] postDataBytes = Encoding.UTF8.GetBytes(postData);
-            request.ContentLength = postDataBytes.Length;
-
-            // Write the POST data to the request stream
-            using (Stream requestStream = request.GetRequestStream())
+            if (postData != null)
             {
-                requestStream.Write(postDataBytes, 0, postDataBytes.Length);
+                // Encode the POST data
+                byte[] postDataBytes = Encoding.UTF8.GetBytes(postData);
+                request.ContentLength = postDataBytes.Length;
+
+                // Write the POST data to the request stream
+                using (Stream requestStream = request.GetRequestStream())
+                {
+                    requestStream.Write(postDataBytes, 0, postDataBytes.Length);
+                }
             }
 
             // Send the request and get the response
@@ -77,8 +84,8 @@ namespace Soccer.Service.Implementation
         private void GenerateSBOMatchResults()
         {
             string url = _configuration["URL:SBOSport-results-data"];
-            string postData = _configuration["PostData:ResultsData"];
-            string content = GetPostRequestWithCookie(url, postData);
+            string postData = _configuration["PostData:ResultsData"] + GetHidCK();
+            string content = GetResponseWithCookie(url, "POST", postData);
 
             if (!string.IsNullOrEmpty(content))
             {
@@ -134,7 +141,7 @@ namespace Soccer.Service.Implementation
             {
                 string url = _configuration["URL:SBOSport-results-more-data"];
                 string postData = _configuration["PostData:ResultsMoreData"] + eventId;
-                string content = GetPostRequestWithCookie(url, postData);
+                string content = GetResponseWithCookie(url, "POST", postData);
 
                 if (!string.IsNullOrEmpty(content))
                 {
@@ -197,6 +204,36 @@ namespace Soccer.Service.Implementation
             return _matchDetails;
         }
 
+        private Dictionary<string,string> GetCookiesFromNet()
+        {
+            Dictionary<string, string> cookies = new Dictionary<string, string>();
+            string url = _configuration["URL:SBOSport-cookies"];
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.CookieContainer = new CookieContainer();
 
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                // Print the properties of each cookie.
+                foreach (Cookie cook in response.Cookies)
+                {
+                    cookies["Name"] = cook.Name;
+                    cookies["Value"] = cook.Value;
+                    cookies["Domain"] = cook.Domain;
+                    cookies["Path"] = cook.Path;
+                }
+            }
+
+            return cookies;
+        }
+
+        private string GetHidCK()
+        {
+            string url = _configuration["URL:SBOSport-results-more"];
+            string htmlStr = GetResponseWithCookie(url, "GET");
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(htmlStr);
+            string hidCK = doc.DocumentNode.SelectSingleNode("//input[@name='HidCK']").GetAttributeValue("value", "");
+            return hidCK;
+        }
     }
 }
