@@ -27,13 +27,45 @@ namespace Soccer.Service.Implementation
             _cookies["Value"] = _configuration["SBOCookies:Value"];
         }
 
+        private Dictionary<string, string> GetCookiesFromNet()
+        {
+            Dictionary<string, string> cookies = new Dictionary<string, string>();
+            string url = _configuration["URL:SBOSport-cookies"];
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.CookieContainer = new CookieContainer();
+
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                // Print the properties of each cookie.
+                foreach (Cookie cook in response.Cookies)
+                {
+                    cookies["Name"] = cook.Name;
+                    cookies["Value"] = cook.Value;
+                    cookies["Domain"] = cook.Domain;
+                    cookies["Path"] = cook.Path;
+                }
+            }
+
+            return cookies;
+        }
+
+        private string GetHidCK()
+        {
+            string url = _configuration["URL:SBOSport-results-more"];
+            string htmlStr = GetResponseWithCookie(url, "GET");
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(htmlStr);
+            string hidCK = doc.DocumentNode.SelectSingleNode("//input[@name='HidCK']").GetAttributeValue("value", "");
+            return hidCK;
+        }
+
         private string GetResponseWithCookie(string url, string method, string? postData = null)
         {
             string res = "";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = method;
-            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentType = _configuration["SBOCookies:ContentType"];
             request.CookieContainer = new CookieContainer();
 
             var cookie = new Cookie(_cookies["Name"], _cookies["Value"])
@@ -202,38 +234,6 @@ namespace Soccer.Service.Implementation
         public List<SBOMatchDetailModel> GetSBOMatchDetails()
         {
             return _matchDetails;
-        }
-
-        private Dictionary<string,string> GetCookiesFromNet()
-        {
-            Dictionary<string, string> cookies = new Dictionary<string, string>();
-            string url = _configuration["URL:SBOSport-cookies"];
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.CookieContainer = new CookieContainer();
-
-            using (var response = (HttpWebResponse)request.GetResponse())
-            {
-                // Print the properties of each cookie.
-                foreach (Cookie cook in response.Cookies)
-                {
-                    cookies["Name"] = cook.Name;
-                    cookies["Value"] = cook.Value;
-                    cookies["Domain"] = cook.Domain;
-                    cookies["Path"] = cook.Path;
-                }
-            }
-
-            return cookies;
-        }
-
-        private string GetHidCK()
-        {
-            string url = _configuration["URL:SBOSport-results-more"];
-            string htmlStr = GetResponseWithCookie(url, "GET");
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(htmlStr);
-            string hidCK = doc.DocumentNode.SelectSingleNode("//input[@name='HidCK']").GetAttributeValue("value", "");
-            return hidCK;
         }
     }
 }
