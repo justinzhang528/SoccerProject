@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MatchResultForPageModel>
+﻿@model IEnumerable<MatchResultModel>
 @{
     ViewData["Title"] = "Soccer";
 }
@@ -31,10 +31,10 @@
                     }
                     else if (item.Condition == Soccer.Common.Utils.EnumCondition.Normal)
                     {
-                        <td>@item.BTIHomeScore</td>
-                        <td>@item.BTIAwayScore</td>
-                        <td>@item.SBOHomeScore</td>
-                        <td>@item.SBOAwayScore</td>
+                        <td>@item.HomeScore</td>
+                        <td>@item.AwayScore</td>
+                        <td></td>
+                        <td></td>
                         <td>
                             <button id="@item.Id" class="btn btn-outline-primary" onclick="getDetailById(this)" type="button" data-toggle="modal" data-target="#detailModal" data-whatever="hello">Show Details</button>
                         </td>

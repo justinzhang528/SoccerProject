@@ -15,7 +15,7 @@ namespace Soccer.Web.Controllers
 
         public IActionResult Index()
         {
-            List<MatchResultForPageModel> results = _service.GetAllMatchResults();
+            List<MatchResultModel> results = _service.GetAllMatchResults();
             return View(results);
         }
 

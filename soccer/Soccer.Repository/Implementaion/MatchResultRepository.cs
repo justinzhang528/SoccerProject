@@ -33,9 +33,9 @@ namespace Soccer.Repository.Implementaion
             UpdateAll("Soccer_MatchResult_UpdateMatchResultDetailHistory_v1", parameterObject);
         }
 
-        public List<MatchResultForPageModel> GetAllMatchResults()
+        public List<MatchResultModel> GetAllMatchResults()
         {
-            return Query<MatchResultForPageModel>("Soccer_MatchResult_GetAllMatchResults_v1");
+            return Query<MatchResultModel>("Soccer_MatchResult_GetAllMatchResults_v1");
         }
 
         public MatchDetailModel GetMatchDetailById(string id)

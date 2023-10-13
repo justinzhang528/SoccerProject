@@ -5,7 +5,7 @@ namespace Soccer.Service.Interface
     public interface IMatchResultService
     {
         void UpdateResultDetailHistoryTable();
-        List<MatchResultForPageModel> GetAllMatchResults();
+        List<MatchResultModel> GetAllMatchResults();
 
         MatchDetailModel GetMatchDetailModel(string id);
     }

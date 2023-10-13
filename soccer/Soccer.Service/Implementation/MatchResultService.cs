@@ -24,7 +24,7 @@ namespace Soccer.Service.Implementation
             _matchResultRepository.UpdateResultDetailHistoryTable(_matchResultBuilder.GenerateResults());
         }
 
-        public List<MatchResultForPageModel> GetAllMatchResults()
+        public List<MatchResultModel> GetAllMatchResults()
         {
             return _matchResultRepository.GetAllMatchResults();
         }
