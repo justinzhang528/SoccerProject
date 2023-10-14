@@ -12,41 +12,20 @@ namespace Soccer.Service.Implementation
     public class SBOMatchResultBuilder : ISBOMatchResultBuilder
     {
         private readonly IConfiguration _configuration;
+        private readonly ICookiesService _cookiesService;
         private List<SBOMatchResultModel> _matchResults;
         private List<SBOMatchDetailModel> _matchDetails;
         private List<string> _eventIds;
-        private Dictionary<string, string> _cookies;
+        private CookiesModel _cookies;
 
-        public SBOMatchResultBuilder(IConfiguration configuration)
+        public SBOMatchResultBuilder(IConfiguration configuration, ICookiesService cookiesService)
         {
             _configuration = configuration;
+            _cookiesService = cookiesService;
             _matchResults = new List<SBOMatchResultModel>();
             _matchDetails = new List<SBOMatchDetailModel>();
             _eventIds = new List<string>();
-            _cookies = GetCookiesFromNet();
-            _cookies["Value"] = _configuration["SBOCookies:Value"];
-        }
-
-        private Dictionary<string, string> GetCookiesFromNet()
-        {
-            Dictionary<string, string> cookies = new Dictionary<string, string>();
-            string url = _configuration["URL:SBOSport-cookies"];
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.CookieContainer = new CookieContainer();
-
-            using (var response = (HttpWebResponse)request.GetResponse())
-            {
-                // Print the properties of each cookie.
-                foreach (Cookie cook in response.Cookies)
-                {
-                    cookies["Name"] = cook.Name;
-                    cookies["Value"] = cook.Value;
-                    cookies["Domain"] = cook.Domain;
-                    cookies["Path"] = cook.Path;
-                }
-            }
-
-            return cookies;
+            _cookies = _cookiesService.GetCookesByCondition(_configuration["Cookies:Website"], _configuration["Cookies:Name"]);
         }
 
         private string GetHidCK()
@@ -55,8 +34,7 @@ namespace Soccer.Service.Implementation
             string htmlStr = GetResponseWithCookie(url, "GET");
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(htmlStr);
-            string hidCK = doc.DocumentNode.SelectSingleNode("//input[@name='HidCK']").GetAttributeValue("value", "");
-            return hidCK;
+            return doc.DocumentNode.SelectSingleNode("//input[@name='HidCK']").GetAttributeValue("value", "");
         }
 
         private string GetResponseWithCookie(string url, string method, string? postData = null)
@@ -65,13 +43,13 @@ namespace Soccer.Service.Implementation
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = method;
-            request.ContentType = _configuration["SBOCookies:ContentType"];
+            request.ContentType = _configuration["Cookies:ContentType"];
             request.CookieContainer = new CookieContainer();
 
-            var cookie = new Cookie(_cookies["Name"], _cookies["Value"])
+            var cookie = new Cookie(_cookies.Name, _cookies.Value)
             {
-                Domain = _cookies["Domain"],
-                Path = _cookies["Path"]
+                Domain = _cookies.Domain,
+                Path = _cookies.Path
             };
             request.CookieContainer.Add(cookie);
 
