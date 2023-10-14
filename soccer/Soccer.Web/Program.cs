@@ -42,6 +42,8 @@ try
     builder.Services.AddScoped<ISBOMatchResultRepository, SBOMatchResultRepository>();
     builder.Services.AddScoped<ISBOMatchResultService, SBOMatchResultService>();
     builder.Services.AddScoped<ISBOMatchResultBuilder, SBOMatchResultBuilder>();
+    builder.Services.AddScoped<ICookiesRepository, CookiesRepository>();
+    builder.Services.AddScoped<ICookiesService, CookiesService>();
 
 
     var app = builder.Build();
@@ -77,6 +79,7 @@ try
     // schedule job
     RecurringJob.AddOrUpdate<BTISportCrawlerScheduler>(x => x.UpdateResultDetailHistoryTable(), "*/03 * * * *");
     RecurringJob.AddOrUpdate<SBOSportCrawlerScheduler>(x => x.UpdateResultDetailHistoryTable(), "*/03 * * * *");
+    RecurringJob.AddOrUpdate<SBOCookiesUpdateScheduler>(x => x.UpdateSBOCookies(), "0 0 * * *");  //update at 12:AM
 
     app.Run();
 }
