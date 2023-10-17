@@ -57,10 +57,11 @@ jobs:
         run: dotnet publish -c Release -o publish .\soccer\Soccer.Web
         
       - name: Copy to EC2
-        uses: garygrossgarten/github-action-scp@release
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
-          local: ./publish
-          remote: scp/directory
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          password: ${{ secrets.PASSWORD }}
+            username: ${{ secrets.EC2_USER }}
+            server: ${{ secrets.EC2_HOST }}
+            ssh_private_key: ${{ secrets.EC2_SSH_KEY }}
+            local_path: './publish/*'
+            remote_path: '/'
+            sftpArgs: '-o ConnectTimeout=5'
