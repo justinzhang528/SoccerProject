@@ -57,10 +57,10 @@ jobs:
         run: dotnet publish -c Release -o publish .\soccer\Soccer.Web
         
       - name: Copy to EC2
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        uses: SamKirkland/web-deploy@v1
         with:
-          server: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          password: ${{ secrets.EC2_SSH_KEY }}
-          local-dir: './publish/'
-          server-dir: 'test/'
+          target-server: ${{ secrets.EC2_HOST }}
+          remote-user: ${{ secrets.EC2_USER }}
+          private-ssh-key: ${{ secrets.EC2_SSH_KEY }}
+          source-path: ./publish/
+          destination-path: ~/destinationFolder/
