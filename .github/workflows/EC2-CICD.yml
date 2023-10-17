@@ -56,30 +56,11 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o publish .\soccer\Soccer.Web
         
-      - name: Copy files to EC2
-        run: |
-          $username = ${{ secrets.EC2_USERNAME }}
-          $password = ${{ secrets.EC2_PASSWORD }}
-          $hostname = ${{ secrets.EC2_HOST }}
-          $sourcePath = "path/to/your/local/files"
-          $destinationPath = "C:\path\on\your\EC2\instance"
-
-          # Create a PowerShell script to copy files to the remote machine
-          $script = >
-            $SecurePassword = ConvertTo-SecureString "$password" -AsPlainText -Force
-            $Credential = New-Object System.Management.Automation.PSCredential ("$username", $SecurePassword)
-            
-            $session = New-PSSession -ComputerName $hostname -Credential $Credential
-            Copy-Item -Path "$sourcePath" -Destination "$destinationPath" -ToSession $session
-            Remove-PSSession -Session $session
-          $powershell -NoProfile -ExecutionPolicy Bypass -Command "$script"
-          
-      # - name: Copy files to EC2
-      #   uses: appleboy/scp-action@v0.1.4
-      #   with:
-      #     host: ${{ secrets.EC2_HOST }}
-      #     username: ${{ secrets.EC2_USER }}
-      #     key: ${{ secrets.EC2_SSH_KEY }}
-      #     source: ./publish
-      #     target: C:/iis
-      #     args: -r
+      - name: Copy to EC2
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: ./publish
+          remote: scp/directory
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          password: ${{ secrets.PASSWORD }}
