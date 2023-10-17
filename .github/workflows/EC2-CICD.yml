@@ -31,7 +31,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  build-deploy:
     runs-on: windows-latest
 
     steps:
@@ -55,32 +55,22 @@ jobs:
 
       - name: dotnet publish
         run: dotnet publish -c Release -o publish .\soccer\Soccer.Web
-
-  deploy:
-      permissions:
-        contents: none
-      runs-on: windows-latest
-      needs: build
-      environment:
-        name: 'Development'
-        url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+        
+      - name: Copy to EC2
+        env:
+          REMOTE_IP: ${{ secrets.EC2_HOST }}
+          USERNAME: ${{ secrets.EC2_USER }}
+          PASSWORD: ${{ secrets.EC2_SSH_KEY }}
+        run: |
+          $remoteIP = $env:REMOTE_IP
+          $username = $env:USERNAME
+          $password = ConvertTo-SecureString $env:PASSWORD -AsPlainText -Force
+          $credentials = New-Object System.Management.Automation.PSCredential ($username, $password)
   
-      steps:        
-        - name: Run PowerShell script
-          env:
-            REMOTE_IP: ${{ secrets.EC2_HOST }}
-            USERNAME: ${{ secrets.EC2_USER }}
-            PASSWORD: ${{ secrets.EC2_SSH_KEY }}
-          run: |
-            $remoteIP = $env:REMOTE_IP
-            $username = $env:USERNAME
-            $password = ConvertTo-SecureString $env:PASSWORD -AsPlainText -Force
-            $credentials = New-Object System.Management.Automation.PSCredential ($username, $password)
-    
-            $sourceFilePath = ".\publish"
-            $destinationPath = "\\$remoteIP\C$\inetpub\wwwroot"
-            
-            New-PSDrive -Name RemoteDrive -PSProvider FileSystem -Root $destinationPath -Credential $credentials
+          $sourceFilePath = ".\publish"
+          $destinationPath = "\\$remoteIP\C$\inetpub\wwwroot"
+          
+          New-PSDrive -Name RemoteDrive -PSProvider FileSystem -Root $destinationPath -Credential $credentials
   
             Copy-Item -Path $sourceFilePath -Destination "RemoteDrive:" -Recurse -Force
             
