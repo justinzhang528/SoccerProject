@@ -57,11 +57,10 @@ jobs:
         run: dotnet publish -c Release -o publish .\soccer\Soccer.Web
         
       - name: Copy to EC2
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-            username: ${{ secrets.EC2_USER }}
-            server: ${{ secrets.EC2_HOST }}
-            ssh_private_key: ${{ secrets.EC2_SSH_KEY }}
-            local_path: './publish/*'
-            remote_path: '/'
-            sftpArgs: '-o ConnectTimeout=5'
+          server: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          password: ${{ secrets.EC2_SSH_KEY }}
+          local-dir: './publish/'
+          server-dir: 'test/'
