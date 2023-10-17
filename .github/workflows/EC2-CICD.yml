@@ -62,32 +62,32 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: .\soccer\Soccer.Web
 
-  deploy:
-    permissions:
-      contents: none
-    runs-on: windows-latest
-    needs: build
-    environment:
-      name: 'Development'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  # deploy:
+  #   permissions:
+  #     contents: none
+  #   runs-on: windows-latest
+  #   needs: build
+  #   environment:
+  #     name: 'Development'
+  #     url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: .net-app
+  #   steps:
+  #     - name: Download artifact from build job
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: .net-app
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        env:
-          SSH_PRIVATE_KEY: ${{secrets.EC2_SSH_KEY}}
-          REMOTE_HOST: ${{secrets.EC2_HOST}}
-          REMOTE_USER: ${{secrets.EC2_USER}}
-          TARGET: ${{secrets.TARGET_DIR}}
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+  #     - name: Deploy to Azure Web App
+  #       id: deploy-to-webapp
+  #       uses: azure/webapps-deploy@v2
+  #       env:
+  #         SSH_PRIVATE_KEY: ${{secrets.EC2_SSH_KEY}}
+  #         REMOTE_HOST: ${{secrets.EC2_HOST}}
+  #         REMOTE_USER: ${{secrets.EC2_USER}}
+  #         TARGET: ${{secrets.TARGET_DIR}}
+  #       with:
+  #         app-name: ${{ env.AZURE_WEBAPP_NAME }}
+  #         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+  #         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
