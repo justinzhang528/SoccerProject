@@ -59,20 +59,30 @@ jobs:
   deploy:
       permissions:
         contents: none
-      runs-on: ubuntu-latest
+      runs-on: windows-latest
       needs: build
       environment:
         name: 'Development'
         url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
   
       steps:        
-        - name: Copy to EC2
-          uses: appleboy/scp-action@v0.1.4
-          with:
-            host: ${{ secrets.EC2_HOST }}
-            username: ${{ secrets.EC2_USER }}
-            password: ${{ secrets.EC2_SSH_KEY }}
-            port: 22
-            source: "./publish/"
-            target: "./"
-
+        - name: Run PowerShell script
+          env:
+            REMOTE_IP: ${{ secrets.EC2_HOST }}
+            USERNAME: ${{ secrets.EC2_USER }}
+            PASSWORD: ${{ secrets.EC2_SSH_KEY }}
+          run: |
+            $remoteIP = $env:REMOTE_IP
+            $username = $env:USERNAME
+            $password = ConvertTo-SecureString $env:PASSWORD -AsPlainText -Force
+            $credentials = New-Object System.Management.Automation.PSCredential ($username, $password)
+    
+            $sourceFilePath = ".\publish"
+            $destinationPath = "\\$remoteIP\C$\inetpub\wwwroot"
+            
+            New-PSDrive -Name RemoteDrive -PSProvider FileSystem -Root $destinationPath -Credential $credentials
+  
+            Copy-Item -Path $sourceFilePath -Destination "RemoteDrive:" -Recurse -Force
+            
+            Remove-PSDrive -Name RemoteDrive
+    
