@@ -36,8 +36,11 @@ jobs:
           New-Item -Path $destinationDir -ItemType Directory -Force
 
           Copy-Item -Path $sourceDir\* -Destination $destinationDir -Recurse
+
+      - name: Restore web dependencies
+        run: dotnet restore ./soccer/Soccer.Web
           
-      - name: Restore dependencies
+      - name: Restore db dependencies
         run: dotnet restore ./soccer/MatchResultDb
 
       - name: Build SQL Server Database Project
