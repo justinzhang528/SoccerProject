@@ -32,8 +32,8 @@ jobs:
           New-Item -Path $destinationDir -ItemType Directory -Force
           Copy-Item -Path $sourceDir\* -Destination $destinationDir -Recurse
 
-          $destinationDir = "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/Extensions/Microsoft/SQLDB/DAC/"
-          $sourceDir = "D:\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\"
+          $sourceDir = "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/Extensions/Microsoft/SQLDB/DAC/"
+          $destinationDir = "D:\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\"
           New-Item -Path $destinationDir -ItemType Directory -Force
           Copy-Item -Path $sourceDir\* -Destination $destinationDir -Recurse
 
