@@ -27,7 +27,7 @@ jobs:
 
       - name: List files
         run: |
-          $destinationDir = "C:/Users/runneradmin/AppData/Local/Microsoft/dotnet/sdk/6.0.415/Microsoft/VisualStudio/v17.0/SSDT/"
+          $destinationDir = "C:/Users/runneradmin/AppData/Local/Microsoft/dotnet/sdk/6.0.415/Microsoft/VisualStudio/v11.0/SSDT/"
           $sourceDir = "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/MSBuild/Microsoft/VisualStudio/v17.0/SSDT/"
           New-Item -Path $destinationDir -ItemType Directory -Force
           Copy-Item -Path $sourceDir\* -Destination $destinationDir -Recurse
