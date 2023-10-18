@@ -25,18 +25,14 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Install SQL Server Data Tools (SSDT)
-        run: |
-          choco install ssdt17
+      # - name: Install SQL Server Data Tools (SSDT)
+      #   run: |
+      #     choco install ssdt17
 
       - name: List files
         run: |
-          cd C:/Users/runneradmin/AppData/Local/Microsoft/dotnet/sdk/
-          cd C:/Users/runneradmin/AppData/Local/Microsoft/dotnet/sdk/6.0.415/
-          cd C:/Users/runneradmin/AppData/Local/Microsoft/dotnet/sdk/6.0.415/Microsoft/
-          cd C:/Users/runneradmin/AppData/Local/Microsoft/dotnet/sdk/6.0.415/Microsoft/VisualStudio/
-          d C:/Users/runneradmin/AppData/Local/Microsoft/dotnet/sdk/6.0.415/Microsoft/VisualStudio/v11.0/
-          cd C:/Users/runneradmin/AppData/Local/Microsoft/dotnet/sdk/6.0.415/Microsoft/VisualStudio/v11.0/SSDT/
+          cd C:/Program Files/Microsoft Visual Studio/
+          
           Get-ChildItem
           
       - name: Restore dependencies
