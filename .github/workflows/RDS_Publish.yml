@@ -31,8 +31,7 @@ jobs:
 
       - name: List files
         run: |
-          run: |
-          cd C:\Users\runneradmin\AppData\Local\Microsoft\dotnet\
+          cd C:/Users/runneradmin/AppData/Local/Microsoft/dotnet/
           Get-ChildItem
           
       - name: Restore dependencies
