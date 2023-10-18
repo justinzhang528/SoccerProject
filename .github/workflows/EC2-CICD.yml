@@ -27,6 +27,7 @@ on:
     branches: [ "main" ]
     paths-ignore:
       - 'soccer/MatchResultDb/**'
+      - '.github/workflows/RDS_Publish.yml'
   workflow_dispatch:
 
 permissions:
