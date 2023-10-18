@@ -46,6 +46,9 @@ jobs:
       - name: Restore db dependencies
         run: dotnet restore ./soccer/MatchResultDb
 
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+        
       - name: Build SQL Server Database Project
         run: msbuild ./soccer/MatchResultDb /t:restore;rebuild;publish /p:Configuration=Release;SelfContained=true;
         # run: dotnet publish ./soccer/MatchResultDb -o ./build-artifacts
