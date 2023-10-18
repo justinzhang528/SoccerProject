@@ -26,10 +26,13 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore dependencies
-        run: dotnet restore ./soccer/MatchResultDb/MatchResultDb.sqlproj
+        run: dotnet restore ./soccer/MatchResultDb
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release ./soccer/MatchResultDb
 
       - name: Build SQL Server Database Project
-        run: dotnet publish ./soccer/MatchResultDb/MatchResultDb.sqlproj -o ./build-artifacts
+        run: dotnet publish ./soccer/MatchResultDb -o ./build-artifacts
         
       - name: Publish Database to RDS
         run: |
