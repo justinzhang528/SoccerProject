@@ -31,10 +31,11 @@ jobs:
 
       - name: List files
         run: |
-          cd "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/MSBuild/Microsoft/VisualStudio/v17.0/"
-          Get-ChildItem
-          cd "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/MSBuild/Microsoft/VisualStudio/v17.0/SSDT/"
-          Get-ChildItem
+          $destinationDir = "C:/Users/runneradmin/AppData/Local/Microsoft/dotnet/sdk/6.0.415/Microsoft/VisualStudio/v11.0/SSDT/"
+
+          $sourceDir = "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Microsoft/VisualStudio/v17.0/SSDT/"
+
+          Copy-Item -Path $sourceDir\* -Destination $destinationDir -Recurse
           
       - name: Restore dependencies
         run: dotnet restore ./soccer/MatchResultDb
