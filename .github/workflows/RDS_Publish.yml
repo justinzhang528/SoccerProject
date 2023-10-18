@@ -48,12 +48,8 @@ jobs:
 
       - name: list files
         run : |
-          cd "D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\obj\"
+          cd "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/Extensions/Microsoft/SQLDB/DAC/"       
           Get-ChildItem
-          cd "D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\obj\Release\"
-          Get-ChildItem
-          cd "D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\"
-          Get-ChildItem          
           cd "D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\"
           Get-ChildItem
           
