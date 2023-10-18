@@ -66,4 +66,4 @@ jobs:
           USERNAME: ${{ secrets.RDS_USERNAME }}
           PASSWORD: ${{ secrets.RDS_PASSWORD }}
         run: |
-          "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/Extensions/Microsoft/SQLDB/DAC/SqlPackage.exe" /Action:Publish /SourceFile:"D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\MatchResultDb.dacpac" /TargetServer:$RDS_ENDPOINT /TargetDatabase:$DATABASE_NAME /TargetUser:$USERNAME /TargetPassword:$PASSWORD /p:BlockOnPossibleDataLoss=false
+          SqlPackage /Action:Publish /SourceFile:"D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\MatchResultDb.dacpac" TargetConnectionString:"Server=$RDS_ENDPOINT,1433;Database=$DATABASE_NAME;User Id=$USERNAME;Password=$PASSWORD;Trusted_Connection=True;Integrated Security=SSPI;TrustServerCertificate=True"
