@@ -27,7 +27,7 @@ jobs:
 
       - name: Install SQL Server Data Tools (SSDT)
         run: |
-          choco install sql-server-data-tools
+          choco install visualstudio2019sql --pre
           
       - name: Restore dependencies
         run: dotnet restore ./soccer/MatchResultDb
