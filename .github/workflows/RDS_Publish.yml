@@ -52,6 +52,17 @@ jobs:
       - name: Build SQL Server Database Project
         run: msbuild ./soccer/MatchResultDb -t:build -property:Configuration=Release
         # run: dotnet publish ./soccer/MatchResultDb -o ./build-artifacts
+
+      - name: list files
+        run : |
+          cd "D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\obj\"
+          Get-ChildItem
+          cd "D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\obj\Release\"
+          Get-ChildItem
+          cd "D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\"
+          Get-ChildItem          
+          cd "D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\"
+          Get-ChildItem
         
       - name: Publish Database to RDS
         run: |
