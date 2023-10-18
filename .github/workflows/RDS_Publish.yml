@@ -28,6 +28,19 @@ jobs:
       - name: Install SQL Server Data Tools (SSDT)
         run: |
           choco install ssdt17
+
+      - name: Fetch action
+        id: pl
+        uses: Rishabh510/Path-lister-action@master
+        with:
+          path: "C:/Users/runneradmin/AppData/Local/Microsoft/dotnet/sdk/"
+
+      - name: Output results
+        run: |
+          echo "Found ${{ steps.pl.outputs.path_count }} file(s) with this extension:"
+          for i in ${{ steps.pl.outputs.paths }}; do
+          echo $i
+          done
           
       - name: Restore dependencies
         run: dotnet restore ./soccer/MatchResultDb
