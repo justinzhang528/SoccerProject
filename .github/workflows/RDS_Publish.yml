@@ -37,19 +37,7 @@ jobs:
 
           Copy-Item -Path $sourceDir\* -Destination $destinationDir -Recurse
 
-          cd "D:\"
-          Get-ChildItem
-          cd "D:\Common7\"
-          Get-ChildItem
-          cd "D:\Common7\IDE\"
-          Get-ChildItem
-          cd "D:\Common7\IDE\Extensions\"
-          Get-ChildItem
-          cd "D:\Common7\IDE\Extensions\Microsoft\"
-          Get-ChildItem
-          cd "D:\Common7\IDE\Extensions\Microsoft\SQLDB\"
-          Get-ChildItem
-          cd "D:\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\"
+          cd "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/Extensions/Microsoft/SQLDB/DAC/"
           Get-ChildItem
 
       # - name: Restore web dependencies
