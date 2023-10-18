@@ -25,9 +25,6 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Install necessary package
-        run: dotnet add package Microsoft.NETFramework.ReferenceAssemblies --version 1.0.2
-
       - name: Restore db dependencies
         run: msbuild /t:restore ./soccer/MatchResultDb
 
