@@ -57,6 +57,10 @@ jobs:
       #   uses: coreywebber/setup-sqlpackage@v1
       #   with:
       #     sql-version: 17
+      
+      - name: Add SqlPackage.exe to PATH
+        run: |
+          echo "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/Extensions/Microsoft/SQLDB/DAC/SqlPackage.exe" >> $GITHUB_PATH
   
       - name: Deploy to AWS RDS
         env:
@@ -65,7 +69,6 @@ jobs:
           DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
           USERNAME: ${{ secrets.RDS_USERNAME }}
           PASSWORD: ${{ secrets.RDS_PASSWORD }}
-          SQLPACKAGE_PATH: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/Extensions/Microsoft/SQLDB/DAC/"
         run: |
           cd $SQLPACKAGE_PATH
-          .\SqlPackage /Action:Publish /SourceFile:"D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\MatchResultDb.dacpac" TargetConnectionString:"Server=$RDS_ENDPOINT,1433;Database=$DATABASE_NAME;User Id=$USERNAME;Password=$PASSWORD;Trusted_Connection=True;Integrated Security=SSPI;TrustServerCertificate=True"
+          SqlPackage.exe /Action:Publish /SourceFile:"D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\MatchResultDb.dacpac" TargetConnectionString:"Server=$RDS_ENDPOINT,1433;Database=$DATABASE_NAME;User Id=$USERNAME;Password=$PASSWORD;Trusted_Connection=True;Integrated Security=SSPI;TrustServerCertificate=True"
