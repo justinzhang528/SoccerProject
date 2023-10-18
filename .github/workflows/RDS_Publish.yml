@@ -59,6 +59,8 @@ jobs:
           
       - name: Add sqlpackage to PATH
         uses: coreywebber/setup-sqlpackage@v1
+        with:
+          sql-version: 17
   
       - name: Deploy to AWS RDS
         env:
