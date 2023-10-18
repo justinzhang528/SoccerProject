@@ -48,7 +48,7 @@ jobs:
         run: dotnet restore ./soccer/MatchResultDb/MatchResultDb.sqlproj
 
       - name: Build SQL Server Database Project
-        run: dotnet publish ./soccer/MatchResultDb/MatchResultDb.sqlproj -o $(Build.ArtifactStagingDirectory)
+        run: dotnet publish ./soccer/MatchResultDb/MatchResultDb.sqlproj -o ./build-artifacts
         
       - name: Publish Database to RDS
         run: |
@@ -58,4 +58,4 @@ jobs:
           export RDS_PORT = 1433
           export DATABASE_NAME = ${{ secrets.DATABASE_NAME }}
 
-          sqlpackage /a:Publish /tsn:$RDS_SERVER /tdn:$DATABASE_NAME /tu:$RDS_USERNAME /tp:$RDS_PASSWORD /tcp:$RDS_PORT /sf:$(Build.ArtifactStagingDirectory)/MatchResultDb.dacpac
+          sqlpackage /a:Publish /tsn:$RDS_SERVER /tdn:$DATABASE_NAME /tu:$RDS_USERNAME /tp:$RDS_PASSWORD /tcp:$RDS_PORT /sf:./build-artifacts/MatchResultDb.dacpac
