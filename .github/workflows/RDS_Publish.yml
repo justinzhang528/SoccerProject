@@ -25,6 +25,10 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Install SQL Server Data Tools (SSDT)
+        run: |
+          choco install sql-server-data-tools
+          
       - name: Restore dependencies
         run: dotnet restore ./soccer/MatchResultDb
 
