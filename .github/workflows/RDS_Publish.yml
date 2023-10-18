@@ -37,6 +37,9 @@ jobs:
           New-Item -Path $destinationDir -ItemType Directory -Force
           Copy-Item -Path $sourceDir\* -Destination $destinationDir -Recurse
 
+          cd "D:\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\"
+          Get-ChildItem
+
       # - name: Restore web dependencies
       #   run: dotnet restore ./soccer/Soccer.Web
           
