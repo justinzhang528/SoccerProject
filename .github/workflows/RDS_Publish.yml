@@ -1,6 +1,6 @@
 name: Publish DB to AWS RDS
 env:
-  DOTNET_VERSION: '6.x'                 # set this to the .NET Core version to use
+  DOTNET_VERSION: '6.x'
 
 on:
   push:
@@ -25,13 +25,11 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Restore db dependencies
-        run: |
-          msbuild /t:restore ./soccer/MatchResultDb
+      - name: Restore dependencies
+        run: dotnet restore ./soccer/MatchResultDb/MatchResultDb.sqlproj
 
-      - name: Publish SQL Server Database Project
-        run: |
-          msbuild ./soccer/MatchResultDb/MatchResultDb.sqlproj /t:Publish /p:Configuration=Release /p:PublishDir=./build-artifacts
+      - name: Build SQL Server Database Project
+        run: dotnet publish ./soccer/MatchResultDb/MatchResultDb.sqlproj -o ./build-artifacts
         
       - name: Publish Database to RDS
         run: |
