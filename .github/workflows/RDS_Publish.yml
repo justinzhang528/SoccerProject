@@ -26,6 +26,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'soccer/MatchResultDb/**'
+      - '.github/workflows/RDS_Publish.yml'
   workflow_dispatch:
 
 permissions:
@@ -44,7 +45,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ./soccer/MatchResultDb/MatchResultDb.sqlproj
 
       - name: Build SQL Server Database Project
         run: dotnet publish ./soccer/MatchResultDb/MatchResultDb.sqlproj -o $(Build.ArtifactStagingDirectory)
