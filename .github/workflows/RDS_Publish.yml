@@ -53,17 +53,17 @@ jobs:
           cd "D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\"
           Get-ChildItem
           
-      - name: Add sqlpackage to PATH
-        uses: coreywebber/setup-sqlpackage@v1
-        with:
-          sql-version: 17
+      # - name: Add sqlpackage to PATH
+      #   uses: coreywebber/setup-sqlpackage@v1
+      #   with:
+      #     sql-version: 17
   
       - name: Deploy to AWS RDS
         env:
-          AWS_REGION: ap-southeast-1 # Change this to your AWS region
+          AWS_REGION: ap-southeast-1
           RDS_ENDPOINT: ${{ secrets.RDS_SERVER }}
           DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
           USERNAME: ${{ secrets.RDS_USERNAME }}
           PASSWORD: ${{ secrets.RDS_PASSWORD }}
         run: |
-          SqlPackage.exe /Action:Publish /SourceFile:"D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\MatchResultDb.dacpac" /TargetServer:$RDS_ENDPOINT /TargetDatabase:$DATABASE_NAME /TargetUser:$USERNAME /TargetPassword:$PASSWORD /p:BlockOnPossibleDataLoss=false
+          "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/Extensions/Microsoft/SQLDB/DAC/SqlPackage.exe" /Action:Publish /SourceFile:"D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\MatchResultDb.dacpac" /TargetServer:$RDS_ENDPOINT /TargetDatabase:$DATABASE_NAME /TargetUser:$USERNAME /TargetPassword:$PASSWORD /p:BlockOnPossibleDataLoss=false
