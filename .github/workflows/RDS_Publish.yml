@@ -39,7 +39,7 @@ jobs:
 
           cd "D:\"
           Get-ChildItem
-          cd "D:\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\"
+          cd "D:\Common7\"
           Get-ChildItem
           cd "D:\Common7\IDE\"
           Get-ChildItem
