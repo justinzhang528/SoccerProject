@@ -28,14 +28,11 @@ jobs:
       - name: Install necessary package
         run: dotnet add package Microsoft.NETFramework.ReferenceAssemblies --version 1.0.2
 
-      - name: Restore web dependencies
-        run: dotnet restore ./soccer/Soccer.Web
-
       - name: Restore db dependencies
-        run: dotnet restore ./soccer/MatchResultDb
+        run: msbuild /t:restore ./soccer/MatchResultDb
 
-      - name: Build SQL Server Database Project
-        run: dotnet publish ./soccer/MatchResultDb/MatchResultDb.sqlproj -o ./build-artifacts
+      - name: Publish SQL Server Database Project
+        run: msbuild ./soccer/MatchResultDb/MatchResultDb.sqlproj /t:Publish /p:Configuration=Release /p:PublishDir=./build-artifacts
         
       - name: Publish Database to RDS
         run: |
