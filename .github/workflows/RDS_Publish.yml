@@ -28,9 +28,6 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ./soccer/MatchResultDb
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release ./soccer/MatchResultDb
-
       - name: Build SQL Server Database Project
         run: dotnet publish ./soccer/MatchResultDb -o ./build-artifacts
         
