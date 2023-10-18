@@ -31,7 +31,7 @@ jobs:
 
       - name: List files
         run: |
-          cd "C:/Program Files/Microsoft Visual Studio/"
+          cd "C:/Program Files/Microsoft Visual Studio/2022/"
           
           Get-ChildItem
           
