@@ -43,11 +43,11 @@ jobs:
       # - name: Restore web dependencies
       #   run: dotnet restore ./soccer/Soccer.Web
           
-      - name: Restore db dependencies
-        run: dotnet restore ./soccer/MatchResultDb
+      # - name: Restore db dependencies
+      #   run: dotnet restore ./soccer/MatchResultDb
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v1.3.1
         
       - name: Build SQL Server Database Project
         run: msbuild ./soccer/MatchResultDb -t:build -property:Configuration=Release
@@ -64,12 +64,12 @@ jobs:
           cd "D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\"
           Get-ChildItem
         
-      - name: Publish Database to RDS
+      - name: Deploy to AWS RDS
+        env:
+          AWS_REGION: ap-southeast-1 # Change this to your AWS region
+          RDS_ENDPOINT: ${{ secrets.RDS_SERVER }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+          USERNAME: ${{ secrets.RDS_USERNAME }}
+          PASSWORD: ${{ secrets.RDS_PASSWORD }}
         run: |
-          export RDS_SERVER = ${{ secrets.RDS_SERVER }}
-          export RDS_USERNAME = ${{ secrets.RDS_USERNAME }}
-          export RDS_PASSWORD = ${{ secrets.RDS_PASSWORD }}
-          export RDS_PORT = 1433
-          export DATABASE_NAME = ${{ secrets.DATABASE_NAME }}
-
-          sqlpackage /a:Publish /tsn:$RDS_SERVER /tdn:$DATABASE_NAME /tu:$RDS_USERNAME /tp:$RDS_PASSWORD /tcp:$RDS_PORT /sf:./build-artifacts/MatchResultDb.dacpac
+          SqlPackage.exe /Action:Publish /SourceFile:"D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\MatchResultDb.dacpac" /TargetServer:$RDS_ENDPOINT /TargetDatabase:$DATABASE_NAME /TargetUser:$USERNAME /TargetPassword:$PASSWORD /p:BlockOnPossibleDataLoss=false
