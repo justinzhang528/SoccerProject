@@ -63,7 +63,7 @@ jobs:
         uses: im-open/iis-service-action@v1.0.7
         with:
           action: 'stop'
-          server: ${{ env.EC2_HOST }}
+          server: ${{ secrets.EC2_HOST }}
           service-account-id: ${{ secrets.EC2_USER }}
           service-account-password: ${{ secrets.EC2_SSH_KEY }}
         
@@ -89,7 +89,7 @@ jobs:
         uses: im-open/iis-service-action@v1.0.7
         with:
           action: 'start'
-          server: ${{ env.EC2_HOST }}
+          server: ${{ secrets.EC2_HOST }}
           service-account-id: ${{ secrets.EC2_USER }}
           service-account-password: ${{ secrets.EC2_SSH_KEY }}
     
