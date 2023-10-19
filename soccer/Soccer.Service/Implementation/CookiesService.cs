@@ -50,6 +50,7 @@ namespace Soccer.Service.Implementation
             foreach (var cookie in cookies)
             {
                 CookiesModel cookiesModel = new CookiesModel();
+                cookiesModel.Website = _configuration["Cookies:Website"];
                 cookiesModel.Name = cookie.Name;
                 cookiesModel.Value = cookie.Value;
                 cookiesModel.Path = cookie.Path;

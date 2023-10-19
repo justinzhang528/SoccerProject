@@ -16,7 +16,7 @@ namespace Soccer.Repository.Implementaion
             DataTable results_dt = ToDataTable(cookies);
             var parameterObject = new
             {
-                Results = results_dt.AsTableValuedParameter("dbo.SBOMatchResultType")
+                Cookies = results_dt.AsTableValuedParameter("dbo.CookiesType")
             };
             UpdateAll("Soccer_MatchResult_UpdateCookies_v1", parameterObject);
         }
