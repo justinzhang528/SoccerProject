@@ -59,6 +59,14 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o publish .\soccer\Soccer.Web
         
+      - name: IIS stop
+        uses: im-open/iis-service-action@v1.0.7
+        with:
+        action: 'stop'
+          server: ${{ env.EC2_HOST }}
+          service-account-id: ${{ secrets.EC2_USER }}
+          service-account-password: ${{ secrets.EC2_SSH_KEY }}
+        
       - name: Copy to EC2
         env:
           REMOTE_IP: ${{ secrets.EC2_HOST }}
@@ -73,13 +81,15 @@ jobs:
           $sourceFilePath = ".\publish"
           $destinationPath = "\\$remoteIP\C$\inetpub\wwwroot"
           
-          New-PSDrive -Name RemoteDrive -PSProvider FileSystem -Root $destinationPath -Credential $credentials
-          
-          Stop-Service -Name 'W3SVC' -Force
-  
-          Copy-Item -Path $sourceFilePath -Destination "RemoteDrive:" -Recurse -Force
-            
+          New-PSDrive -Name RemoteDrive -PSProvider FileSystem -Root $destinationPath -Credential $credentials 
+          Copy-Item -Path $sourceFilePath -Destination "RemoteDrive:" -Recurse -Force            
           Remove-PSDrive -Name RemoteDrive
           
-          Start-Service -Name 'W3SVC'
+      - name: IIS start
+        uses: im-open/iis-service-action@v1.0.7
+        with:
+        action: 'start'
+          server: ${{ env.EC2_HOST }}
+          service-account-id: ${{ secrets.EC2_USER }}
+          service-account-password: ${{ secrets.EC2_SSH_KEY }}
     
