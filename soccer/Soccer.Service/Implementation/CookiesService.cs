@@ -27,6 +27,10 @@ namespace Soccer.Service.Implementation
             string resultUrl = _configuration["URL:SBOSport-results-more"];
             IWebDriver driver = new EdgeDriver();
 
+            Cookie languageCookies = new Cookie(_configuration["Cookies:SBOLanguage:Name"], _configuration["Cookies:SBOLanguage:Value"]);
+
+            driver.Navigate().GoToUrl(url);
+            driver.Manage().Cookies.AddCookie(languageCookies);
             driver.Navigate().GoToUrl(url);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10000);
 
@@ -40,10 +44,10 @@ namespace Soccer.Service.Implementation
 
             IWebElement submitButton = driver.FindElement(By.ClassName(_configuration["Selenium:LoginButtonElement"]));
             submitButton.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
 
             driver.Navigate().GoToUrl(sportUrl);
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
 
             driver.Navigate().GoToUrl(resultUrl);
 
@@ -51,7 +55,7 @@ namespace Soccer.Service.Implementation
             foreach (var cookie in cookies)
             {
                 CookiesModel cookiesModel = new CookiesModel();
-                cookiesModel.Website = _configuration["Cookies:Website"];
+                cookiesModel.Website = _configuration["Cookies:SBOResult:Website"];
                 cookiesModel.Name = cookie.Name;
                 cookiesModel.Value = cookie.Value;
                 cookiesModel.Path = cookie.Path;

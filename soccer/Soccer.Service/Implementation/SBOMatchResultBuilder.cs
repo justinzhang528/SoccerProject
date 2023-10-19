@@ -25,7 +25,7 @@ namespace Soccer.Service.Implementation
             _matchResults = new List<SBOMatchResultModel>();
             _matchDetails = new List<SBOMatchDetailModel>();
             _eventIds = new List<string>();
-            _cookies = _cookiesService.GetCookesByCondition(_configuration["Cookies:Website"], _configuration["Cookies:Name"]);
+            _cookies = _cookiesService.GetCookesByCondition(_configuration["Cookies:SBOResult:Website"], _configuration["Cookies:SBOResult:Name"]);
         }
 
         private string GetHidCK()
@@ -43,7 +43,7 @@ namespace Soccer.Service.Implementation
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = method;
-            request.ContentType = _configuration["Cookies:ContentType"];
+            request.ContentType = _configuration["Cookies:SBOResult:ContentType"];
             request.CookieContainer = new CookieContainer();
 
             var cookie = new Cookie(_cookies.Name, _cookies.Value)
