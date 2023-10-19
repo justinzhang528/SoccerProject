@@ -62,7 +62,7 @@ jobs:
       - name: IIS stop
         uses: im-open/iis-service-action@v1.0.7
         with:
-        action: 'stop'
+          action: 'stop'
           server: ${{ env.EC2_HOST }}
           service-account-id: ${{ secrets.EC2_USER }}
           service-account-password: ${{ secrets.EC2_SSH_KEY }}
@@ -88,7 +88,7 @@ jobs:
       - name: IIS start
         uses: im-open/iis-service-action@v1.0.7
         with:
-        action: 'start'
+          action: 'start'
           server: ${{ env.EC2_HOST }}
           service-account-id: ${{ secrets.EC2_USER }}
           service-account-password: ${{ secrets.EC2_SSH_KEY }}
