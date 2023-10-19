@@ -73,10 +73,10 @@ jobs:
       #     cd $SQLPACKAGE_PATH
       #     SqlPackage.exe /Action:Publish /SourceFile:"D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\MatchResultDb.dacpac" TargetConnectionString:"Server=$RDS_ENDPOINT,1433;Database=$DATABASE_NAME;User Id=$USERNAME;Password=$PASSWORD;Trusted_Connection=True;Integrated Security=SSPI;TrustServerCertificate=True"
 
-      - name: Add msbuild to PATH
+      - name: deploy to RDS
         uses: azure/sql-action@v2.2
         with:        
           connection-string: ${{ secrets.SQL_CONNECTION_STRING }}
           path: 'D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\MatchResultDb.dacpac'
           action: 'publish'
-          arguments: '/p:DropObjectsNotInSource=true'
+          arguments: '/p:DropObjectsNotInSource=true /p:BlockOnPossibleDataLoss=false'
