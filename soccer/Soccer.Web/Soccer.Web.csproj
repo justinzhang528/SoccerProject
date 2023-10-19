@@ -11,6 +11,7 @@
     <PackageReference Include="Hangfire.SqlServer" Version="1.8.5" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.4" />
+    <PackageReference Include="Selenium.WebDriver.MSEdgeDriver" Version="118.0.2088.41" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="vue" Version="2.6.11" />
     <PackageReference Include="Vue.Js.Element.UI" Version="2.10.0.1" />

@@ -4,6 +4,7 @@ using Soccer.Repository.Interface;
 using Soccer.Repository.Models;
 using Soccer.Service.Interface;
 using Microsoft.Extensions.Configuration;
+using OpenQA.Selenium.Edge;
 
 namespace Soccer.Service.Implementation
 {
@@ -24,7 +25,7 @@ namespace Soccer.Service.Implementation
             string url = _configuration["URL:SBO"];
             string sportUrl = _configuration["URL:SBOSport"];
             string resultUrl = _configuration["URL:SBOSport-results-more"];
-            IWebDriver driver = new ChromeDriver();
+            IWebDriver driver = new EdgeDriver();
 
             driver.Navigate().GoToUrl(url);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10000);
