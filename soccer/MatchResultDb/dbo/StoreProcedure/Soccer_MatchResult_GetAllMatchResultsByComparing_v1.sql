@@ -20,3 +20,4 @@ on (bti.MatchTime = sbo.MatchTime or bti.MatchTime = DATEADD(MINUTE, 1, sbo.Matc
 	and (bti.HomeTeam = sbo.HomeTeam or bti.HomeTeamId = sbo.HomeTeamId)
 order by bti.League
 RETURN 0
+

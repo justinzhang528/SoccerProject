@@ -1,0 +1,40 @@
+name: Publish DB to AWS RDS
+env:
+  DOTNET_VERSION: '6.x'
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'soccer/MatchResultDb/**'
+      - '.github/workflows/RDS_Publish.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish-db:
+    runs-on: windows-latest
+
+    steps:        
+      - uses: actions/checkout@v3
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Set up msbuild
+        uses: microsoft/setup-msbuild@v1.3.1
+        
+      - name: Build SQL Server Database Project
+        run: msbuild ./soccer/MatchResultDb -t:build -property:Configuration=Release
+          
+      - name: Deploy to RDS
+        uses: azure/sql-action@v2.2
+        with:        
+          connection-string: ${{ secrets.SQL_CONNECTION_STRING }}
+          path: 'D:\a\SoccerProject\SoccerProject\soccer\MatchResultDb\bin\Release\MatchResultDb.dacpac'
+          action: 'publish'
+          arguments: '/p:DropObjectsNotInSource=true /p:BlockOnPossibleDataLoss=false /p:DoNotDropObjectTypes=Users;Logins;RoleMembership;Permissions;'
