@@ -59,13 +59,13 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o publish .\soccer\Soccer.Web
         
-      - name: IIS stop
-        uses: im-open/iis-service-action@v1.0.7
-        with:
-          action: 'stop'
-          server: ${{ secrets.EC2_HOST }}
-          service-account-id: ${{ secrets.EC2_USER }}
-          service-account-password: ${{ secrets.EC2_SSH_KEY }}
+      # - name: IIS stop
+      #   uses: im-open/iis-service-action@v1.0.7
+      #   with:
+      #     action: 'stop'
+      #     server: ${{ secrets.EC2_HOST }}
+      #     service-account-id: ${{ secrets.EC2_USER }}
+      #     service-account-password: ${{ secrets.EC2_SSH_KEY }}
         
       - name: Copy to EC2
         env:
@@ -85,11 +85,11 @@ jobs:
           Copy-Item -Path $sourceFilePath -Destination "RemoteDrive:" -Recurse -Force            
           Remove-PSDrive -Name RemoteDrive
           
-      - name: IIS start
-        uses: im-open/iis-service-action@v1.0.7
-        with:
-          action: 'start'
-          server: ${{ secrets.EC2_HOST }}
-          service-account-id: ${{ secrets.EC2_USER }}
-          service-account-password: ${{ secrets.EC2_SSH_KEY }}
+      # - name: IIS start
+      #   uses: im-open/iis-service-action@v1.0.7
+      #   with:
+      #     action: 'start'
+      #     server: ${{ secrets.EC2_HOST }}
+      #     service-account-id: ${{ secrets.EC2_USER }}
+      #     service-account-password: ${{ secrets.EC2_SSH_KEY }}
     
