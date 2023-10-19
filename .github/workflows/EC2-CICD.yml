@@ -74,8 +74,12 @@ jobs:
           $destinationPath = "\\$remoteIP\C$\inetpub\wwwroot"
           
           New-PSDrive -Name RemoteDrive -PSProvider FileSystem -Root $destinationPath -Credential $credentials
+          
+          Stop-Service -Name 'W3SVC' -Force
   
-            Copy-Item -Path $sourceFilePath -Destination "RemoteDrive:" -Recurse -Force
+          Copy-Item -Path $sourceFilePath -Destination "RemoteDrive:" -Recurse -Force
             
-            Remove-PSDrive -Name RemoteDrive
+          Remove-PSDrive -Name RemoteDrive
+          
+          Start-Service -Name 'W3SVC'
     
