@@ -1,5 +1,4 @@
-﻿using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using Soccer.Repository.Interface;
 using Soccer.Repository.Models;
 using Soccer.Service.Interface;

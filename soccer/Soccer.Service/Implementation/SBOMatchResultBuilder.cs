@@ -34,7 +34,7 @@ namespace Soccer.Service.Implementation
             string htmlStr = GetResponseWithCookie(url, "GET");
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(htmlStr);
-            return doc.DocumentNode.SelectSingleNode("//input[@name='HidCK']").GetAttributeValue("value", "");
+            return doc.DocumentNode.SelectSingleNode("//input[@name='HidCK']").GetAttributeValue("value", "") ?? "";
         }
 
         private string GetResponseWithCookie(string url, string method, string? postData = null)
