@@ -7,6 +7,7 @@ using Soccer.Service.Interface;
 using Soccer.Repository.Interface;
 using Soccer.Repository.Implementaion;
 using Soccer.Service.Implementation;
+using Hangfire.Dashboard.BasicAuthorization;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -68,7 +69,24 @@ try
 
     app.UseRouting();
 
-    app.UseHangfireDashboard("/dashboard");
+    app.UseHangfireDashboard("/dashboard", new DashboardOptions
+    {
+        Authorization = new[] {new BasicAuthAuthorizationFilter(new BasicAuthAuthorizationFilterOptions
+        {
+            RequireSsl = false,
+            SslRedirect = false,
+            LoginCaseSensitive = true,
+            Users = new[]
+            {
+                new BasicAuthAuthorizationUser
+                {
+                    Login = builder.Configuration["Hangfire:UserName"],
+                    PasswordClear = builder.Configuration["Hangfire:Password"]
+                }
+            }
+        })},
+        IsReadOnlyFunc = (context) => false
+    });
 
     app.UseAuthorization();
 
